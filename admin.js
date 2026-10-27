@@ -467,6 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-042',
       category: 'Infrastructure',
       summary: 'Heavy siltation & plastic clog choking Purok 2 culvert outflow',
+      submittedDetails: 'Culvert capacity depleted by ~72%. Overflow risk acute during rainfall exceeding 45mm.',
       location: 'Purok 2 Embankment',
       reporter: 'Purok Leader M. De Chavez',
       dateLogged: '2026-10-11',
@@ -478,6 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-041',
       category: 'Infrastructure',
       summary: 'Collapsed riprap retaining wall threatening footpath',
+      submittedDetails: 'Approximately 6 meters of riprap dislodged due to creek bank scouring.',
       location: 'Sitio Santolan Bridge',
       reporter: 'Resident Engr. F. Aldover',
       dateLogged: '2026-10-10',
@@ -489,6 +491,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-040',
       category: 'Utilities',
       summary: 'Dangling secondary power cable near basketball court',
+      submittedDetails: 'Cable sagging to 2.1m above road level.',
       location: 'Sitio Ibaba Main St',
       reporter: 'SK Kagawad K. Soriano',
       dateLogged: '2026-10-09',
@@ -645,6 +648,47 @@ document.addEventListener('DOMContentLoaded', function () {
       notes: 'Barangay Linis-Kanal weekend drive mobilized; 40 sacks of silt removed.'
     }
   ];
+
+  // Sync any newly submitted resident concerns from Resident Portal (localStorage: brgy360_concerns)
+  const SEEDED_PORTAL_CONCERN_REFS = new Set(['TCK-4021', 'TCK-3890', 'TCK-3412']);
+  function syncResidentConcernsFromStorage() {
+    try {
+      const storedConcerns = JSON.parse(localStorage.getItem('brgy360_concerns') || '[]');
+      if (!Array.isArray(storedConcerns) || storedConcerns.length === 0) return;
+
+      let residentName = 'Verified Resident';
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('brgy360_user') || '{}');
+        if (storedUser && storedUser.name) residentName = storedUser.name;
+      } catch (_) {}
+
+      const existingIds = new Set(incidentTickets.map(t => t.id));
+      for (let i = storedConcerns.length - 1; i >= 0; i--) {
+        const c = storedConcerns[i];
+        if (!c || !c.ref || SEEDED_PORTAL_CONCERN_REFS.has(c.ref)) continue;
+        if (!existingIds.has(c.ref)) {
+          incidentTickets.unshift({
+            id: c.ref,
+            category: c.category || 'Infrastructure',
+            summary: c.desc || 'Submitted resident concern',
+            submittedDetails: '',
+            location: c.location || 'Barangay Pallocan West',
+            reporter: c.reporter || residentName,
+            dateLogged: c.dateFiled || new Date().toISOString().slice(0, 10),
+            severity: c.urgency === 'Urgent' ? 'Urgent Hazard' : 'Moderate',
+            urgency: c.urgency || 'Standard',
+            status: c.status === 'Resolved' ? 'Resolved' : 'Active Hazard',
+            actionTaken: c.status === 'Resolved' ? (c.resolutionNote || '') : undefined,
+            notes: c.desc || ''
+          });
+          existingIds.add(c.ref);
+        }
+      }
+    } catch (err) {
+      console.warn('Error syncing resident concerns:', err);
+    }
+  }
+  syncResidentConcernsFromStorage();
 
   // Prescriptive Directive Execution State
   let directiveState = {
@@ -2943,7 +2987,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       let actions = `
         <div class="table-actions">
-          <button type="button" class="btn-table-action btn-inspect-inc" data-id="${item.id}" title="Log on-site inspection findings">Log Inspection</button>
+          <button type="button" class="btn-table-action btn-view-inc" data-id="${item.id}" title="View submitted concern of resident">View</button>
       `;
 
       if (item.status !== 'Resolved') {
@@ -3005,10 +3049,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function bindIncidentRowEvents() {
-    document.querySelectorAll('.btn-inspect-inc').forEach(btn => {
+    document.querySelectorAll('.btn-view-inc').forEach(btn => {
       btn.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
-        openIncidentInspectionModal(id);
+        openConcernViewModal(id);
       });
     });
 
@@ -3057,6 +3101,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   renderIncidentsTable();
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'brgy360_concerns') {
+      syncResidentConcernsFromStorage();
+      renderIncidentsTable();
+    }
+  });
 
   // ==============================================================
   // 9. OVERVIEW OPERATIONAL ACTIONS
@@ -3144,66 +3194,86 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Modal: Incident Inspection
-  const incidentInspectionModal = document.getElementById('incidentInspectionModal');
+  // Modal: View Submitted Resident Concern (Read-Only)
+  const concernViewModal = document.getElementById('concernViewModal');
   const btnCloseIncModal = document.getElementById('btnCloseIncModal');
-  const btnCancelInspection = document.getElementById('btnCancelInspection');
-  const btnSaveInspection = document.getElementById('btnSaveInspection');
+  const btnCloseIncFooter = document.getElementById('btnCloseIncFooter');
   const modalIncTitle = document.getElementById('modalIncTitle');
   const modalIncId = document.getElementById('modalIncId');
-  const inspectTime = document.getElementById('inspectTime');
+  const modalIncViewBody = document.getElementById('modalIncViewBody');
 
-  function openIncidentInspectionModal(id) {
+  function openConcernViewModal(id) {
     const item = incidentTickets.find(t => t.id === id);
-    if (!item || !incidentInspectionModal) return;
+    if (!item || !concernViewModal) return;
 
     currentInspectingIncId = id;
-    if (modalIncTitle) modalIncTitle.textContent = `Site Inspection: ${item.category}`;
-    if (modalIncId) modalIncId.textContent = `${item.id} · ${item.location}`;
+    if (modalIncTitle) modalIncTitle.textContent = `${item.category} Concern`;
+    if (modalIncId) modalIncId.textContent = `Ticket #${item.id} · Submitted by ${item.reporter}`;
 
-    if (inspectTime) {
-      const nowIso = new Date().toISOString().slice(0, 16);
-      inspectTime.value = nowIso;
+    const isHighSev = item.severity && (
+      item.severity.includes('Critical') ||
+      item.severity.includes('High') ||
+      item.severity.includes('Urgent')
+    );
+    const sevBadgeClass = isHighSev ? 'red' : (item.severity === 'Low' ? 'green' : 'yellow');
+
+    let statusBadgeHtml = '<span class="badge-status yellow">' + escapeHtml(item.status) + '</span>';
+    if (item.status === 'Active Hazard') {
+      statusBadgeHtml = '<span class="badge-status red">Active Hazard</span>';
+    } else if (item.status === 'Inspection Scheduled') {
+      statusBadgeHtml = '<span class="badge-status yellow">Inspection Scheduled</span>';
+    } else if (item.status === 'Resolved') {
+      statusBadgeHtml = '<span class="badge-status green">Resolved</span>';
     }
 
-    const inspectNotes = document.getElementById('inspectNotes');
-    if (inspectNotes) {
-      inspectNotes.value = item.notes || '';
+    if (modalIncViewBody) {
+      modalIncViewBody.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 14px;">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span class="resolve-ticket-badge">${escapeHtml(item.id)}</span>
+              <span class="badge-neutral">${escapeHtml(item.category)}</span>
+              <span class="badge-status ${sevBadgeClass}">${escapeHtml(item.severity || 'Standard')}</span>
+            </div>
+            <div>${statusBadgeHtml}</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px;">
+            <div>
+              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Submitted By (Resident / Reporter)</span>
+              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.reporter)}</strong>
+            </div>
+            <div>
+              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Date Submitted</span>
+              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.dateLogged)}</strong>
+            </div>
+            <div style="grid-column: 1 / -1;">
+              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Reported Location / Sitio</span>
+              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.location)}</strong>
+            </div>
+          </div>
+
+          <div>
+            <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:6px;">Submitted Concern of Resident</span>
+            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; font-size:13px; color:#0f172a; line-height:1.55;">
+              <div style="font-weight:600;">${escapeHtml(item.summary)}</div>
+              ${item.submittedDetails ? `<p style="margin:6px 0 0 0; color:#475569; font-weight:400;">${escapeHtml(item.submittedDetails)}</p>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     }
 
-    incidentInspectionModal.classList.add('active');
+    concernViewModal.classList.add('active');
   }
 
-  function closeIncidentInspectionModal() {
-    if (incidentInspectionModal) incidentInspectionModal.classList.remove('active');
+  function closeConcernViewModal() {
+    if (concernViewModal) concernViewModal.classList.remove('active');
     currentInspectingIncId = null;
   }
 
-  if (btnCloseIncModal) btnCloseIncModal.addEventListener('click', closeIncidentInspectionModal);
-  if (btnCancelInspection) btnCancelInspection.addEventListener('click', closeIncidentInspectionModal);
-
-  if (btnSaveInspection) {
-    btnSaveInspection.addEventListener('click', function () {
-      const item = incidentTickets.find(t => t.id === currentInspectingIncId);
-      if (!item) return;
-
-      const notes = document.getElementById('inspectNotes')?.value || '';
-      const action = document.getElementById('inspectActionSelect')?.value || '';
-      const officer = document.getElementById('inspectOfficer')?.value || 'BPSO Patrol';
-
-      item.notes = `${notes} (Inspected by ${officer})`;
-
-      if (action === 'Mark Resolved') {
-        item.status = 'Resolved';
-      } else {
-        item.status = 'Inspection Scheduled';
-      }
-
-      renderIncidentsTable();
-      closeIncidentInspectionModal();
-      showAdminToast('Inspection Record Logged', `Inspection findings recorded for ${item.id}.`, 'success');
-    });
-  }
+  if (btnCloseIncModal) btnCloseIncModal.addEventListener('click', closeConcernViewModal);
+  if (btnCloseIncFooter) btnCloseIncFooter.addEventListener('click', closeConcernViewModal);
 
   // ==============================================================
   // RESOLVE CASE / CONCERN MODAL: RESPONSE & ACTION RECORDER

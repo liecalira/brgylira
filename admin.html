@@ -1731,54 +1731,22 @@
     </div>
   </div>
 
-  <!-- MODAL 2: INCIDENT INSPECTION LOGGING MODAL -->
-  <div class="admin-modal-overlay" id="incidentInspectionModal">
+  <!-- MODAL 2: VIEW SUBMITTED RESIDENT CONCERN MODAL (READ-ONLY) -->
+  <div class="admin-modal-overlay" id="concernViewModal" role="dialog" aria-modal="true" aria-labelledby="modalIncTitle">
     <div class="admin-modal-box">
       <div class="modal-header">
         <div>
-          <span class="modal-kicker">PUBLIC SAFETY INSPECTION DESK</span>
-          <h3 class="modal-title" id="modalIncTitle">Log Site Inspection</h3>
+          <span class="modal-kicker">SUBMITTED RESIDENT CONCERN</span>
+          <h3 class="modal-title" id="modalIncTitle">Submitted Concern Details</h3>
           <span class="modal-sub" id="modalIncId">Ticket #INC-2026-042</span>
         </div>
-        <button type="button" class="modal-close-btn" id="btnCloseIncModal">&times;</button>
+        <button type="button" class="modal-close-btn" id="btnCloseIncModal" aria-label="Close dialog">&times;</button>
       </div>
-      <div class="modal-body">
-        <form id="inspectionForm" class="modal-form">
-          <div class="form-group">
-            <label class="form-label">Inspecting Officer / Tanod Unit</label>
-            <input type="text" id="inspectOfficer" class="form-input" value="BPSO Patrol Unit 3 · Officer R. Castillo" required>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Inspection Date &amp; Time</label>
-              <input type="datetime-local" id="inspectTime" class="form-input" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Verified Hazard Severity</label>
-              <select id="inspectSeverity" class="form-select">
-                <option value="High (Actionable Hazard)">High (Actionable Hazard)</option>
-                <option value="Moderate (Scheduled Repair)">Moderate (Scheduled Repair)</option>
-                <option value="Low (Informational Blotter)">Low (Informational Blotter)</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Site Findings &amp; Technical Notes</label>
-            <textarea id="inspectNotes" class="form-textarea" rows="3" placeholder="Describe obstruction, structural damage, water levels, or parties interviewed..." required></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Recommended Resolution Action</label>
-            <select id="inspectActionSelect" class="form-select">
-              <option value="Issue Work Order">Issue Work Order / Dispatch Barangay Public Works</option>
-              <option value="Summon Parties to Lupon">Summon Parties to Barangay Hall (Lupon Tagapamayapa)</option>
-              <option value="Mark Resolved">Hazard Cleared on Site (Mark as Resolved)</option>
-            </select>
-          </div>
-        </form>
+      <div class="modal-body" id="modalIncViewBody">
+        <!-- Rendered dynamically via admin.js (read-only view of resident's submitted concern) -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-modal-outline" id="btnCancelInspection">Cancel</button>
-        <button type="button" class="btn-modal-primary" id="btnSaveInspection">Save Inspection Record</button>
+        <button type="button" class="btn-modal-outline" id="btnCloseIncFooter">Close</button>
       </div>
     </div>
   </div>
