@@ -339,9 +339,9 @@
             </div>
             <div class="kpi-card-body">
               <div class="kpi-number" id="kpiTotalConcerns">3</div>
-              <div class="kpi-status-sub">
-                <span class="status-pill status-resolved">1 Resolved</span>
-                <span class="status-pill status-in-review">1 In Review</span>
+              <div class="kpi-status-sub" id="kpiConcernsStatusSub">
+                <span class="status-pill status-resolved">2 Resolved</span>
+                <span class="status-pill status-in-review">1 In Progress</span>
               </div>
             </div>
             <div class="kpi-card-footer">
@@ -591,19 +591,33 @@
           <div class="workflow-banner-steps">
             <div class="step-pill">
               <span class="step-num">1</span>
-              <span><strong>New:</strong> Ticket issued &amp; logged</span>
+              <span><strong>Pending:</strong> Ticket submitted &amp; awaiting review</span>
             </div>
             <span class="step-arrow">&rarr;</span>
             <div class="step-pill">
               <span class="step-num">2</span>
-              <span><strong>In Review:</strong> Site inspected &amp; assigned</span>
+              <span><strong>In Progress:</strong> Admin reviewing &amp; action underway</span>
             </div>
             <span class="step-arrow">&rarr;</span>
             <div class="step-pill">
               <span class="step-num">3</span>
-              <span><strong>Resolved:</strong> Action taken &amp; documented</span>
+              <span><strong>Resolved:</strong> Action completed &amp; documented</span>
             </div>
           </div>
+        </div>
+
+        <!-- Inline Submission Success Banner -->
+        <div class="concern-success-banner" id="concernSuccessBanner" role="status" aria-live="polite" style="display: none;">
+          <div class="concern-success-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="concern-success-content">
+            <h4 class="concern-success-title" id="concernSuccessTitle">Concern Submitted Successfully!</h4>
+            <p class="concern-success-desc" id="concernSuccessDesc">Your concern has been recorded and forwarded to the Barangay Admin Concern Desk.</p>
+          </div>
+          <button type="button" class="concern-success-close" id="closeConcernSuccessBanner" aria-label="Dismiss message">&times;</button>
         </div>
 
         <!-- Concerns Feed & History -->
@@ -611,7 +625,7 @@
           <div class="dash-card-header flex-column-mobile">
             <div>
               <h3 class="dash-card-title">My Reported Concerns</h3>
-              <p class="dash-card-subtitle">Tracking tickets, site inspection notes, and resolution actions</p>
+              <p class="dash-card-subtitle">Tracking submitted concerns, urgency levels, and real-time admin status updates</p>
             </div>
 
             <!-- Filters -->
@@ -621,13 +635,13 @@
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" id="concernsSearchInput" placeholder="Search ticket or issue..." class="table-search-input">
+                <input type="text" id="concernsSearchInput" placeholder="Search ticket, title, or issue..." class="table-search-input">
               </div>
 
               <div class="filter-pills-row" id="concernsFilterPills">
                 <button type="button" class="filter-pill-btn active" data-filter="All">All (<span id="countAllConcerns">0</span>)</button>
-                <button type="button" class="filter-pill-btn" data-filter="New">New (<span id="countNewConcerns">0</span>)</button>
-                <button type="button" class="filter-pill-btn" data-filter="In Review">In Review (<span id="countReviewConcerns">0</span>)</button>
+                <button type="button" class="filter-pill-btn" data-filter="Pending">Pending (<span id="countPendingConcerns">0</span>)</button>
+                <button type="button" class="filter-pill-btn" data-filter="In Progress">In Progress (<span id="countProgressConcerns">0</span>)</button>
                 <button type="button" class="filter-pill-btn" data-filter="Resolved">Resolved (<span id="countResolvedConcerns">0</span>)</button>
               </div>
             </div>
@@ -1076,10 +1090,16 @@
       </div>
 
       <form id="concernReportForm" class="portal-modal-form">
-        <!-- Category & Urgency -->
+        <!-- Concern Title -->
+        <div class="form-group">
+          <label for="modalConcernTitle" class="form-label">Concern Title <span class="required">*</span></label>
+          <input type="text" id="modalConcernTitle" class="form-input" placeholder="e.g. Broken streetlight along Sitio Ibaba main walkway" required>
+        </div>
+
+        <!-- Category & Date Submitted -->
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="modalConcernCategory" class="form-label">Issue Category <span class="required">*</span></label>
+            <label for="modalConcernCategory" class="form-label">Category <span class="required">*</span></label>
             <select id="modalConcernCategory" class="form-select" required>
               <option value="Infrastructure">Infrastructure (Damaged road, open manhole, streetlights)</option>
               <option value="Sanitation">Sanitation (Uncollected garbage, canal blockage, illegal dumping)</option>
@@ -1091,11 +1111,34 @@
           </div>
 
           <div class="form-group">
-            <label for="modalConcernUrgency" class="form-label">Urgency Level <span class="required">*</span></label>
-            <select id="modalConcernUrgency" class="form-select" required>
-              <option value="Standard">Standard (Response within 24-48 hrs)</option>
-              <option value="Urgent">Urgent / Safety Hazard (Priority dispatch)</option>
-            </select>
+            <label for="modalConcernDate" class="form-label">Date Submitted <span class="required">*</span></label>
+            <input type="date" id="modalConcernDate" class="form-input" required>
+          </div>
+        </div>
+
+        <!-- Urgency Level (Strictly Standard and Urgent) -->
+        <div class="form-group">
+          <label class="form-label">Urgency Level <span class="required">*</span></label>
+          <input type="hidden" id="modalConcernUrgency" value="Standard">
+          <div class="radio-cards-row urgency-level-cards" id="concernUrgencyCards" role="radiogroup" aria-label="Urgency Level">
+            <label class="radio-card urgency-card is-selected" data-urgency-card="Standard">
+              <input type="radio" name="concernUrgencyRadio" value="Standard" checked>
+              <div>
+                <span class="radio-title">
+                  <span class="status-pill status-standard">Standard</span>
+                </span>
+                <span class="radio-desc">Regular neighborhood maintenance or non-emergency concern</span>
+              </div>
+            </label>
+            <label class="radio-card urgency-card is-urgent-option" data-urgency-card="Urgent">
+              <input type="radio" name="concernUrgencyRadio" value="Urgent">
+              <div>
+                <span class="radio-title">
+                  <span class="status-pill status-urgent">Urgent</span>
+                </span>
+                <span class="radio-desc">Immediate safety risk, severe blockage, or active hazard</span>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -1122,13 +1165,30 @@
 
         <!-- Issue Description -->
         <div class="form-group">
-          <label for="modalConcernDesc" class="form-label">Detailed Description of the Concern <span class="required">*</span></label>
+          <label for="modalConcernDesc" class="form-label">Detailed Description <span class="required">*</span></label>
           <textarea id="modalConcernDesc" class="form-textarea" rows="4" placeholder="Please describe what happened, when it started, and how it affects the area..." required></textarea>
+        </div>
+
+        <!-- Pre-filled Resident Information -->
+        <div class="form-prefill-box">
+          <div class="prefill-box-header">
+            <span>Submitted By (Auto-attached Resident Information)</span>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label-sm">Resident Full Name</label>
+              <input type="text" id="modalConcernReporter" class="form-input form-input-sm" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label-sm">Contact / Email</label>
+              <input type="text" id="modalConcernContact" class="form-input form-input-sm" readonly>
+            </div>
+          </div>
         </div>
 
         <!-- Photo Upload -->
         <div class="form-group">
-          <label for="modalConcernPhoto" class="form-label">Attach Photo / Evidence (Recommended)</label>
+          <label for="modalConcernPhoto" class="form-label">Attach Photo / Evidence (Optional)</label>
           <div class="custom-file-upload">
             <input type="file" id="modalConcernPhoto" accept="image/*" class="file-input-hidden">
             <label for="modalConcernPhoto" class="file-upload-dropzone">
@@ -1145,7 +1205,7 @@
         <div class="portal-modal-footer">
           <button type="button" class="btn-dash-outline" id="btnCancelConcernModal">Cancel</button>
           <button type="submit" class="btn-dash-primary" id="btnSubmitConcern">
-            <span>Submit Concern &amp; Get Ticket</span>
+            <span>Submit Concern</span>
           </button>
         </div>
       </form>

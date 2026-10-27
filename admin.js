@@ -461,191 +461,146 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   ];
 
-  // Citizen Blotter & Incident Desk Dataset (14 Tickets: 11 Resolved, 3 Active Hazards)
-  let incidentTickets = [
+  const SHARED_DEFAULT_CONCERNS = [
     {
-      id: 'INC-2026-042',
+      ref: 'TCK-4021',
+      id: 'TCK-4021',
+      title: 'Flickering Streetlight Creating Nighttime Blind Spot',
       category: 'Infrastructure',
-      summary: 'Heavy siltation & plastic clog choking Sitio Ibaba culvert outflow',
-      submittedDetails: 'Culvert capacity depleted by ~72%. Overflow risk acute during rainfall exceeding 45mm.',
-      location: 'Sitio Ibaba',
-      reporter: 'Sitio Leader M. De Chavez',
-      dateLogged: '2026-10-11',
-      severity: 'Critical Hazard',
-      status: 'Active Hazard',
-      notes: 'Culvert capacity depleted by ~72%. Overflow risk acute during rainfall exceeding 45mm.'
+      urgency: 'Standard',
+      sitio: 'Sitio Ibaba',
+      landmark: 'Main Road Pedestrian Walkway',
+      location: 'Sitio Ibaba — Main Road Pedestrian Walkway',
+      dateFiled: '2026-10-14',
+      status: 'In Progress',
+      currentStage: 2,
+      desc: 'Streetlight has been flickering and completely goes dark after 8:00 PM. Creates a blind spot for pedestrians and students walking home at night.',
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Inspected by BPSO Night Patrol on Oct 15. Coordinated with City Engineering Public Lighting Office for LED fixture replacement.'
     },
     {
-      id: 'INC-2026-041',
+      ref: 'TCK-4018',
+      id: 'TCK-4018',
+      title: 'Heavy Siltation and Plastic Clog Blocking Culvert Outflow',
       category: 'Infrastructure',
-      summary: 'Collapsed riprap retaining wall threatening footpath',
-      submittedDetails: 'Approximately 6 meters of riprap dislodged due to creek bank scouring.',
-      location: 'Sitio Santolan',
-      reporter: 'Resident Engr. F. Aldover',
-      dateLogged: '2026-10-10',
-      severity: 'High Hazard',
-      status: 'Active Hazard',
-      notes: 'Approximately 6 meters of riprap dislodged due to creek bank scouring.'
+      urgency: 'Urgent',
+      sitio: 'Sitio Ibaba',
+      landmark: 'Culvert Outflow Channel',
+      location: 'Sitio Ibaba — Culvert Outflow Channel',
+      dateFiled: '2026-10-15',
+      status: 'Pending',
+      currentStage: 1,
+      desc: 'Drainage culvert outflow is heavily clogged with silt and plastic debris, causing rapid street ponding whenever heavy rain falls.',
+      reporter: 'Clarisse Anne Villanueva',
+      userEmail: 'clarisse.villanueva@gmail.com',
+      userMobile: '0917 554 8219',
+      userAddress: '082 Sitio Ibaba Road, Barangay Pallocan West',
+      residentId: 'PW-2026-08510',
+      resolutionNote: ''
     },
     {
-      id: 'INC-2026-040',
-      category: 'Utilities',
-      summary: 'Dangling secondary power cable near basketball court',
-      submittedDetails: 'Cable sagging to 2.1m above road level.',
-      location: 'Sitio Ibaba',
-      reporter: 'SK Kagawad K. Soriano',
-      dateLogged: '2026-10-09',
-      severity: 'Urgent Hazard',
-      status: 'Active Hazard',
-      notes: 'Cable sagging to 2.1m above road level. Meralco Batangas emergency dispatch notified.'
+      ref: 'TCK-4015',
+      id: 'TCK-4015',
+      title: 'Low-Hanging Power Cable Across Basketball Court Access Road',
+      category: 'Public Utility',
+      urgency: 'Urgent',
+      sitio: 'Tierra Verde',
+      landmark: 'Near Covered Court Gate',
+      location: 'Tierra Verde — Near Covered Court Gate',
+      dateFiled: '2026-10-13',
+      status: 'In Progress',
+      currentStage: 2,
+      desc: 'Secondary utility line sagging approximately 2.1 meters above the road, posing a hazard to delivery vans and pedestrians.',
+      reporter: 'Eduardo Castillo Jr.',
+      userEmail: 'eddie.castillo.ph@yahoo.com',
+      userMobile: '0920 891 2345',
+      userAddress: 'Block 14 Lot 6, Tierra Verde, Barangay Pallocan West',
+      residentId: 'PW-2026-08514',
+      resolutionNote: 'Cordoned off by BPSO Tanod Patrol. Utility emergency crew dispatched for cable re-tensioning.'
     },
     {
-      id: 'INC-2026-039',
+      ref: 'TCK-4009',
+      id: 'TCK-4009',
+      title: 'Uncollected Domestic Waste Bags Along Interior Easement',
       category: 'Sanitation',
-      summary: 'Illegal waste dumping along riverbank easement',
-      location: 'Sitio Ilaya',
-      reporter: 'BPSO Patrol Team 2',
-      dateLogged: '2026-10-08',
-      severity: 'Moderate',
-      status: 'Inspection Scheduled',
-      notes: 'Site inspection scheduled with City ENRO for summons issuance.'
+      urgency: 'Standard',
+      sitio: 'Sitio Santolan',
+      landmark: 'Villa Celina Corner',
+      location: 'Sitio Santolan — Villa Celina Corner',
+      dateFiled: '2026-10-11',
+      status: 'Pending',
+      currentStage: 1,
+      desc: 'Several sacks of household waste missed during Tuesday collection are attracting stray animals along the corner walkway.',
+      reporter: 'Maria Santos Alcantara',
+      userEmail: 'maria.alcantara@gmail.com',
+      userMobile: '0918 345 6789',
+      userAddress: 'Block 3 Lot 8, Villa Celina, Barangay Pallocan West',
+      residentId: 'PW-2026-08502',
+      resolutionNote: ''
     },
     {
-      id: 'INC-2026-038',
+      ref: 'TCK-3994',
+      id: 'TCK-3994',
+      title: 'Late-Night Karaoke Exceeding 10:00 PM Quiet Hours Ordinance',
+      category: 'Noise Disturbance',
+      urgency: 'Standard',
+      sitio: 'Sitio Ilaya',
+      landmark: 'Crossing Ilaya Interior',
+      location: 'Sitio Ilaya — Crossing Ilaya Interior',
+      dateFiled: '2026-10-08',
+      status: 'Resolved',
+      currentStage: 3,
+      desc: 'Loud outdoor amplifier operating past midnight on weeknights, disturbing elderly residents and students.',
+      reporter: 'Mark Anthony Balmes',
+      userEmail: 'mark.balmes@outlook.com',
+      userMobile: '0927 348 9120',
+      userAddress: '105 Crossing Ilaya Road, Barangay Pallocan West',
+      residentId: 'PW-2026-08521',
+      resolutionNote: 'BPSO Night Patrol visited the household and reminded the owner of Barangay Curfew & Quiet Hours Ordinance. Full compliance achieved.'
+    },
+    {
+      ref: 'TCK-3890',
+      id: 'TCK-3890',
+      title: 'Garden Waste and Branch Trimmings Obstructing Sidewalk',
+      category: 'Sanitation',
+      urgency: 'Standard',
+      sitio: 'Sitio Santolan',
+      landmark: 'Main Sidewalk Strip',
+      location: 'Sitio Santolan — Main Sidewalk Strip',
+      dateFiled: '2026-09-22',
+      status: 'Resolved',
+      currentStage: 3,
+      desc: 'Piles of branch trimmings and garden waste left on sidewalk obstructing pedestrian pathway.',
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Barangay Green Waste collection truck dispatched on Sep 23, 10:30 AM. Area cleared and sidewalk swept.'
+    },
+    {
+      ref: 'TCK-3412',
+      id: 'TCK-3412',
+      title: 'Unleashed Stray Dogs Near Elementary School Walkway',
       category: 'Public Safety',
-      summary: 'Stray canine pack aggressive near elementary walkway',
-      location: 'Sitio Gitna',
-      reporter: 'PTA President L. Mercado',
-      dateLogged: '2026-10-07',
-      severity: 'Moderate',
-      status: 'Inspection Scheduled',
-      notes: 'City Veterinary Office impounding coordination in progress.'
-    },
-    {
-      id: 'INC-2026-037',
-      category: 'Noise',
-      summary: 'Late night videoke beyond 22:00 curfew ordinance',
-      location: 'Sitio Santolan',
-      reporter: 'Anonymous Resident',
-      dateLogged: '2026-10-05',
-      severity: 'Low',
+      urgency: 'Urgent',
+      sitio: 'Sitio Ilaya',
+      landmark: 'Near Pallocan West Elementary Gate',
+      location: 'Sitio Ilaya — Near Pallocan West Elementary Gate',
+      dateFiled: '2026-09-08',
       status: 'Resolved',
-      actionTaken: 'Tanod team dispatched. First warning issued; music ceased peacefully.',
-      resolvedBy: 'BPSO Patrol Team 1',
-      resolvedDate: '2026-10-05 22:45',
-      notes: 'Tanod team dispatched. First warning issued; music ceased peacefully.'
-    },
-    {
-      id: 'INC-2026-036',
-      category: 'Infrastructure',
-      summary: 'Deep pothole causing motorcycle skidding near corner',
-      location: 'Potenciana Village',
-      reporter: 'TODA Driver G. Balita',
-      dateLogged: '2026-10-04',
-      severity: 'Moderate',
-      status: 'Resolved',
-      actionTaken: 'Cold mix asphalt patch applied by Barangay Maintenance Team.',
-      resolvedBy: 'Barangay Maintenance Unit',
-      resolvedDate: '2026-10-04 15:30',
-      notes: 'Cold mix asphalt patch applied by Barangay Maintenance Team.'
-    },
-    {
-      id: 'INC-2026-035',
-      category: 'Sanitation',
-      summary: 'Uncollected domestic garbage pile attracting flies',
-      location: 'Tierra Verde',
-      reporter: 'HOA Officer R. Belen',
-      dateLogged: '2026-10-03',
-      severity: 'Low',
-      status: 'Resolved',
-      actionTaken: 'City Waste Management truck re-routed; cleared within 4 hours.',
-      resolvedBy: 'City Waste Management & Kagawad on Duty',
-      resolvedDate: '2026-10-03 11:20',
-      notes: 'City Waste Management truck re-routed; cleared within 4 hours.'
-    },
-    {
-      id: 'INC-2026-034',
-      category: 'Public Safety',
-      summary: 'Dark street corner due to blown sodium lamp fixture',
-      location: 'Potenciana Village',
-      reporter: 'Kagawad H. Gutierrez',
-      dateLogged: '2026-10-02',
-      severity: 'Moderate',
-      status: 'Resolved',
-      actionTaken: 'Replaced with 100W Solar LED fixture under AIP Lighting program.',
-      resolvedBy: 'Barangay Electrician / Kagawad H. Gutierrez',
-      resolvedDate: '2026-10-02 18:00',
-      notes: 'Replaced with 100W Solar LED fixture under AIP Lighting program.'
-    },
-    {
-      id: 'INC-2026-033',
-      category: 'Sanitation',
-      summary: 'Stagnant water ponding in abandoned vacant lot',
-      location: 'Sitio Ibaba',
-      reporter: 'Barangay Health Worker',
-      dateLogged: '2026-09-29',
-      severity: 'Moderate',
-      status: 'Resolved',
-      actionTaken: 'Dengue larvicide applied; property owner served declogging notice.',
-      resolvedBy: 'Barangay Health Worker Team & Sanitary Officer',
-      resolvedDate: '2026-09-29 14:15',
-      notes: 'Dengue larvicide applied; property owner served declogging notice.'
-    },
-    {
-      id: 'INC-2026-032',
-      category: 'Noise',
-      summary: 'Modified muffler exhaust noise late evening',
-      location: 'G.C Berberabe',
-      reporter: 'Resident Walk-in',
-      dateLogged: '2026-09-27',
-      severity: 'Low',
-      status: 'Resolved',
-      actionTaken: 'Checkpoint set up with PNP Batangas; 3 modified motorcycles cited.',
-      resolvedBy: 'BPSO Tanod Team & PNP Batangas City',
-      resolvedDate: '2026-09-27 23:10',
-      notes: 'Checkpoint set up with PNP Batangas; 3 modified motorcycles cited.'
-    },
-    {
-      id: 'INC-2026-031',
-      category: 'Public Safety',
-      summary: 'Boundary dispute & fence encroachment altercation',
-      location: 'Sitio Ilaya',
-      reporter: 'P. Alcantara & S. Ramos',
-      dateLogged: '2026-09-25',
-      severity: 'Moderate',
-      status: 'Resolved',
-      actionTaken: 'Mediated amicably under Lupon Tagapamayapa Case #2026-19.',
-      resolvedBy: 'Lupon Tagapamayapa Panel',
-      resolvedDate: '2026-09-25 16:45',
-      notes: 'Mediated amicably under Lupon Tagapamayapa Case #2026-19.'
-    },
-    {
-      id: 'INC-2026-030',
-      category: 'Infrastructure',
-      summary: 'Missing manhole cover on pedestrian sidewalk',
-      location: 'Sitio Gitna',
-      reporter: 'BPSO Tanod C. Rivera',
-      dateLogged: '2026-09-20',
-      severity: 'High Hazard',
-      status: 'Resolved',
-      actionTaken: 'Reinforced concrete slab fabricated and installed within 24h.',
-      resolvedBy: 'Barangay Engineering & Maintenance',
-      resolvedDate: '2026-09-20 17:30',
-      notes: 'Reinforced concrete slab fabricated and installed within 24h.'
-    },
-    {
-      id: 'INC-2026-029',
-      category: 'Sanitation',
-      summary: 'Clogged roadside ditch causing stagnant septic smell',
-      location: 'Sitio Santolan',
-      reporter: 'Resident Petition',
-      dateLogged: '2026-09-18',
-      severity: 'Moderate',
-      status: 'Resolved',
-      actionTaken: 'Barangay Linis-Kanal weekend drive mobilized; 40 sacks of silt removed.',
-      resolvedBy: 'Barangay Linis-Kanal Community Brigade',
-      resolvedDate: '2026-09-18 10:00',
-      notes: 'Barangay Linis-Kanal weekend drive mobilized; 40 sacks of silt removed.'
+      currentStage: 3,
+      desc: 'Unleashed aggressive dogs barking and chasing students walking to Pallocan West Elementary.',
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Joint operation by Barangay Tanod and City Veterinary Office on Sep 9. Dog owners notified and safety patrol stationed during school hours.'
     }
   ];
 
@@ -672,43 +627,131 @@ document.addEventListener('DOMContentLoaded', function () {
     return 'Sitio Ibaba';
   }
 
-  // Sync any newly submitted resident concerns from Resident Portal (localStorage: brgy360_concerns)
-  const SEEDED_PORTAL_CONCERN_REFS = new Set(['TCK-4021', 'TCK-3890', 'TCK-3412']);
+  function normalizeConcernUrgency(val) {
+    const s = String(val || '').trim().toLowerCase();
+    if (s.includes('urgent') || s.includes('critical') || s.includes('high')) {
+      return 'Urgent';
+    }
+    return 'Standard';
+  }
+
+  function normalizeConcernStatus(val) {
+    const s = String(val || '').trim().toLowerCase();
+    if (s === 'resolved' || s === 'completed' || s === 'closed') {
+      return 'Resolved';
+    }
+    if (s === 'in progress' || s === 'in review' || s === 'inspection scheduled' || s === 'under review') {
+      return 'In Progress';
+    }
+    return 'Pending';
+  }
+
+  function normalizeConcernCategory(val) {
+    const s = String(val || '').trim();
+    if (!s) return 'Infrastructure';
+    if (s === 'Noise') return 'Noise Disturbance';
+    if (s === 'Utilities') return 'Public Utility';
+    return s;
+  }
+
+  function normalizeAdminConcern(raw) {
+    const item = raw && typeof raw === 'object' ? raw : {};
+    const ref = item.ref || item.id || ('TCK-' + Math.floor(1000 + Math.random() * 9000));
+    const category = normalizeConcernCategory(item.category);
+    const status = normalizeConcernStatus(item.status);
+    const urgency = normalizeConcernUrgency(item.urgency || item.severity);
+    const sitio = normalizeSitioName(item.sitio || item.location);
+    const landmark = item.landmark || '';
+    const location = item.location || (landmark ? `${sitio} — ${landmark}` : sitio);
+    const desc = item.desc || item.submittedDetails || item.notes || item.summary || '';
+    const title = item.title || item.summary || (desc ? (desc.length > 64 ? desc.slice(0, 61) + '...' : desc) : `${category} Concern`);
+    const isJuanLegacy = ['TCK-4021', 'TCK-3890', 'TCK-3412'].includes(ref);
+    const dateFiled = item.dateFiled || item.dateLogged || new Date().toISOString().slice(0, 10);
+    const resolutionNote = item.resolutionNote !== undefined ? item.resolutionNote : (item.actionTaken || '');
+
+    return {
+      ref: ref,
+      id: ref,
+      title: title,
+      summary: title,
+      desc: desc,
+      submittedDetails: desc,
+      category: category,
+      urgency: urgency,
+      severity: urgency,
+      status: status,
+      currentStage: status === 'Resolved' ? 3 : (status === 'In Progress' ? 2 : 1),
+      dateFiled: dateFiled,
+      dateLogged: dateFiled,
+      sitio: sitio,
+      landmark: landmark,
+      location: location,
+      reporter: item.reporter || (isJuanLegacy ? 'Juan Dela Cruz' : 'Verified Resident'),
+      userEmail: item.userEmail || (isJuanLegacy ? 'juan.delacruz@example.com' : ''),
+      userMobile: item.userMobile || (isJuanLegacy ? '0917 123 4567' : ''),
+      userAddress: item.userAddress || (isJuanLegacy ? '142 Pallocan Blvd, Barangay Pallocan West' : (sitio + ', Barangay Pallocan West')),
+      residentId: item.residentId || (isJuanLegacy ? 'PW-2026-08492' : ''),
+      photoName: item.photoName || null,
+      photoData: item.photoData || null,
+      resolutionNote: resolutionNote,
+      actionTaken: resolutionNote,
+      notes: resolutionNote || desc,
+      updatedAt: item.updatedAt || null
+    };
+  }
+
+  let incidentTickets = [];
+
+  function persistConcernsToStorage() {
+    try {
+      const normalized = incidentTickets.map(normalizeAdminConcern);
+      incidentTickets = normalized;
+      localStorage.setItem('brgy360_concerns', JSON.stringify(normalized));
+    } catch (err) {
+      console.warn('Error saving concerns to storage:', err);
+    }
+  }
+
   function syncResidentConcernsFromStorage() {
     try {
-      const storedConcerns = JSON.parse(localStorage.getItem('brgy360_concerns') || '[]');
-      if (!Array.isArray(storedConcerns) || storedConcerns.length === 0) return;
+      const rawStr = localStorage.getItem('brgy360_concerns');
+      let list = [];
+      if (!rawStr) {
+        list = SHARED_DEFAULT_CONCERNS.map(normalizeAdminConcern);
+        localStorage.setItem('brgy360_concerns', JSON.stringify(list));
+        localStorage.setItem('brgy360_concerns_connected_v3', 'true');
+      } else {
+        const parsed = JSON.parse(rawStr);
+        const rawList = Array.isArray(parsed) ? parsed : SHARED_DEFAULT_CONCERNS;
+        list = rawList.map(normalizeAdminConcern);
 
-      let residentName = 'Verified Resident';
-      try {
-        const storedUser = JSON.parse(localStorage.getItem('brgy360_user') || '{}');
-        if (storedUser && storedUser.name) residentName = storedUser.name;
-      } catch (_) {}
-
-      const existingIds = new Set(incidentTickets.map(t => t.id));
-      for (let i = storedConcerns.length - 1; i >= 0; i--) {
-        const c = storedConcerns[i];
-        if (!c || !c.ref || SEEDED_PORTAL_CONCERN_REFS.has(c.ref)) continue;
-        if (!existingIds.has(c.ref)) {
-          incidentTickets.unshift({
-            id: c.ref,
-            category: c.category || 'Infrastructure',
-            summary: c.desc || 'Submitted resident concern',
-            submittedDetails: '',
-            location: normalizeSitioName(c.sitio || c.location),
-            reporter: c.reporter || residentName,
-            dateLogged: c.dateFiled || new Date().toISOString().slice(0, 10),
-            severity: c.urgency === 'Urgent' ? 'Urgent Hazard' : 'Moderate',
-            urgency: c.urgency || 'Standard',
-            status: c.status === 'Resolved' ? 'Resolved' : 'Active Hazard',
-            actionTaken: c.status === 'Resolved' ? (c.resolutionNote || '') : undefined,
-            notes: c.desc || ''
+        if (!localStorage.getItem('brgy360_concerns_connected_v3')) {
+          const existingRefs = new Set(list.map(c => c.ref));
+          SHARED_DEFAULT_CONCERNS.forEach(seed => {
+            if (!existingRefs.has(seed.ref)) {
+              list.push(normalizeAdminConcern(seed));
+            } else {
+              const idx = list.findIndex(c => c.ref === seed.ref);
+              if (idx !== -1) {
+                if (!rawList[idx].title) {
+                  list[idx].title = seed.title;
+                  list[idx].summary = seed.title;
+                }
+                if (!rawList[idx].reporter) list[idx].reporter = seed.reporter;
+                if (!rawList[idx].userEmail) list[idx].userEmail = seed.userEmail;
+                if (!rawList[idx].userMobile) list[idx].userMobile = seed.userMobile;
+                if (!rawList[idx].residentId) list[idx].residentId = seed.residentId;
+              }
+            }
           });
-          existingIds.add(c.ref);
+          localStorage.setItem('brgy360_concerns_connected_v3', 'true');
         }
+        localStorage.setItem('brgy360_concerns', JSON.stringify(list));
       }
+      incidentTickets = list;
     } catch (err) {
       console.warn('Error syncing resident concerns:', err);
+      incidentTickets = SHARED_DEFAULT_CONCERNS.map(normalizeAdminConcern);
     }
   }
   syncResidentConcernsFromStorage();
@@ -1332,6 +1375,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentReqSearch = '';
   let currentIncStatusFilter = 'all';
   let currentIncCategoryFilter = 'all';
+  let currentIncUrgencyFilter = 'all';
   let currentIncSearch = '';
   let currentInspectingReqId = null;
   let currentInspectingIncId = null;
@@ -2996,23 +3040,101 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ==============================================================
-  // 8. CITIZEN BLOTTER & INCIDENT DESK MANAGEMENT
+  // 8. RESIDENT CONCERNS DESK MANAGEMENT
+  // ==============================================================
+  function pushResidentStatusNotification(ticket, newStatus, adminNote) {
+    try {
+      const rawNotifs = localStorage.getItem('brgy360_notifs');
+      const notifs = rawNotifs ? JSON.parse(rawNotifs) : [];
+      if (!Array.isArray(notifs)) return;
+
+      const noteSnippet = adminNote ? ` Note: ${adminNote}` : '';
+      notifs.unshift({
+        id: Date.now(),
+        title: `Concern Status Updated: ${newStatus}`,
+        desc: `Ticket ${ticket.id} ("${ticket.title}") was updated to ${newStatus} by Barangay Admin.${noteSnippet}`,
+        time: 'Just now',
+        unread: true,
+        type: newStatus === 'Resolved' ? 'green' : (newStatus === 'In Progress' ? 'blue' : 'amber')
+      });
+      localStorage.setItem('brgy360_notifs', JSON.stringify(notifs));
+    } catch (err) {
+      console.warn('Notification sync warning:', err);
+    }
+  }
+
+  function getConcernUrgencyBadgeHtml(rawUrgency) {
+    const urgencyNorm = normalizeConcernUrgency(rawUrgency);
+    if (urgencyNorm === 'Urgent') {
+      return '<span class="badge-status badge-urgent-pill"><span class="status-dot dot-red"></span>Urgent</span>';
+    }
+    return '<span class="badge-status badge-standard-pill"><span class="dot-gray"></span>Standard</span>';
+  }
+
+  function updateConcernStatus(id, rawStatus, customNote, rawUrgency) {
+    const ticket = incidentTickets.find(t => t.id === id || t.ref === id);
+    if (!ticket) return;
+
+    const newStatus = normalizeConcernStatus(rawStatus);
+    ticket.status = newStatus;
+    ticket.currentStage = newStatus === 'Resolved' ? 3 : (newStatus === 'In Progress' ? 2 : 1);
+    if (rawUrgency !== undefined && rawUrgency !== null) {
+      const normUrgency = normalizeConcernUrgency(rawUrgency);
+      ticket.urgency = normUrgency;
+      ticket.severity = normUrgency;
+    }
+    ticket.updatedAt = new Date().toISOString().slice(0, 10);
+
+    if (typeof customNote === 'string') {
+      const trimmed = customNote.trim();
+      ticket.resolutionNote = trimmed;
+      ticket.actionTaken = trimmed;
+      ticket.notes = trimmed || ticket.desc;
+    } else if (!ticket.resolutionNote) {
+      if (newStatus === 'In Progress') {
+        ticket.resolutionNote = 'Concern reviewed by Barangay Admin. Inspection and field action currently in progress.';
+        ticket.actionTaken = ticket.resolutionNote;
+      } else if (newStatus === 'Resolved') {
+        ticket.resolutionNote = 'Concern addressed and marked Resolved by Barangay Admin.';
+        ticket.actionTaken = ticket.resolutionNote;
+      }
+    }
+
+    persistConcernsToStorage();
+    pushResidentStatusNotification(ticket, newStatus, ticket.resolutionNote);
+    renderIncidentsTable();
+
+    const toastTone = newStatus === 'Resolved' ? 'success' : (newStatus === 'In Progress' ? 'info' : 'warning');
+    showAdminToast(
+      `Status Updated: ${newStatus}`,
+      `Ticket ${ticket.id} ("${ticket.title}") is now ${newStatus} (${ticket.urgency}).`,
+      toastTone
+    );
+  }
+
   function renderIncidentsTable() {
     const tbody = document.getElementById('incidentsTableBody');
     if (!tbody) return;
 
     const filtered = incidentTickets.filter(item => {
-      const matchesStatus = currentIncStatusFilter === 'all' || item.status === currentIncStatusFilter;
+      const statusNorm = normalizeConcernStatus(item.status);
+      const urgencyNorm = normalizeConcernUrgency(item.urgency);
+      const matchesStatus = currentIncStatusFilter === 'all' || statusNorm === currentIncStatusFilter;
       const matchesCat = currentIncCategoryFilter === 'all' || item.category === currentIncCategoryFilter;
+      const matchesUrgency = currentIncUrgencyFilter === 'all' || urgencyNorm === currentIncUrgencyFilter;
       const searchLower = currentIncSearch.toLowerCase();
       const matchesSearch = !currentIncSearch ||
         item.id.toLowerCase().includes(searchLower) ||
+        (item.title || '').toLowerCase().includes(searchLower) ||
+        (item.desc || '').toLowerCase().includes(searchLower) ||
         item.category.toLowerCase().includes(searchLower) ||
-        item.summary.toLowerCase().includes(searchLower) ||
         item.location.toLowerCase().includes(searchLower) ||
-        item.reporter.toLowerCase().includes(searchLower);
+        item.reporter.toLowerCase().includes(searchLower) ||
+        (item.userEmail || '').toLowerCase().includes(searchLower) ||
+        (item.userMobile || '').toLowerCase().includes(searchLower) ||
+        (item.residentId || '').toLowerCase().includes(searchLower);
 
-      return matchesStatus && matchesCat && matchesSearch;
+      return matchesStatus && matchesCat && matchesUrgency && matchesSearch;
     });
 
     tbody.innerHTML = '';
@@ -3021,7 +3143,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tbody.innerHTML = `
         <tr>
           <td colspan="8" style="text-align:center; padding: 28px; color: #94a3b8;">
-            No blotter tickets match the selected criteria.
+            No submitted concerns match the selected filters.
           </td>
         </tr>
       `;
@@ -3031,45 +3153,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
     filtered.forEach(item => {
       const tr = document.createElement('tr');
+      const statusNorm = normalizeConcernStatus(item.status);
+      const urgencyNorm = normalizeConcernUrgency(item.urgency);
 
-      let statusBadge = '';
-      if (item.status === 'Active Hazard') {
-        statusBadge = '<span class="badge-status red">Active Hazard</span>';
-      } else if (item.status === 'Inspection Scheduled') {
-        statusBadge = '<span class="badge-status yellow">Inspection Scheduled</span>';
-      } else if (item.status === 'Resolved') {
+      let statusBadge = '<span class="badge-status yellow">Pending</span>';
+      if (statusNorm === 'In Progress') {
+        statusBadge = '<span class="badge-status blue">In Progress</span>';
+      } else if (statusNorm === 'Resolved') {
         statusBadge = '<span class="badge-status green">Resolved</span>';
       }
 
-      let actions = `
+      const urgencyBadge = getConcernUrgencyBadgeHtml(urgencyNorm);
+
+      const contactParts = [];
+      if (item.userMobile) contactParts.push(escapeHtml(item.userMobile));
+      else if (item.userEmail) contactParts.push(escapeHtml(item.userEmail));
+      if (item.sitio) contactParts.push(escapeHtml(item.sitio));
+      const residentSubHtml = contactParts.length > 0
+        ? `<div class="resident-meta-sub">${contactParts.join(' &bull; ')}</div>`
+        : '';
+
+      const descPreview = truncate(item.desc || '', 72);
+
+      const actions = `
         <div class="table-actions">
-          <button type="button" class="btn-table-action btn-view-inc" data-id="${item.id}" title="View submitted concern of resident">View</button>
-      `;
-
-      if (item.status !== 'Resolved') {
-        actions += `
-          <button type="button" class="btn-table-action success-fill btn-resolve-inc" data-id="${item.id}" title="Resolve this concern case & record action made">Resolve</button>
-        `;
-      } else {
-        actions += `
-          <button type="button" class="btn-table-action btn-view-inc-action" data-id="${item.id}" title="View action made to resolve this case">View Action</button>
-        `;
-      }
-
-      actions += `</div>`;
-
-      // Incident summary on front page (clean display; action made appears strictly in View Action modal)
-      let summaryHtml = `
-        <div style="font-weight: 600; color: #0f172a;">${escapeHtml(item.summary)}</div>
+          <select class="concern-status-select" data-id="${escapeHtml(item.id)}" aria-label="Update status for ${escapeHtml(item.id)}" title="Update concern status">
+            <option value="Pending" ${statusNorm === 'Pending' ? 'selected' : ''}>Pending</option>
+            <option value="In Progress" ${statusNorm === 'In Progress' ? 'selected' : ''}>In Progress</option>
+            <option value="Resolved" ${statusNorm === 'Resolved' ? 'selected' : ''}>Resolved</option>
+          </select>
+          <button type="button" class="btn-table-action primary btn-view-inc" data-id="${escapeHtml(item.id)}" title="View full details and update concern">View Details</button>
+        </div>
       `;
 
       tr.innerHTML = `
         <td><strong><code>${escapeHtml(item.id)}</code></strong></td>
+        <td>
+          <div style="font-weight: 600; color: #0f172a;">${escapeHtml(item.reporter)}</div>
+          ${residentSubHtml}
+        </td>
+        <td style="max-width: 290px;">
+          <div style="font-weight: 600; color: #0f172a; margin-bottom: 2px;">${escapeHtml(item.title)}</div>
+          <div style="font-size: 11.5px; color: #475569; line-height: 1.4;">${escapeHtml(descPreview)}</div>
+          <div style="font-size: 10.5px; color: #64748b; margin-top: 2px;">📍 ${escapeHtml(item.location)}</div>
+        </td>
         <td><span class="badge-neutral">${escapeHtml(item.category)}</span></td>
-        <td>${summaryHtml}</td>
-        <td><strong>${escapeHtml(item.location)}</strong></td>
-        <td>${escapeHtml(item.reporter)}</td>
-        <td><span style="font-size: 11px; color: #64748b;">${escapeHtml(item.dateLogged)}</span></td>
+        <td>${urgencyBadge}</td>
+        <td><span style="font-size: 11.5px; color: #334155; font-weight: 500; white-space: nowrap;">${escapeHtml(item.dateFiled)}</span></td>
         <td>${statusBadge}</td>
         <td class="text-right">${actions}</td>
       `;
@@ -3082,22 +3212,35 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateIncidentsCounter(count) {
+    const total = incidentTickets.length;
+    const pendingCount = incidentTickets.filter(i => normalizeConcernStatus(i.status) === 'Pending').length;
+    const progressCount = incidentTickets.filter(i => normalizeConcernStatus(i.status) === 'In Progress').length;
+    const resolvedCount = incidentTickets.filter(i => normalizeConcernStatus(i.status) === 'Resolved').length;
+
     const info = document.getElementById('incidentsPaginationInfo');
-    if (info) info.textContent = `Showing ${count} blotter records`;
+    if (info) info.textContent = `Showing ${count} of ${total} submitted concern records`;
 
-    const activeHazards = incidentTickets.filter(i => i.status === 'Active Hazard').length;
-    const inspecting = incidentTickets.filter(i => i.status === 'Inspection Scheduled').length;
-    const resolved = incidentTickets.filter(i => i.status === 'Resolved').length;
-
+    const elTotal = document.getElementById('incTotalCount');
     const elActive = document.getElementById('incActiveCount');
     const elInspect = document.getElementById('incInspectCount');
     const elResolved = document.getElementById('incResolvedCount');
     const navIncCount = document.getElementById('navCounterIncidents');
 
-    if (elActive) elActive.textContent = `${activeHazards} Active`;
-    if (elInspect) elInspect.textContent = `${inspecting} In Progress`;
-    if (elResolved) elResolved.textContent = `${resolved} Closed (${((resolved / incidentTickets.length) * 100).toFixed(1)}%)`;
-    if (navIncCount) navIncCount.textContent = activeHazards;
+    if (elTotal) elTotal.textContent = `${total} Submitted`;
+    if (elActive) elActive.textContent = `${pendingCount} Pending`;
+    if (elInspect) elInspect.textContent = `${progressCount} In Progress`;
+    const pct = total > 0 ? ((resolvedCount / total) * 100).toFixed(0) : 0;
+    if (elResolved) elResolved.textContent = `${resolvedCount} Resolved (${pct}%)`;
+    if (navIncCount) navIncCount.textContent = pendingCount + progressCount;
+
+    const pAll = document.getElementById('pillCountIncAll');
+    const pPending = document.getElementById('pillCountIncPending');
+    const pProgress = document.getElementById('pillCountIncProgress');
+    const pResolved = document.getElementById('pillCountIncResolved');
+    if (pAll) pAll.textContent = total;
+    if (pPending) pPending.textContent = pendingCount;
+    if (pProgress) pProgress.textContent = progressCount;
+    if (pResolved) pResolved.textContent = resolvedCount;
 
     if (typeof updateDashboardStatsCards === 'function') {
       updateDashboardStatsCards(document.getElementById('dashboardFiscalYearSelect')?.value || '2026');
@@ -3112,7 +3255,14 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // Resolve button opens resolution modal to record response / action made before resolving
+    document.querySelectorAll('.concern-status-select').forEach(sel => {
+      sel.addEventListener('change', function () {
+        const id = this.getAttribute('data-id');
+        const newStatus = this.value;
+        updateConcernStatus(id, newStatus);
+      });
+    });
+
     document.querySelectorAll('.btn-resolve-inc').forEach(btn => {
       btn.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
@@ -3120,7 +3270,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // View Action button opens resolution details
     document.querySelectorAll('.btn-view-inc-action').forEach(btn => {
       btn.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
@@ -3129,7 +3278,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Incident Search and Filters
+  // Concern Search and Filters
   const incidentsSearchInput = document.getElementById('incidentsSearchInput');
   if (incidentsSearchInput) {
     incidentsSearchInput.addEventListener('input', function () {
@@ -3152,6 +3301,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (incidentCategorySelect) {
     incidentCategorySelect.addEventListener('change', function () {
       currentIncCategoryFilter = this.value;
+      renderIncidentsTable();
+    });
+  }
+
+  const incidentUrgencySelect = document.getElementById('incidentUrgencySelect');
+  if (incidentUrgencySelect) {
+    incidentUrgencySelect.addEventListener('change', function () {
+      currentIncUrgencyFilter = this.value;
       renderIncidentsTable();
     });
   }
@@ -3250,70 +3407,133 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Modal: View Submitted Resident Concern (Read-Only)
+  // Modal: View & Update Submitted Resident Concern
   const concernViewModal = document.getElementById('concernViewModal');
   const btnCloseIncModal = document.getElementById('btnCloseIncModal');
   const btnCloseIncFooter = document.getElementById('btnCloseIncFooter');
+  const btnSaveConcernModalStatus = document.getElementById('btnSaveConcernModalStatus');
   const modalIncTitle = document.getElementById('modalIncTitle');
   const modalIncId = document.getElementById('modalIncId');
   const modalIncViewBody = document.getElementById('modalIncViewBody');
 
   function openConcernViewModal(id) {
-    const item = incidentTickets.find(t => t.id === id);
+    const item = incidentTickets.find(t => t.id === id || t.ref === id);
     if (!item || !concernViewModal) return;
 
-    currentInspectingIncId = id;
-    if (modalIncTitle) modalIncTitle.textContent = `${item.category} Concern`;
-    if (modalIncId) modalIncId.textContent = `Ticket #${item.id} · Submitted by ${item.reporter}`;
+    currentInspectingIncId = item.id;
+    const statusNorm = normalizeConcernStatus(item.status);
+    const urgencyNorm = normalizeConcernUrgency(item.urgency);
 
-    const isHighSev = item.severity && (
-      item.severity.includes('Critical') ||
-      item.severity.includes('High') ||
-      item.severity.includes('Urgent')
-    );
-    const sevBadgeClass = isHighSev ? 'red' : (item.severity === 'Low' ? 'green' : 'yellow');
+    if (modalIncTitle) modalIncTitle.textContent = item.title || `${item.category} Concern`;
+    if (modalIncId) modalIncId.textContent = `Ticket #${item.id} · Submitted on ${item.dateFiled}`;
 
-    let statusBadgeHtml = '<span class="badge-status yellow">' + escapeHtml(item.status) + '</span>';
-    if (item.status === 'Active Hazard') {
-      statusBadgeHtml = '<span class="badge-status red">Active Hazard</span>';
-    } else if (item.status === 'Inspection Scheduled') {
-      statusBadgeHtml = '<span class="badge-status yellow">Inspection Scheduled</span>';
-    } else if (item.status === 'Resolved') {
+    const urgencyBadgeHtml = getConcernUrgencyBadgeHtml(urgencyNorm);
+    let statusBadgeHtml = '<span class="badge-status yellow">Pending</span>';
+    if (statusNorm === 'In Progress') {
+      statusBadgeHtml = '<span class="badge-status blue">In Progress</span>';
+    } else if (statusNorm === 'Resolved') {
       statusBadgeHtml = '<span class="badge-status green">Resolved</span>';
     }
 
     if (modalIncViewBody) {
       modalIncViewBody.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:14px;">
+          <!-- Top Metadata Strip -->
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 14px;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <span class="resolve-ticket-badge">${escapeHtml(item.id)}</span>
               <span class="badge-neutral">${escapeHtml(item.category)}</span>
-              <span class="badge-status ${sevBadgeClass}">${escapeHtml(item.severity || 'Standard')}</span>
+              ${urgencyBadgeHtml}
             </div>
             <div>${statusBadgeHtml}</div>
           </div>
 
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px;">
-            <div>
-              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Submitted By (Resident / Reporter)</span>
-              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.reporter)}</strong>
+          <!-- Submitted Resident / User Information -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:#0d47a1; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
+              Resident Information
             </div>
-            <div>
-              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Date Submitted</span>
-              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.dateLogged)}</strong>
-            </div>
-            <div style="grid-column: 1 / -1;">
-              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:2px;">Reported Location / Sitio</span>
-              <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.location)}</strong>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;">
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Full Name</span>
+                <strong style="font-size:13px; color:#0f172a;">${escapeHtml(item.reporter)}</strong>
+              </div>
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Resident ID</span>
+                <strong style="font-size:12.5px; color:#0f172a;">${escapeHtml(item.residentId || 'Verified Resident')}</strong>
+              </div>
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Mobile Number</span>
+                <span style="font-size:12.5px; color:#334155;">${escapeHtml(item.userMobile || 'Not provided')}</span>
+              </div>
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Email Address</span>
+                <span style="font-size:12.5px; color:#334155;">${escapeHtml(item.userEmail || 'Not provided')}</span>
+              </div>
+              <div style="grid-column: 1 / -1;">
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Residential Address</span>
+                <span style="font-size:12.5px; color:#334155;">${escapeHtml(item.userAddress || item.sitio)}</span>
+              </div>
             </div>
           </div>
 
-          <div>
-            <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:6px;">Submitted Concern of Resident</span>
-            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; font-size:13px; color:#0f172a; line-height:1.55;">
-              <div style="font-weight:600;">${escapeHtml(item.summary)}</div>
-              ${item.submittedDetails ? `<p style="margin:6px 0 0 0; color:#475569; font-weight:400;">${escapeHtml(item.submittedDetails)}</p>` : ''}
+          <!-- Concern Full Details -->
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:14px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #f1f5f9;">
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Date Submitted</span>
+                <strong style="font-size:12.5px; color:#0f172a;">${escapeHtml(item.dateFiled)}</strong>
+              </div>
+              <div>
+                <span style="font-size:10.5px; font-weight:600; color:#64748b; display:block;">Incident Location / Sitio</span>
+                <strong style="font-size:12.5px; color:#0f172a;">${escapeHtml(item.location)}</strong>
+              </div>
+            </div>
+            <div style="margin-bottom:8px;">
+              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; display:block; margin-bottom:3px;">Concern Title</span>
+              <div style="font-size:14px; font-weight:700; color:#0f172a;">${escapeHtml(item.title)}</div>
+            </div>
+            <div>
+              <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; display:block; margin-bottom:4px;">Full Description</span>
+              <p style="margin:0; font-size:13px; color:#334155; line-height:1.55; white-space:pre-wrap;">${escapeHtml(item.desc)}</p>
+            </div>
+            ${item.photoData ? `
+              <div style="margin-top:12px; padding-top:12px; border-top:1px solid #f1f5f9;">
+                <span style="font-size:10.5px; font-weight:700; color:#64748b; text-transform:uppercase; display:block; margin-bottom:6px;">Attached Photo Evidence</span>
+                <img src="${item.photoData}" alt="Resident submitted concern evidence" style="max-width:100%; max-height:220px; border-radius:8px; border:1px solid #e2e8f0; object-fit:cover;">
+              </div>
+            ` : (item.photoName ? `
+              <div style="margin-top:10px; font-size:12px; color:#64748b;">
+                <strong>Attached File:</strong> ${escapeHtml(item.photoName)}
+              </div>
+            ` : '')}
+          </div>
+
+          <!-- Admin Status & Action Update Controls -->
+          <div style="background:#f0f7ff; border:1px solid #bfdbfe; border-radius:8px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:#0d47a1; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
+              Update Concern Status &amp; Admin Remarks
+            </div>
+            <div class="form-grid-2" style="margin-bottom:10px;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label" for="modalConcernStatusSelect">Concern Status</label>
+                <select id="modalConcernStatusSelect" class="form-select">
+                  <option value="Pending" ${statusNorm === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="In Progress" ${statusNorm === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                  <option value="Resolved" ${statusNorm === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label" for="modalConcernUrgencySelect">Urgency Level</label>
+                <select id="modalConcernUrgencySelect" class="form-select">
+                  <option value="Standard" ${urgencyNorm === 'Standard' ? 'selected' : ''}>Standard</option>
+                  <option value="Urgent" ${urgencyNorm === 'Urgent' ? 'selected' : ''}>Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label" for="modalConcernAdminNote">Barangay Response / Action Notes (Visible to Resident)</label>
+              <textarea id="modalConcernAdminNote" class="form-textarea" rows="3" placeholder="Enter inspection findings, assigned team, or resolution details...">${escapeHtml(item.resolutionNote || '')}</textarea>
             </div>
           </div>
         </div>
@@ -3330,6 +3550,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (btnCloseIncModal) btnCloseIncModal.addEventListener('click', closeConcernViewModal);
   if (btnCloseIncFooter) btnCloseIncFooter.addEventListener('click', closeConcernViewModal);
+  if (btnSaveConcernModalStatus) {
+    btnSaveConcernModalStatus.addEventListener('click', function () {
+      if (!currentInspectingIncId) return;
+      const newStatus = document.getElementById('modalConcernStatusSelect')?.value || 'Pending';
+      const newUrgency = document.getElementById('modalConcernUrgencySelect')?.value || 'Standard';
+      const adminNote = document.getElementById('modalConcernAdminNote')?.value || '';
+      updateConcernStatus(currentInspectingIncId, newStatus, adminNote, newUrgency);
+      closeConcernViewModal();
+    });
+  }
 
   // ==============================================================
   // RESOLVE CASE / CONCERN MODAL: RESPONSE & ACTION RECORDER
@@ -3342,12 +3572,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const quickChipsGroup = document.getElementById('resolveQuickChips')?.closest('.form-group');
 
   function openResolveCaseModal(id, isViewOnly = false) {
-    const ticket = incidentTickets.find(t => t.id === id);
+    const ticket = incidentTickets.find(t => t.id === id || t.ref === id);
     if (!ticket || !resolveCaseModal) return;
 
-    currentResolvingIncidentId = id;
+    currentResolvingIncidentId = ticket.id;
+    const urgencyNorm = normalizeConcernUrgency(ticket.urgency);
 
-    // Populate Case Summary Card
     const elId = document.getElementById('resCaseTicketId');
     const elCat = document.getElementById('resCaseCategory');
     const elSev = document.getElementById('resCaseSeverity');
@@ -3362,22 +3592,27 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elId) elId.textContent = ticket.id;
     if (elCat) elCat.textContent = ticket.category;
     if (elSev) {
-      elSev.textContent = ticket.severity;
-      elSev.className = `badge-status ${ticket.severity.includes('Critical') || ticket.severity.includes('High') || ticket.severity.includes('Urgent') ? 'red' : 'yellow'}`;
+      if (urgencyNorm === 'Urgent') {
+        elSev.className = 'badge-status badge-urgent-pill';
+        elSev.innerHTML = '<span class="status-dot dot-red"></span>Urgent';
+      } else {
+        elSev.className = 'badge-status badge-standard-pill';
+        elSev.innerHTML = '<span class="dot-gray"></span>Standard';
+      }
     }
-    if (elDate) elDate.textContent = `Logged: ${ticket.dateLogged}`;
-    if (elSum) elSum.textContent = ticket.summary;
+    if (elDate) elDate.textContent = `Submitted: ${ticket.dateFiled}`;
+    if (elSum) elSum.textContent = ticket.title;
     if (elLoc) elLoc.textContent = ticket.location;
     if (elRep) elRep.textContent = ticket.reporter;
-    if (elNotes) elNotes.textContent = ticket.summary || 'No preliminary notes recorded.';
+    if (elNotes) elNotes.textContent = ticket.desc || 'No additional description.';
 
-    const isResolved = ticket.status === 'Resolved';
+    const isResolved = normalizeConcernStatus(ticket.status) === 'Resolved';
 
     if (isViewOnly || isResolved) {
       if (modalTitle) modalTitle.textContent = `View Action: ${ticket.id}`;
       if (modalSub) modalSub.textContent = `Recorded response and action made to resolve this concern case.`;
       if (resolveActionInput) {
-        resolveActionInput.value = ticket.actionTaken || ticket.notes || 'No action recorded.';
+        resolveActionInput.value = ticket.resolutionNote || ticket.actionTaken || 'No action recorded.';
       }
       if (quickChipsGroup) quickChipsGroup.style.display = 'none';
       if (btnSubmitResolveCase) {
@@ -3419,7 +3654,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCloseResolveModal) btnCloseResolveModal.addEventListener('click', closeResolveCaseModal);
   if (btnCancelResolveCase) btnCancelResolveCase.addEventListener('click', closeResolveCaseModal);
 
-  // Quick action presets chips
   document.querySelectorAll('#resolveQuickChips .quick-chip-btn').forEach(chip => {
     chip.addEventListener('click', function () {
       const text = this.getAttribute('data-text');
@@ -3430,10 +3664,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Submit resolution handler (only text field required)
   if (btnSubmitResolveCase) {
     btnSubmitResolveCase.addEventListener('click', function () {
-      const ticket = incidentTickets.find(t => t.id === currentResolvingIncidentId);
+      const ticket = incidentTickets.find(t => t.id === currentResolvingIncidentId || t.ref === currentResolvingIncidentId);
       if (!ticket) {
         closeResolveCaseModal();
         return;
@@ -3446,56 +3679,59 @@ document.addEventListener('DOMContentLoaded', function () {
           resolveActionInput.style.borderColor = '#ef4444';
           setTimeout(() => { resolveActionInput.style.borderColor = ''; }, 2000);
         }
-        showAdminToast('Action Required', 'Please enter the response or action made to resolve the case in concern.', 'danger');
+        showAdminToast('Action Required', 'Please enter the response or action made to resolve the case.', 'danger');
         return;
       }
 
-      // Update ticket fields
-      ticket.status = 'Resolved';
-      ticket.actionTaken = actionMade;
-      ticket.notes = actionMade;
-
-      // Sync with localStorage resident concerns if applicable (brgy360_concerns)
-      try {
-        const storedConcerns = JSON.parse(localStorage.getItem('brgy360_concerns') || '[]');
-        let updatedStorage = false;
-        storedConcerns.forEach(c => {
-          if (c.ref === ticket.id || (ticket.summary && c.desc && (c.desc.includes(ticket.summary) || ticket.summary.includes(c.desc)))) {
-            c.status = 'Resolved';
-            c.currentStage = 3;
-            c.resolutionNote = actionMade;
-            updatedStorage = true;
-          }
-        });
-        if (updatedStorage) {
-          localStorage.setItem('brgy360_concerns', JSON.stringify(storedConcerns));
-        }
-      } catch (err) {
-        console.warn('LocalStorage concern sync notice:', err);
-      }
-
+      updateConcernStatus(ticket.id, 'Resolved', actionMade);
       closeResolveCaseModal();
-      renderIncidentsTable();
-      showAdminToast(
-        'Case Marked as Resolved',
-        `Ticket ${ticket.id} (${ticket.category}) resolved. Action recorded.`,
-        'success'
-      );
     });
   }
 
-  // Modal: Log New Incident
+  // Modal: Log Walk-in Concern
   const newIncidentModal = document.getElementById('newIncidentModal');
   const btnOpenNewIncidentModal = document.getElementById('btnOpenNewIncidentModal');
   const btnCloseNewIncModal = document.getElementById('btnCloseNewIncModal');
   const btnCancelNewInc = document.getElementById('btnCancelNewInc');
   const btnSubmitNewIncident = document.getElementById('btnSubmitNewIncident');
 
+  const btnToggleConcernUrgency = document.getElementById('btnToggleConcernUrgency');
+  const newIncUrgencyInput = document.getElementById('newIncUrgency');
+  const newIncUrgencyBadge = document.getElementById('newIncUrgencyBadge');
+  const newIncUrgencyTitle = document.getElementById('newIncUrgencyTitle');
+  const newIncUrgencySub = document.getElementById('newIncUrgencySub');
+
+  function setWalkInConcernUrgencyState(isUrgent) {
+    if (!btnToggleConcernUrgency || !newIncUrgencyInput || !newIncUrgencyBadge) return;
+    if (isUrgent) {
+      btnToggleConcernUrgency.classList.add('is-critical');
+      newIncUrgencyInput.value = 'Urgent';
+      newIncUrgencyBadge.innerHTML = '<span class="status-dot dot-red"></span><span class="badge-text">Urgent</span>';
+      if (newIncUrgencyTitle) newIncUrgencyTitle.textContent = 'Urgent Concern Level';
+      if (newIncUrgencySub) newIncUrgencySub.textContent = 'Flagged as Urgent for immediate Barangay response and field inspection';
+    } else {
+      btnToggleConcernUrgency.classList.remove('is-critical');
+      newIncUrgencyInput.value = 'Standard';
+      newIncUrgencyBadge.innerHTML = '<span class="dot-gray"></span><span class="badge-text">Standard</span>';
+      if (newIncUrgencyTitle) newIncUrgencyTitle.textContent = 'Standard Concern Level';
+      if (newIncUrgencySub) newIncUrgencySub.textContent = 'Click to mark as Urgent if this concern poses an immediate safety or infrastructure hazard';
+    }
+  }
+
+  if (btnToggleConcernUrgency) {
+    btnToggleConcernUrgency.addEventListener('click', function () {
+      const currentlyUrgent = newIncUrgencyInput?.value === 'Urgent';
+      setWalkInConcernUrgencyState(!currentlyUrgent);
+    });
+  }
+
   function openNewIncidentModal() {
+    setWalkInConcernUrgencyState(false);
     if (newIncidentModal) newIncidentModal.classList.add('active');
   }
 
   function closeNewIncidentModal() {
+    setWalkInConcernUrgencyState(false);
     if (newIncidentModal) newIncidentModal.classList.remove('active');
   }
 
@@ -3505,33 +3741,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (btnSubmitNewIncident) {
     btnSubmitNewIncident.addEventListener('click', function () {
-      const cat = document.getElementById('newIncCategory')?.value || 'Public Safety';
-      const loc = document.getElementById('newIncLocation')?.value || 'Sitio Ibaba';
-      const rep = document.getElementById('newIncReporter')?.value.trim() || 'Citizen Walk-in';
-      const desc = document.getElementById('newIncDesc')?.value.trim() || 'Community incident report';
+      const title = (document.getElementById('newIncTitle')?.value || '').trim();
+      const cat = normalizeConcernCategory(document.getElementById('newIncCategory')?.value || 'Infrastructure');
+      const urgency = normalizeConcernUrgency(document.getElementById('newIncUrgency')?.value || 'Standard');
+      const loc = normalizeSitioName(document.getElementById('newIncLocation')?.value || 'Sitio Ibaba');
+      const repRaw = (document.getElementById('newIncReporter')?.value || '').trim();
+      const desc = (document.getElementById('newIncDesc')?.value || '').trim();
 
-      const newId = `INC-2026-${String(incidentTickets.length + 30).padStart(3, '0')}`;
-      const newTicket = {
+      if (!title || !repRaw || !desc) {
+        showAdminToast('Missing Required Fields', 'Please enter the concern title, resident name, and description.', 'danger');
+        return;
+      }
+
+      const repParts = repRaw.split(/[•·/|-]/).map(s => s.trim()).filter(Boolean);
+      const reporterName = repParts[0] || repRaw;
+      const reporterContact = repParts[1] || '';
+
+      const newId = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
+      const newTicket = normalizeAdminConcern({
+        ref: newId,
         id: newId,
+        title: title,
+        desc: desc,
         category: cat,
-        summary: desc,
+        urgency: urgency,
+        sitio: loc,
         location: loc,
-        reporter: rep,
-        dateLogged: new Date().toISOString().slice(0, 10),
-        severity: 'Moderate',
-        status: 'Active Hazard',
-        notes: 'Newly logged citizen blotter ticket.'
-      };
+        reporter: reporterName,
+        userMobile: reporterContact,
+        userAddress: loc + ', Barangay Pallocan West',
+        dateFiled: new Date().toISOString().slice(0, 10),
+        status: 'Pending',
+        resolutionNote: ''
+      });
 
+      syncResidentConcernsFromStorage();
       incidentTickets.unshift(newTicket);
+      persistConcernsToStorage();
       renderIncidentsTable();
       closeNewIncidentModal();
 
-      // Reset form
       const form = document.getElementById('newIncidentForm');
       if (form) form.reset();
+      setWalkInConcernUrgencyState(false);
 
-      showAdminToast('Blotter Record Created', `Ticket ${newId} logged under ${cat}.`, 'success');
+      showAdminToast('Concern Recorded', `Ticket ${newId} ("${title}") logged under ${cat} (${urgency}).`, 'success');
     });
   }
 

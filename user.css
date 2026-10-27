@@ -1062,6 +1062,7 @@
 .status-pending { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
 .status-resolved, .status-completed { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
 .status-urgent, .status-rejected { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.status-standard { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
 .status-cancelled { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
 
 /* Quick Action Shortcuts Bar */
@@ -1702,6 +1703,65 @@
   font-size: 14px;
 }
 
+/* Inline Submission Success Banner */
+.concern-success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-left: 4px solid #16a34a;
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.08);
+}
+
+.concern-success-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.concern-success-content {
+  flex: 1;
+}
+
+.concern-success-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #14532d;
+  margin: 0 0 4px 0;
+}
+
+.concern-success-desc {
+  font-size: 13px;
+  color: #166534;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.concern-success-close {
+  background: transparent;
+  border: none;
+  color: #15803d;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.75;
+}
+
+.concern-success-close:hover {
+  opacity: 1;
+}
+
 /* Concerns Feed Cards */
 .concerns-feed-container {
   display: flex;
@@ -1726,14 +1786,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   gap: 10px;
 }
 
 .concern-ref-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -1759,6 +1819,14 @@
 .concern-date {
   font-size: 12px;
   color: #94a3b8;
+}
+
+.concern-title-heading {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  line-height: 1.35;
 }
 
 .concern-location-row {
@@ -2333,7 +2401,24 @@
 }
 
 .radio-card input {
-  margin-top: 3px;
+  margin-top: 4px;
+  accent-color: var(--primary-blue);
+}
+
+.radio-card.urgency-card.is-selected {
+  border-color: #64748b;
+  background-color: #f8fafc;
+  box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.12);
+}
+
+.radio-card.urgency-card.is-urgent-option input {
+  accent-color: #dc2626;
+}
+
+.radio-card.urgency-card.is-urgent-option.is-selected {
+  border-color: #ef4444;
+  background-color: #fff1f2;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.14);
 }
 
 .radio-title {
@@ -2347,7 +2432,7 @@
   display: block;
   font-size: 11px;
   color: #64748b;
-  margin-top: 2px;
+  margin-top: 4px;
   line-height: 1.4;
 }
 

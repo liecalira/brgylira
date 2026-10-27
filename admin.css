@@ -2363,6 +2363,32 @@ td {
   background-color: #15803d;
 }
 
+.concern-status-select {
+  padding: 5px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background-color: #f8fafc;
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.concern-status-select:hover,
+.concern-status-select:focus {
+  border-color: var(--primary-navy);
+  background-color: #ffffff;
+}
+
+.resident-meta-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
 /* Pagination Footer */
 .table-footer-pagination {
   display: flex;
@@ -4402,24 +4428,30 @@ body.print-modal-open {
   border-color: #be123c;
 }
 
-/* Priority Status Badges */
-.badge-status.badge-critical-pill {
+/* Priority & Urgency Status Badges */
+.badge-status.badge-critical-pill,
+.badge-status.badge-urgent-pill {
   background: #ffe4e6;
   color: #9f1239;
   border: 1px solid #fecdd3;
+  border-radius: 9999px;
+  padding: 4px 10px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .badge-status.badge-standard-pill {
-  background: #f8fafc;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .badge-critical-mini {

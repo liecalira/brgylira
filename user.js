@@ -121,36 +121,143 @@ document.addEventListener('DOMContentLoaded', function () {
   const DEFAULT_CONCERNS = [
     {
       ref: 'TCK-4021',
+      id: 'TCK-4021',
+      title: 'Flickering Streetlight Creating Nighttime Blind Spot',
       category: 'Infrastructure',
       urgency: 'Standard',
-      location: 'Sitio Ibaba',
-      dateFiled: '2026-10-01',
-      status: 'In Review',
-      currentStage: 2, // 1: New, 2: In Review, 3: Resolved
+      sitio: 'Sitio Ibaba',
+      landmark: 'Main Road Pedestrian Walkway',
+      location: 'Sitio Ibaba — Main Road Pedestrian Walkway',
+      dateFiled: '2026-10-14',
+      status: 'In Progress',
+      currentStage: 2,
       desc: 'Streetlight has been flickering and completely goes dark after 8:00 PM. Creates a blind spot for pedestrians and students walking home at night.',
-      resolutionNote: 'Inspected by BPSO Night Patrol on Oct 2. Reported to City Engineering Public Lighting Office. Replacement LED fixture scheduled for Oct 6.'
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Inspected by BPSO Night Patrol on Oct 15. Coordinated with City Engineering Public Lighting Office for LED fixture replacement.'
+    },
+    {
+      ref: 'TCK-4018',
+      id: 'TCK-4018',
+      title: 'Heavy Siltation and Plastic Clog Blocking Culvert Outflow',
+      category: 'Infrastructure',
+      urgency: 'Urgent',
+      sitio: 'Sitio Ibaba',
+      landmark: 'Culvert Outflow Channel',
+      location: 'Sitio Ibaba — Culvert Outflow Channel',
+      dateFiled: '2026-10-15',
+      status: 'Pending',
+      currentStage: 1,
+      desc: 'Drainage culvert outflow is heavily clogged with silt and plastic debris, causing rapid street ponding whenever heavy rain falls.',
+      reporter: 'Clarisse Anne Villanueva',
+      userEmail: 'clarisse.villanueva@gmail.com',
+      userMobile: '0917 554 8219',
+      userAddress: '082 Sitio Ibaba Road, Barangay Pallocan West',
+      residentId: 'PW-2026-08510',
+      resolutionNote: ''
+    },
+    {
+      ref: 'TCK-4015',
+      id: 'TCK-4015',
+      title: 'Low-Hanging Power Cable Across Basketball Court Access Road',
+      category: 'Public Utility',
+      urgency: 'Urgent',
+      sitio: 'Tierra Verde',
+      landmark: 'Near Covered Court Gate',
+      location: 'Tierra Verde — Near Covered Court Gate',
+      dateFiled: '2026-10-13',
+      status: 'In Progress',
+      currentStage: 2,
+      desc: 'Secondary utility line sagging approximately 2.1 meters above the road, posing a hazard to delivery vans and pedestrians.',
+      reporter: 'Eduardo Castillo Jr.',
+      userEmail: 'eddie.castillo.ph@yahoo.com',
+      userMobile: '0920 891 2345',
+      userAddress: 'Block 14 Lot 6, Tierra Verde, Barangay Pallocan West',
+      residentId: 'PW-2026-08514',
+      resolutionNote: 'Cordoned off by BPSO Tanod Patrol. Utility emergency crew dispatched for cable re-tensioning.'
+    },
+    {
+      ref: 'TCK-4009',
+      id: 'TCK-4009',
+      title: 'Uncollected Domestic Waste Bags Along Interior Easement',
+      category: 'Sanitation',
+      urgency: 'Standard',
+      sitio: 'Sitio Santolan',
+      landmark: 'Villa Celina Corner',
+      location: 'Sitio Santolan — Villa Celina Corner',
+      dateFiled: '2026-10-11',
+      status: 'Pending',
+      currentStage: 1,
+      desc: 'Several sacks of household waste missed during Tuesday collection are attracting stray animals along the corner walkway.',
+      reporter: 'Maria Santos Alcantara',
+      userEmail: 'maria.alcantara@gmail.com',
+      userMobile: '0918 345 6789',
+      userAddress: 'Block 3 Lot 8, Villa Celina, Barangay Pallocan West',
+      residentId: 'PW-2026-08502',
+      resolutionNote: ''
+    },
+    {
+      ref: 'TCK-3994',
+      id: 'TCK-3994',
+      title: 'Late-Night Karaoke Exceeding 10:00 PM Quiet Hours Ordinance',
+      category: 'Noise Disturbance',
+      urgency: 'Standard',
+      sitio: 'Sitio Ilaya',
+      landmark: 'Crossing Ilaya Interior',
+      location: 'Sitio Ilaya — Crossing Ilaya Interior',
+      dateFiled: '2026-10-08',
+      status: 'Resolved',
+      currentStage: 3,
+      desc: 'Loud outdoor amplifier operating past midnight on weeknights, disturbing elderly residents and students.',
+      reporter: 'Mark Anthony Balmes',
+      userEmail: 'mark.balmes@outlook.com',
+      userMobile: '0927 348 9120',
+      userAddress: '105 Crossing Ilaya Road, Barangay Pallocan West',
+      residentId: 'PW-2026-08521',
+      resolutionNote: 'BPSO Night Patrol visited the household and reminded the owner of Barangay Curfew & Quiet Hours Ordinance. Full compliance achieved.'
     },
     {
       ref: 'TCK-3890',
+      id: 'TCK-3890',
+      title: 'Garden Waste and Branch Trimmings Obstructing Sidewalk',
       category: 'Sanitation',
       urgency: 'Standard',
-      location: 'Sitio Santolan',
+      sitio: 'Sitio Santolan',
+      landmark: 'Main Sidewalk Strip',
+      location: 'Sitio Santolan — Main Sidewalk Strip',
       dateFiled: '2026-09-22',
       status: 'Resolved',
       currentStage: 3,
       desc: 'Piles of branch trimmings and garden waste left on sidewalk obstructing pedestrian pathway.',
-      resolutionNote: 'Barangay Green Waste collection truck dispatched on Sep 23, 10:30 AM. Area cleared and sidewalk disinfected.'
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Barangay Green Waste collection truck dispatched on Sep 23, 10:30 AM. Area cleared and sidewalk swept.'
     },
     {
       ref: 'TCK-3412',
+      id: 'TCK-3412',
+      title: 'Unleashed Stray Dogs Near Elementary School Walkway',
       category: 'Public Safety',
       urgency: 'Urgent',
-      location: 'Sitio Ilaya',
+      sitio: 'Sitio Ilaya',
+      landmark: 'Near Pallocan West Elementary Gate',
+      location: 'Sitio Ilaya — Near Pallocan West Elementary Gate',
       dateFiled: '2026-09-08',
       status: 'Resolved',
       currentStage: 3,
       desc: 'Unleashed aggressive dogs barking and chasing students walking to Pallocan West Elementary.',
-      resolutionNote: 'Joint operation by Barangay Tanod and City Veterinary Office on Sep 9. Dog owners notified and issued citation; safety patrol instituted during school hours.'
+      reporter: 'Juan Dela Cruz',
+      userEmail: 'juan.delacruz@example.com',
+      userMobile: '0917 123 4567',
+      userAddress: '142 Pallocan Blvd, Barangay Pallocan West',
+      residentId: 'PW-2026-08492',
+      resolutionNote: 'Joint operation by Barangay Tanod and City Veterinary Office on Sep 9. Dog owners notified and safety patrol stationed during school hours.'
     }
   ];
 
@@ -243,17 +350,145 @@ document.addEventListener('DOMContentLoaded', function () {
     return 'Sitio Ibaba';
   }
 
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function normalizeConcernUrgency(val) {
+    const s = String(val || '').trim().toLowerCase();
+    if (s.includes('urgent') || s.includes('critical') || s.includes('high')) {
+      return 'Urgent';
+    }
+    return 'Standard';
+  }
+
+  function normalizeConcernStatus(val) {
+    const s = String(val || '').trim().toLowerCase();
+    if (s === 'resolved' || s === 'completed' || s === 'closed') {
+      return 'Resolved';
+    }
+    if (s === 'in progress' || s === 'in review' || s === 'inspection scheduled' || s === 'under review') {
+      return 'In Progress';
+    }
+    return 'Pending';
+  }
+
+  function normalizeConcernCategory(val) {
+    const s = String(val || '').trim();
+    if (!s) return 'Infrastructure';
+    if (s === 'Noise') return 'Noise Disturbance';
+    if (s === 'Utilities') return 'Public Utility';
+    return s;
+  }
+
+  function normalizeConcernRecord(raw) {
+    const item = raw && typeof raw === 'object' ? raw : {};
+    const ref = item.ref || item.id || ('TCK-' + Math.floor(1000 + Math.random() * 9000));
+    const category = normalizeConcernCategory(item.category);
+    const status = normalizeConcernStatus(item.status);
+    const urgency = normalizeConcernUrgency(item.urgency || item.severity);
+    const sitio = normalizeSitioName(item.sitio || item.location);
+    const landmark = item.landmark || '';
+    const location = item.location || (landmark ? `${sitio} — ${landmark}` : sitio);
+    const desc = item.desc || item.submittedDetails || item.notes || item.summary || '';
+    const title = item.title || item.summary || (desc ? (desc.length > 64 ? desc.slice(0, 61) + '...' : desc) : `${category} Concern`);
+    const isJuanLegacy = ['TCK-4021', 'TCK-3890', 'TCK-3412'].includes(ref);
+
+    return {
+      ref: ref,
+      id: ref,
+      title: title,
+      desc: desc,
+      category: category,
+      urgency: urgency,
+      status: status,
+      currentStage: status === 'Resolved' ? 3 : (status === 'In Progress' ? 2 : 1),
+      dateFiled: item.dateFiled || item.dateLogged || new Date().toISOString().split('T')[0],
+      sitio: sitio,
+      landmark: landmark,
+      location: location,
+      reporter: item.reporter || (isJuanLegacy ? DEFAULT_USER.name : 'Verified Resident'),
+      userEmail: item.userEmail || (isJuanLegacy ? DEFAULT_USER.email : ''),
+      userMobile: item.userMobile || (isJuanLegacy ? DEFAULT_USER.mobile : ''),
+      userAddress: item.userAddress || (isJuanLegacy ? DEFAULT_USER.address : sitio + ', Barangay Pallocan West'),
+      residentId: item.residentId || (isJuanLegacy ? DEFAULT_USER.residentId : ''),
+      photoName: item.photoName || null,
+      photoData: item.photoData || null,
+      resolutionNote: item.resolutionNote !== undefined ? item.resolutionNote : (item.actionTaken || ''),
+      updatedAt: item.updatedAt || null
+    };
+  }
+
+  function isConcernOwnedByUser(concern, user) {
+    if (!concern || !user) return false;
+    const uId = String(user.residentId || '').trim().toLowerCase();
+    const cId = String(concern.residentId || '').trim().toLowerCase();
+    if (uId && cId && uId === cId) return true;
+
+    const uEmail = String(user.email || '').trim().toLowerCase();
+    const cEmail = String(concern.userEmail || '').trim().toLowerCase();
+    if (uEmail && cEmail && uEmail === cEmail) return true;
+
+    const uName = String(user.name || '').trim().toLowerCase();
+    const cName = String(concern.reporter || '').trim().toLowerCase();
+    if (uName && cName && uName === cName) return true;
+
+    // Match pre-configured Juan Dela Cruz across both login emails
+    if ((uEmail === 'juan@gmail.com' || uEmail === 'juan.delacruz@example.com') &&
+        (cEmail === 'juan@gmail.com' || cEmail === 'juan.delacruz@example.com' || cName.includes('juan dela cruz') || cName.includes('juan m. dela cruz'))) {
+      return true;
+    }
+    return false;
+  }
+
   // Load app state
   let currentUser = loadData('brgy360_user', DEFAULT_USER);
   if (currentUser && typeof currentUser === 'object') {
     currentUser.sitio = normalizeSitioName(currentUser.sitio);
   }
   let userRequests = loadData('brgy360_requests', DEFAULT_REQUESTS);
-  let userConcerns = loadData('brgy360_concerns', DEFAULT_CONCERNS);
-  if (Array.isArray(userConcerns)) {
-    userConcerns.forEach((c) => {
-      if (c) c.sitio = normalizeSitioName(c.sitio);
-    });
+
+  function loadAndSyncAllConcerns() {
+    let rawList = loadData('brgy360_concerns', DEFAULT_CONCERNS);
+    if (!Array.isArray(rawList)) rawList = [...DEFAULT_CONCERNS];
+    let normalized = rawList.map(normalizeConcernRecord);
+
+    // Seed shared multi-resident concerns once if upgrading from legacy store
+    if (!localStorage.getItem('brgy360_concerns_connected_v3')) {
+      const existingRefs = new Set(normalized.map(c => c.ref));
+      DEFAULT_CONCERNS.forEach(seed => {
+        if (!existingRefs.has(seed.ref)) {
+          normalized.push(normalizeConcernRecord(seed));
+        } else {
+          // Enrich legacy seeded record with title & reporter metadata while keeping status/notes
+          const idx = normalized.findIndex(c => c.ref === seed.ref);
+          if (idx !== -1) {
+            if (!rawList[idx].title) normalized[idx].title = seed.title;
+            if (!rawList[idx].reporter) normalized[idx].reporter = seed.reporter;
+            if (!rawList[idx].userEmail) normalized[idx].userEmail = seed.userEmail;
+            if (!rawList[idx].userMobile) normalized[idx].userMobile = seed.userMobile;
+            if (!rawList[idx].residentId) normalized[idx].residentId = seed.residentId;
+          }
+        }
+      });
+      localStorage.setItem('brgy360_concerns_connected_v3', 'true');
+    }
+
+    saveData('brgy360_concerns', normalized);
+    return normalized;
+  }
+
+  let allConcerns = loadAndSyncAllConcerns();
+  let userConcerns = allConcerns.filter(c => isConcernOwnedByUser(c, currentUser));
+  function refreshUserConcernsState() {
+    allConcerns = loadAndSyncAllConcerns();
+    userConcerns = allConcerns.filter(c => isConcernOwnedByUser(c, currentUser));
   }
   let userProposals = loadData('brgy360_proposals', DEFAULT_PROPOSALS);
   if (Array.isArray(userProposals)) {
@@ -674,6 +909,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modalDocMobile) modalDocMobile.value = mobile;
     if (modalDocSitio) modalDocSitio.value = sitio;
     if (modalDocAddress) modalDocAddress.value = address;
+
+    // Concern Modal Prefills
+    const modalConcernReporter = document.getElementById('modalConcernReporter');
+    const modalConcernContact = document.getElementById('modalConcernContact');
+    const modalConcernSitio = document.getElementById('modalConcernSitio');
+    const modalConcernDate = document.getElementById('modalConcernDate');
+    if (modalConcernReporter) modalConcernReporter.value = name;
+    if (modalConcernContact) modalConcernContact.value = mobile + ' • ' + email;
+    if (modalConcernSitio && !modalConcernSitio.value) modalConcernSitio.value = sitio;
+    if (modalConcernDate && !modalConcernDate.value) modalConcernDate.value = new Date().toISOString().split('T')[0];
   }
 
   // Date banner update
@@ -703,9 +948,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const kpiTotalConcerns = document.getElementById('kpiTotalConcerns');
     if (kpiTotalConcerns) kpiTotalConcerns.textContent = userConcerns.length;
 
-    const inReviewConcerns = userConcerns.filter(c => c.status === 'In Review').length;
+    const pendingConcernsCount = userConcerns.filter(c => c.status === 'Pending').length;
+    const inProgressConcernsCount = userConcerns.filter(c => c.status === 'In Progress').length;
+    const resolvedConcernsCount = userConcerns.filter(c => c.status === 'Resolved').length;
+    const openConcernsCount = pendingConcernsCount + inProgressConcernsCount;
+
     const sidebarReportsCount = document.getElementById('sidebarReportsCount');
-    if (sidebarReportsCount) sidebarReportsCount.textContent = inReviewConcerns;
+    if (sidebarReportsCount) sidebarReportsCount.textContent = openConcernsCount;
+
+    const kpiConcernsStatusSub = document.getElementById('kpiConcernsStatusSub');
+    if (kpiConcernsStatusSub) {
+      const pills = [];
+      if (pendingConcernsCount > 0) {
+        pills.push(`<span class="status-pill status-pending">${pendingConcernsCount} Pending</span>`);
+      }
+      if (inProgressConcernsCount > 0) {
+        pills.push(`<span class="status-pill status-in-review">${inProgressConcernsCount} In Progress</span>`);
+      }
+      if (resolvedConcernsCount > 0 || pills.length === 0) {
+        pills.push(`<span class="status-pill status-resolved">${resolvedConcernsCount} Resolved</span>`);
+      }
+      kpiConcernsStatusSub.innerHTML = pills.join('');
+    }
 
     // 3. Proposals
     const kpiTotalProposals = document.getElementById('kpiTotalProposals');
@@ -715,11 +979,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function getStatusBadgeClass(status) {
     switch (status) {
       case 'Ready for Pickup': return 'status-ready';
+      case 'In Progress':
       case 'In Review': return 'status-in-review';
-      case 'Pending': return 'status-pending';
+      case 'Pending':
+      case 'New': return 'status-pending';
       case 'Completed': return 'status-completed';
       case 'Resolved': return 'status-resolved';
       case 'Cancelled': return 'status-cancelled';
+      case 'Standard': return 'status-standard';
       case 'Rejected':
       case 'Urgent': return 'status-urgent';
       default: return 'status-pending';
@@ -748,8 +1015,8 @@ document.addEventListener('DOMContentLoaded', function () {
     userConcerns.forEach(function (c) {
       combined.push({
         ref: c.ref,
-        subject: c.category + ' Issue',
-        subtext: c.location,
+        subject: c.title || (c.category + ' Concern'),
+        subtext: c.category + ' • ' + c.location,
         date: c.dateFiled,
         status: c.status,
         type: 'Citizen Concern',
@@ -1259,73 +1526,81 @@ document.addEventListener('DOMContentLoaded', function () {
     const activeFilterBtn = document.querySelector('#concernsFilterPills .filter-pill-btn.active');
     const filter = activeFilterBtn ? activeFilterBtn.getAttribute('data-filter') : 'All';
 
-    // Update counts
+    // Update counts (Pending, In Progress, Resolved)
     const countAll = userConcerns.length;
-    const countNew = userConcerns.filter(c => c.status === 'New').length;
-    const countReview = userConcerns.filter(c => c.status === 'In Review').length;
+    const countPending = userConcerns.filter(c => c.status === 'Pending').length;
+    const countProgress = userConcerns.filter(c => c.status === 'In Progress').length;
     const countResolved = userConcerns.filter(c => c.status === 'Resolved').length;
 
     const countAllEl = document.getElementById('countAllConcerns');
-    const countNewEl = document.getElementById('countNewConcerns');
-    const countReviewEl = document.getElementById('countReviewConcerns');
+    const countPendingEl = document.getElementById('countPendingConcerns');
+    const countProgressEl = document.getElementById('countProgressConcerns');
     const countResolvedEl = document.getElementById('countResolvedConcerns');
     if (countAllEl) countAllEl.textContent = countAll;
-    if (countNewEl) countNewEl.textContent = countNew;
-    if (countReviewEl) countReviewEl.textContent = countReview;
+    if (countPendingEl) countPendingEl.textContent = countPending;
+    if (countProgressEl) countProgressEl.textContent = countProgress;
     if (countResolvedEl) countResolvedEl.textContent = countResolved;
 
     const filtered = userConcerns.filter(function (c) {
       const matchFilter = filter === 'All' || c.status === filter;
       const matchSearch = !searchVal ||
         c.ref.toLowerCase().includes(searchVal) ||
+        (c.title || '').toLowerCase().includes(searchVal) ||
         c.category.toLowerCase().includes(searchVal) ||
         c.desc.toLowerCase().includes(searchVal) ||
-        c.location.toLowerCase().includes(searchVal);
+        c.location.toLowerCase().includes(searchVal) ||
+        c.urgency.toLowerCase().includes(searchVal) ||
+        c.status.toLowerCase().includes(searchVal);
       return matchFilter && matchSearch;
     });
 
     if (filtered.length === 0) {
-      container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px; background: #ffffff; border-radius: 12px; border: 1px dashed var(--border);">No concerns reported under this category.</div>';
+      container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px; background: #ffffff; border-radius: 12px; border: 1px dashed var(--border);">No concerns found matching your selected filter.</div>';
       return;
     }
 
     let cardsHtml = '';
     filtered.forEach(function (c) {
-      const isUrgent = c.urgency === 'Urgent';
-      const stage = c.currentStage || (c.status === 'Resolved' ? 3 : (c.status === 'In Review' ? 2 : 1));
+      const urgencyLevel = normalizeConcernUrgency(c.urgency);
+      const isUrgent = urgencyLevel === 'Urgent';
+      const statusBadgeClass = getStatusBadgeClass(c.status);
+      const stage = c.status === 'Resolved' ? 3 : (c.status === 'In Progress' ? 2 : 1);
 
       cardsHtml += `
         <div class="concern-item-card">
           <div class="concern-item-header">
             <div class="concern-ref-wrap">
-              <span class="concern-ticket-id">${c.ref}</span>
-              <span class="concern-cat-tag">${c.category}</span>
-              ${isUrgent ? '<span class="status-pill status-urgent">Urgent Hazard</span>' : ''}
-              <span class="concern-date">Filed on ${c.dateFiled}</span>
+              <span class="concern-ticket-id">${escapeHtml(c.ref)}</span>
+              <span class="concern-cat-tag">${escapeHtml(c.category)}</span>
+              <span class="status-pill ${isUrgent ? 'status-urgent' : 'status-standard'}">${escapeHtml(urgencyLevel)}</span>
+              <span class="status-pill ${statusBadgeClass}">${escapeHtml(c.status)}</span>
+              <span class="concern-date">Submitted on ${escapeHtml(c.dateFiled)}</span>
             </div>
-            <button type="button" class="btn-table-action" data-view-ref="${c.ref}">View Record</button>
+            <button type="button" class="btn-table-action" data-view-ref="${escapeHtml(c.ref)}">View Details</button>
           </div>
+
+          <h4 class="concern-title-heading">${escapeHtml(c.title || (c.category + ' Concern'))}</h4>
 
           <div class="concern-location-row">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span>${c.location}</span>
+            <span>${escapeHtml(c.location)}</span>
           </div>
 
-          <p class="concern-desc-text">${c.desc}</p>
+          <p class="concern-desc-text">${escapeHtml(c.desc)}</p>
 
           <!-- 3-Step Visual Progress Stepper -->
           <div class="concern-progress-stepper">
             <div class="stepper-stage ${stage >= 1 ? (stage === 1 ? 'active' : 'completed') : ''}">
               <div class="stage-bullet">${stage > 1 ? '✓' : '1'}</div>
-              <span>New / Logged</span>
+              <span>Pending</span>
             </div>
             <div class="stepper-line ${stage >= 2 ? 'filled' : ''}"></div>
             <div class="stepper-stage ${stage >= 2 ? (stage === 2 ? 'active' : 'completed') : ''}">
               <div class="stage-bullet">${stage > 2 ? '✓' : '2'}</div>
-              <span>In Review / Inspected</span>
+              <span>In Progress</span>
             </div>
             <div class="stepper-line ${stage >= 3 ? 'filled' : ''}"></div>
             <div class="stepper-stage ${stage >= 3 ? 'completed' : ''}">
@@ -1340,9 +1615,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
-                <span>Barangay Personnel Action &amp; Resolution Notes:</span>
+                <span>Barangay Admin Status &amp; Action Notes:</span>
               </div>
-              <p class="resolution-text">${c.resolutionNote}</p>
+              <p class="resolution-text">${escapeHtml(c.resolutionNote)}</p>
             </div>
           ` : ''}
         </div>
@@ -1544,14 +1819,57 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // B. Concern Modal
+  const concernSuccessBanner = document.getElementById('concernSuccessBanner');
+  const concernSuccessTitle = document.getElementById('concernSuccessTitle');
+  const concernSuccessDesc = document.getElementById('concernSuccessDesc');
+  const closeConcernSuccessBanner = document.getElementById('closeConcernSuccessBanner');
+
+  if (closeConcernSuccessBanner && concernSuccessBanner) {
+    closeConcernSuccessBanner.addEventListener('click', function () {
+      concernSuccessBanner.style.display = 'none';
+    });
+  }
+
+  function setConcernModalUrgency(level) {
+    const normalized = normalizeConcernUrgency(level);
+    const hiddenUrgency = document.getElementById('modalConcernUrgency');
+    if (hiddenUrgency) hiddenUrgency.value = normalized;
+
+    document.querySelectorAll('#concernUrgencyCards .urgency-card').forEach(function (card) {
+      const cardVal = card.getAttribute('data-urgency-card');
+      const radio = card.querySelector('input[type="radio"]');
+      const isMatch = cardVal === normalized;
+      card.classList.toggle('is-selected', isMatch);
+      if (radio) radio.checked = isMatch;
+    });
+  }
+
+  document.querySelectorAll('#concernUrgencyCards input[name="concernUrgencyRadio"]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      if (this.checked) {
+        setConcernModalUrgency(this.value);
+      }
+    });
+  });
+
+  function openConcernModalPrepared() {
+    syncUserDisplays();
+    const dateInput = document.getElementById('modalConcernDate');
+    const sitioSelect = document.getElementById('modalConcernSitio');
+    if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+    if (sitioSelect && currentUser?.sitio) sitioSelect.value = normalizeSitioName(currentUser.sitio);
+    setConcernModalUrgency('Standard');
+    openModal(concernModal);
+  }
+
   if (btnOpenNewConcernModal) {
-    btnOpenNewConcernModal.addEventListener('click', () => openModal(concernModal));
+    btnOpenNewConcernModal.addEventListener('click', openConcernModalPrepared);
   }
   if (btnDashNewConcern) {
-    btnDashNewConcern.addEventListener('click', () => openModal(concernModal));
+    btnDashNewConcern.addEventListener('click', openConcernModalPrepared);
   }
   if (scFileConcern) {
-    scFileConcern.addEventListener('click', () => openModal(concernModal));
+    scFileConcern.addEventListener('click', openConcernModalPrepared);
   }
   if (closeConcernModalBtn) closeConcernModalBtn.addEventListener('click', () => closeModal(concernModal));
   if (btnCancelConcernModal) btnCancelConcernModal.addEventListener('click', () => closeModal(concernModal));
@@ -1559,51 +1877,116 @@ document.addEventListener('DOMContentLoaded', function () {
   if (concernReportForm) {
     concernReportForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const category = document.getElementById('modalConcernCategory')?.value || 'Infrastructure';
-      const urgency = document.getElementById('modalConcernUrgency')?.value || 'Standard';
-      const sitio = document.getElementById('modalConcernSitio')?.value || '';
-      const landmark = document.getElementById('modalConcernLocation')?.value || '';
-      const location = sitio ? (landmark ? `${sitio} — ${landmark}` : sitio) : landmark;
-      const desc = document.getElementById('modalConcernDesc')?.value || '';
+      const title = (document.getElementById('modalConcernTitle')?.value || '').trim();
+      const category = normalizeConcernCategory(document.getElementById('modalConcernCategory')?.value || 'Infrastructure');
+      const checkedRadio = document.querySelector('#concernUrgencyCards input[name="concernUrgencyRadio"]:checked');
+      const urgency = normalizeConcernUrgency(checkedRadio?.value || document.getElementById('modalConcernUrgency')?.value || 'Standard');
+      const dateFiled = document.getElementById('modalConcernDate')?.value || new Date().toISOString().split('T')[0];
+      const sitio = normalizeSitioName(document.getElementById('modalConcernSitio')?.value || currentUser.sitio || 'Sitio Ibaba');
+      const landmark = (document.getElementById('modalConcernLocation')?.value || '').trim();
+      const location = landmark ? `${sitio} — ${landmark}` : sitio;
+      const desc = (document.getElementById('modalConcernDesc')?.value || '').trim();
+
+      if (!title || !desc) {
+        showToast('Missing Fields', 'Please enter both a concern title and detailed description.', true);
+        return;
+      }
 
       const ticketRef = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
-      const today = new Date().toISOString().split('T')[0];
+      const photoFile = modalConcernPhoto && modalConcernPhoto.files && modalConcernPhoto.files[0]
+        ? modalConcernPhoto.files[0]
+        : null;
 
-      const newConcern = {
-        ref: ticketRef,
-        category: category,
-        urgency: urgency,
-        location: location,
-        dateFiled: today,
-        status: 'New',
-        currentStage: 1,
-        desc: desc,
-        resolutionNote: 'Ticket received and queued for assignment to the concerned committee / BPSO inspection unit.'
-      };
+      function finalizeConcernSubmission(photoDataUrl) {
+        const newConcern = normalizeConcernRecord({
+          ref: ticketRef,
+          id: ticketRef,
+          title: title,
+          category: category,
+          urgency: urgency,
+          sitio: sitio,
+          landmark: landmark,
+          location: location,
+          dateFiled: dateFiled,
+          status: 'Pending',
+          currentStage: 1,
+          desc: desc,
+          reporter: currentUser.name || 'Juan Dela Cruz',
+          userEmail: currentUser.email || '',
+          userMobile: currentUser.mobile || '',
+          userAddress: currentUser.address || (sitio + ', Barangay Pallocan West'),
+          residentId: currentUser.residentId || 'PW-2026-08492',
+          photoName: photoFile ? photoFile.name : null,
+          photoData: photoDataUrl || null,
+          resolutionNote: ''
+        });
 
-      userConcerns.unshift(newConcern);
-      saveData('brgy360_concerns', userConcerns);
+        // Reload latest shared concerns from localStorage before prepending
+        let latestAll = loadData('brgy360_concerns', DEFAULT_CONCERNS);
+        if (!Array.isArray(latestAll)) latestAll = [];
+        latestAll = latestAll.map(normalizeConcernRecord);
+        latestAll.unshift(newConcern);
+        saveData('brgy360_concerns', latestAll);
 
-      userNotifications.unshift({
-        id: Date.now(),
-        title: 'Concern Ticket Issued',
-        desc: `Ticket ${ticketRef} has been logged for "${category}" at ${location}.`,
-        time: 'Just now',
-        unread: true,
-        type: 'amber'
-      });
-      saveData('brgy360_notifs', userNotifications);
+        allConcerns = latestAll;
+        userConcerns = allConcerns.filter(c => isConcernOwnedByUser(c, currentUser));
 
-      renderDashboardKPIs();
-      renderDashboardActivityTable();
-      renderConcernsFeed();
-      renderNotifications();
+        userNotifications.unshift({
+          id: Date.now(),
+          title: 'Concern Submitted Successfully',
+          desc: `Ticket ${ticketRef} ("${title}") has been submitted (${urgency}) and forwarded to the Admin Concern Desk.`,
+          time: 'Just now',
+          unread: true,
+          type: 'amber'
+        });
+        saveData('brgy360_notifs', userNotifications);
 
-      closeModal(concernModal);
-      concernReportForm.reset();
+        // Reset filter pill to "All" so user immediately sees their newly submitted concern
+        const allFilterBtn = document.querySelector('#concernsFilterPills .filter-pill-btn[data-filter="All"]');
+        if (allFilterBtn) {
+          document.querySelectorAll('#concernsFilterPills .filter-pill-btn').forEach(b => b.classList.remove('active'));
+          allFilterBtn.classList.add('active');
+        }
 
-      showToast('Concern Reported!', `Ticket #${ticketRef} issued. Barangay team alerted.`);
-      switchTab('reports');
+        renderDashboardKPIs();
+        renderDashboardActivityTable();
+        renderConcernsFeed();
+        renderNotifications();
+
+        closeModal(concernModal);
+        concernReportForm.reset();
+        setConcernModalUrgency('Standard');
+        if (modalConcernPhotoName) {
+          modalConcernPhotoName.textContent = 'Upload photo of the issue (JPG, PNG)';
+        }
+
+        switchTab('reports');
+
+        if (concernSuccessBanner) {
+          if (concernSuccessTitle) {
+            concernSuccessTitle.textContent = `Concern Submitted Successfully — Ticket #${ticketRef}`;
+          }
+          if (concernSuccessDesc) {
+            concernSuccessDesc.textContent = `"${title}" (${category} • ${urgency} • Submitted ${dateFiled}) has been sent to Barangay Admin for review.`;
+          }
+          concernSuccessBanner.style.display = 'flex';
+        }
+
+        showToast('Concern Submitted Successfully!', `Ticket #${ticketRef} (${urgency}) sent to Barangay Admin.`);
+      }
+
+      if (photoFile && photoFile.size <= 1500000) {
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          finalizeConcernSubmission(ev.target?.result || null);
+        };
+        reader.onerror = function () {
+          finalizeConcernSubmission(null);
+        };
+        reader.readAsDataURL(photoFile);
+      } else {
+        finalizeConcernSubmission(null);
+      }
     });
   }
 
@@ -1766,34 +2149,71 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }, 0);
     } else if (itemType === 'concern') {
-      if (detailModalKicker) detailModalKicker.textContent = 'CITIZEN CONCERN TICKET';
-      if (detailModalTitle) detailModalTitle.textContent = item.category + ' Issue';
+      const urgencyLevel = normalizeConcernUrgency(item.urgency);
+      if (detailModalKicker) detailModalKicker.textContent = 'CITIZEN CONCERN RECORD';
+      if (detailModalTitle) detailModalTitle.textContent = item.title || (item.category + ' Concern');
 
       detailModalBody.innerHTML = `
         <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Ticket Number</span>
-            <span class="table-ref-code" style="font-size: 14px;">${item.ref}</span>
+            <span class="table-ref-code" style="font-size: 14px;">${escapeHtml(item.ref)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 12.5px; color: #475569;">Current Status:</span>
+            <span class="status-pill ${getStatusBadgeClass(item.status)}">${escapeHtml(item.status)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 12.5px; color: #475569;">Resolution Progress:</span>
-            <span class="status-pill ${getStatusBadgeClass(item.status)}">${item.status}</span>
+            <span style="font-size: 12.5px; color: #475569;">Urgency Level:</span>
+            <span class="status-pill ${urgencyLevel === 'Urgent' ? 'status-urgent' : 'status-standard'}">${escapeHtml(urgencyLevel)}</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; gap: 12px;">
+            <span style="color: #64748b;">Category:</span>
+            <strong>${escapeHtml(item.category)}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 12px;">
+            <span style="color: #64748b;">Date Submitted:</span>
+            <span>${escapeHtml(item.dateFiled)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 12px;">
+            <span style="color: #64748b;">Submitted By:</span>
+            <strong>${escapeHtml(item.reporter || currentUser.name)}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 12px;">
+            <span style="color: #64748b;">Location / Sitio:</span>
+            <span>${escapeHtml(item.location)}</span>
           </div>
         </div>
 
         <div style="font-size: 13px; margin-bottom: 16px;">
-          <strong style="color: #0f172a; display: block; margin-bottom: 4px;">Incident Location:</strong>
-          <p style="color: #475569; margin: 0 0 12px 0;">${item.location}</p>
-          <strong style="color: #0f172a; display: block; margin-bottom: 4px;">Resident's Description:</strong>
-          <p style="color: #475569; margin: 0; line-height: 1.5;">${item.desc}</p>
+          <strong style="color: #0f172a; display: block; margin-bottom: 6px;">Detailed Description:</strong>
+          <p style="color: #475569; margin: 0; line-height: 1.55; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px;">${escapeHtml(item.desc)}</p>
         </div>
+
+        ${item.photoData ? `
+          <div style="margin-bottom: 16px;">
+            <strong style="font-size: 12.5px; color: #0f172a; display: block; margin-bottom: 6px;">Attached Photo Evidence:</strong>
+            <img src="${item.photoData}" alt="Attached concern photo" style="max-width: 100%; max-height: 220px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover;">
+          </div>
+        ` : (item.photoName ? `
+          <div style="font-size: 12px; color: #64748b; margin-bottom: 16px;">
+            <strong>Attached File:</strong> ${escapeHtml(item.photoName)}
+          </div>
+        ` : '')}
 
         ${item.resolutionNote ? `
           <div class="concern-resolution-box">
-            <div class="resolution-header">Barangay Official Response:</div>
-            <p class="resolution-text">${item.resolutionNote}</p>
+            <div class="resolution-header">Barangay Admin Response &amp; Action Notes:</div>
+            <p class="resolution-text">${escapeHtml(item.resolutionNote)}</p>
           </div>
-        ` : ''}
+        ` : `
+          <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px; font-size: 12.5px; color: #92400e;">
+            <strong>Status Note:</strong> Your concern is currently marked <strong>${escapeHtml(item.status)}</strong>. Updates from Barangay Admin will appear here automatically.
+          </div>
+        `}
       `;
     } else {
       if (detailModalKicker) detailModalKicker.textContent = 'DEVELOPMENT PROPOSAL';
@@ -2072,6 +2492,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // ==========================================================
   // 15. INITIAL RENDER CALLS
   // ==========================================================
+
+  // Listen for live Admin updates in another browser tab
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'brgy360_concerns') {
+      refreshUserConcernsState();
+      renderDashboardKPIs();
+      renderDashboardActivityTable();
+      renderConcernsFeed();
+    } else if (e.key === 'brgy360_notifs') {
+      userNotifications = loadData('brgy360_notifs', DEFAULT_NOTIFS);
+      renderNotifications();
+    }
+  });
 
   syncUserDisplays();
   updateDateBanner();

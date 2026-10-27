@@ -715,9 +715,9 @@
           <div class="section-top-toolbar">
             <div class="toolbar-left">
               <div>
-                <span class="view-kicker">PUBLIC SAFETY &amp; COMMUNITY REPORTS</span>
-                <h2 class="section-title">Citizen Blotter &amp; Incident Desk Manager</h2>
-                <p class="section-sub">Log, verify, dispatch inspection patrols, and resolve public safety hazards and civic concerns</p>
+                <span class="view-kicker">RESIDENT CONCERNS &amp; COMMUNITY REPORTS</span>
+                <h2 class="section-title">Submitted Resident Concerns Manager</h2>
+                <p class="section-sub">View all concerns submitted by residents, inspect full user and issue details, and update status between Pending, In Progress, and Resolved.</p>
               </div>
             </div>
             <div class="toolbar-right">
@@ -726,7 +726,7 @@
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                <span>Log New Blotter / Ticket</span>
+                <span>Log Walk-in Concern</span>
               </button>
             </div>
           </div>
@@ -734,24 +734,24 @@
           <!-- Summary Metric Badges -->
           <div class="incident-metrics-strip">
             <div class="inc-metric-pill">
-              <span class="inc-lbl">Total Incidents (YTD):</span>
-              <strong class="inc-val">14 Filed</strong>
+              <span class="inc-lbl">Total Concerns:</span>
+              <strong class="inc-val" id="incTotalCount">7 Submitted</strong>
             </div>
             <div class="inc-metric-pill danger-bg">
-              <span class="inc-lbl">Active Hazards:</span>
-              <strong class="inc-val red" id="incActiveCount">3 Active</strong>
+              <span class="inc-lbl">Pending:</span>
+              <strong class="inc-val red" id="incActiveCount">2 Pending</strong>
             </div>
             <div class="inc-metric-pill">
-              <span class="inc-lbl">Under Site Inspection:</span>
+              <span class="inc-lbl">In Progress:</span>
               <strong class="inc-val" id="incInspectCount">2 In Progress</strong>
             </div>
             <div class="inc-metric-pill success-bg">
-              <span class="inc-lbl">Closed / Resolved:</span>
-              <strong class="inc-val green" id="incResolvedCount">11 Closed (78.5%)</strong>
+              <span class="inc-lbl">Resolved:</span>
+              <strong class="inc-val green" id="incResolvedCount">3 Resolved</strong>
             </div>
           </div>
 
-          <!-- Incidents Data Table Card -->
+          <!-- Concerns Data Table Card -->
           <div class="admin-card table-control-card">
             <div class="table-filters-row">
               <!-- Search Input -->
@@ -760,43 +760,50 @@
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" id="incidentsSearchInput" class="table-search-input" placeholder="Search by Ticket ID, Category, Location, or Reporter...">
+                <input type="text" id="incidentsSearchInput" class="table-search-input" placeholder="Search by Ticket #, Resident Name, Title, Category, or Location...">
               </div>
 
               <!-- Status Pills -->
               <div class="filter-pills-row" id="incidentsStatusFilterGroup">
-                <button type="button" class="filter-pill active" data-status="all">All (14)</button>
-                <button type="button" class="filter-pill" data-status="Active Hazard">Active Hazards (3)</button>
-                <button type="button" class="filter-pill" data-status="Inspection Scheduled">Inspections (2)</button>
-                <button type="button" class="filter-pill" data-status="Resolved">Resolved (11)</button>
+                <button type="button" class="filter-pill active" data-status="all">All (<span id="pillCountIncAll">0</span>)</button>
+                <button type="button" class="filter-pill" data-status="Pending">Pending (<span id="pillCountIncPending">0</span>)</button>
+                <button type="button" class="filter-pill" data-status="In Progress">In Progress (<span id="pillCountIncProgress">0</span>)</button>
+                <button type="button" class="filter-pill" data-status="Resolved">Resolved (<span id="pillCountIncResolved">0</span>)</button>
               </div>
 
-              <!-- Category Select -->
-              <div class="dropdown-filter-wrap">
+              <!-- Category & Urgency Selects -->
+              <div class="dropdown-filter-wrap" style="gap: 8px; flex-wrap: wrap;">
                 <select id="incidentCategorySelect" class="table-filter-select">
-                  <option value="all">All Incident Categories</option>
+                  <option value="all">All Categories</option>
                   <option value="Infrastructure">Infrastructure</option>
                   <option value="Sanitation">Sanitation</option>
                   <option value="Public Safety">Public Safety</option>
-                  <option value="Noise">Noise Disturbances</option>
-                  <option value="Utilities">Utilities &amp; Lighting</option>
+                  <option value="Noise Disturbance">Noise Disturbance</option>
+                  <option value="Public Utility">Public Utility</option>
+                  <option value="Other">Other</option>
+                </select>
+
+                <select id="incidentUrgencySelect" class="table-filter-select">
+                  <option value="all">All Urgency Levels</option>
+                  <option value="Standard">Standard</option>
+                  <option value="Urgent">Urgent</option>
                 </select>
               </div>
             </div>
 
-            <!-- Incidents Table -->
+            <!-- Concerns Table -->
             <div class="table-responsive">
               <table class="admin-data-table" id="incidentsTable">
                 <thead>
                   <tr>
                     <th>Ticket #</th>
+                    <th>Resident Info</th>
+                    <th>Concern Title &amp; Description</th>
                     <th>Category</th>
-                    <th>Incident Summary</th>
-                    <th>Location / Purok</th>
-                    <th>Reporter</th>
-                    <th>Date Logged</th>
+                    <th>Urgency</th>
+                    <th>Date Submitted</th>
                     <th>Status</th>
-                    <th class="text-right">Desk Actions</th>
+                    <th class="text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="incidentsTableBody">
@@ -806,7 +813,7 @@
             </div>
 
             <div class="table-footer-pagination">
-              <span class="pagination-info" id="incidentsPaginationInfo">Showing 14 blotter records</span>
+              <span class="pagination-info" id="incidentsPaginationInfo">Showing 0 concern records</span>
             </div>
           </div>
 
@@ -1731,22 +1738,23 @@
     </div>
   </div>
 
-  <!-- MODAL 2: VIEW SUBMITTED RESIDENT CONCERN MODAL (READ-ONLY) -->
+  <!-- MODAL 2: VIEW & UPDATE SUBMITTED RESIDENT CONCERN MODAL -->
   <div class="admin-modal-overlay" id="concernViewModal" role="dialog" aria-modal="true" aria-labelledby="modalIncTitle">
-    <div class="admin-modal-box">
+    <div class="admin-modal-box" style="max-width: 640px;">
       <div class="modal-header">
         <div>
           <span class="modal-kicker">SUBMITTED RESIDENT CONCERN</span>
           <h3 class="modal-title" id="modalIncTitle">Submitted Concern Details</h3>
-          <span class="modal-sub" id="modalIncId">Ticket #INC-2026-042</span>
+          <span class="modal-sub" id="modalIncId">Ticket #TCK-4021</span>
         </div>
         <button type="button" class="modal-close-btn" id="btnCloseIncModal" aria-label="Close dialog">&times;</button>
       </div>
       <div class="modal-body" id="modalIncViewBody">
-        <!-- Rendered dynamically via admin.js (read-only view of resident's submitted concern) -->
+        <!-- Rendered dynamically via admin.js -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-modal-outline" id="btnCloseIncFooter">Close</button>
+        <button type="button" class="btn-modal-primary" id="btnSaveConcernModalStatus">Update Concern Status</button>
       </div>
     </div>
   </div>
@@ -1768,11 +1776,11 @@
         <div class="resolve-case-card">
           <div class="resolve-case-card-header">
             <div class="resolve-case-meta">
-              <span class="resolve-ticket-badge" id="resCaseTicketId">INC-2026-042</span>
+              <span class="resolve-ticket-badge" id="resCaseTicketId">TCK-4018</span>
               <span class="badge-neutral" id="resCaseCategory">Infrastructure</span>
-              <span class="badge-status red" id="resCaseSeverity">Critical Hazard</span>
+              <span class="badge-status red" id="resCaseSeverity">Urgent</span>
             </div>
-            <span class="resolve-case-date" id="resCaseDateLogged">Logged: 2026-10-11</span>
+            <span class="resolve-case-date" id="resCaseDateLogged">Logged: 2026-10-15</span>
           </div>
 
           <div class="resolve-case-summary-body">
@@ -1835,28 +1843,33 @@
   </div>
 
 
-  <!-- MODAL 4: NEW INCIDENT QUICK LOGGING MODAL -->
+  <!-- MODAL 4: NEW CONCERN QUICK LOGGING MODAL -->
   <div class="admin-modal-overlay" id="newIncidentModal">
     <div class="admin-modal-box">
       <div class="modal-header">
         <div>
-          <span class="modal-kicker">INCIDENT DESK · QUICK BLOTTER</span>
-          <h3 class="modal-title">Log New Citizen Blotter / Hazard</h3>
-          <span class="modal-sub">Official Barangay Pallocan West Safety Registry</span>
+          <span class="modal-kicker">CONCERN DESK · WALK-IN INTAKE</span>
+          <h3 class="modal-title">Log Walk-in Resident Concern</h3>
+          <span class="modal-sub">Official Barangay Pallocan West Concern Registry</span>
         </div>
         <button type="button" class="modal-close-btn" id="btnCloseNewIncModal">&times;</button>
       </div>
       <div class="modal-body">
         <form id="newIncidentForm" class="modal-form">
+          <div class="form-group">
+            <label class="form-label">Concern Title <span class="text-danger">*</span></label>
+            <input type="text" id="newIncTitle" class="form-input" placeholder="e.g. Damaged drainage cover near chapel" required>
+          </div>
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label">Category</label>
               <select id="newIncCategory" class="form-select" required>
-                <option value="Infrastructure">Infrastructure (Road / Drainage / Wall)</option>
-                <option value="Sanitation">Sanitation (Waste / Canal / Stagnant Water)</option>
-                <option value="Public Safety">Public Safety (Hazard / Threat)</option>
-                <option value="Noise">Noise Disturbance</option>
-                <option value="Utilities">Utilities &amp; Streetlighting</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Sanitation">Sanitation</option>
+                <option value="Public Safety">Public Safety</option>
+                <option value="Noise Disturbance">Noise Disturbance</option>
+                <option value="Public Utility">Public Utility</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div class="form-group">
@@ -1873,18 +1886,43 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Reporter Name &amp; Contact</label>
-            <input type="text" id="newIncReporter" class="form-input" placeholder="e.g. Kagawad R. Santos / Citizen Walk-in" required>
+            <label class="form-label">Resident Name &amp; Contact <span class="text-danger">*</span></label>
+            <input type="text" id="newIncReporter" class="form-input" placeholder="e.g. Maria Santos • 0918 345 6789" required>
+          </div>
+          <!-- Urgency Level Toggle Card (Standard vs Urgent) -->
+          <div class="form-group">
+            <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+              <span>Urgency Level</span>
+              <span style="font-size: 11px; color: #64748b; font-weight: 600;">Click to switch between Standard &amp; Urgent</span>
+            </label>
+            <button type="button" class="btn-critical-toggle-card" id="btnToggleConcernUrgency">
+              <div class="critical-toggle-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <div class="critical-toggle-content">
+                <div class="critical-toggle-title" id="newIncUrgencyTitle">Standard Concern Level</div>
+                <div class="critical-toggle-subtitle" id="newIncUrgencySub">Click to mark as Urgent if this concern poses an immediate safety or infrastructure hazard</div>
+              </div>
+              <div class="critical-toggle-badge" id="newIncUrgencyBadge">
+                <span class="dot-gray"></span>
+                <span class="badge-text">Standard</span>
+              </div>
+            </button>
+            <input type="hidden" id="newIncUrgency" value="Standard">
           </div>
           <div class="form-group">
-            <label class="form-label">Incident Description / Observations</label>
-            <textarea id="newIncDesc" class="form-textarea" rows="3" placeholder="Provide detailed summary of the incident or hazard..." required></textarea>
+            <label class="form-label">Detailed Description <span class="text-danger">*</span></label>
+            <textarea id="newIncDesc" class="form-textarea" rows="3" placeholder="Provide detailed description of the resident's concern..." required></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-modal-outline" id="btnCancelNewInc">Cancel</button>
-        <button type="button" class="btn-modal-primary" id="btnSubmitNewIncident">Record to Blotter Desk</button>
+        <button type="button" class="btn-modal-primary" id="btnSubmitNewIncident">Record Concern</button>
       </div>
     </div>
   </div>
