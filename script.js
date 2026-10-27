@@ -195,7 +195,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const userName = currentUser ? (currentUser.name || 'Juan Dela Cruz') : '';
     const userInitial = currentUser ? (currentUser.avatarInitial || userName.charAt(0).toUpperCase()) : 'J';
-    const userSitio = currentUser ? (currentUser.sitio || 'Sitio Ibaba') : 'Sitio Ibaba';
+    const VALID_PUBLIC_SITIOS = ['Sitio Ibaba', 'Sitio Santolan', 'Sitio Ilaya', 'Sitio Gitna', 'Tierra Verde', 'Potenciana Village', 'G.C Berberabe'];
+    const rawSitio = currentUser ? (currentUser.sitio || 'Sitio Ibaba') : 'Sitio Ibaba';
+    const userSitio = VALID_PUBLIC_SITIOS.includes(rawSitio) ? rawSitio : (rawSitio === 'G.C. Berberabe' ? 'G.C Berberabe' : 'Sitio Ibaba');
 
     // 1. Update Navbar Auth Slot (no user name, no sign out button)
     const navAuthSlot = document.getElementById('navAuthSlot');
@@ -1838,7 +1840,7 @@ if (heroSlides.length > 1) {
       year: '2026',
       quarter: 'Q1',
       category: 'Infrastructure',
-      description: 'Drainage Desiltation & Street Repair Purok 1-3',
+      description: 'Drainage Desiltation & Street Repair — Sitio Ibaba & Sitio Santolan',
       budget: 320000,
       actual: 310000
     },
@@ -1902,7 +1904,7 @@ if (heroSlides.length > 1) {
       year: '2026',
       quarter: 'Q3',
       category: 'Infrastructure',
-      description: 'Flood Retaining Wall Reinforcement Purok 2',
+      description: 'Flood Retaining Wall Reinforcement — Sitio Ibaba',
       budget: 300000,
       actual: 150000
     },
@@ -1968,7 +1970,7 @@ if (heroSlides.length > 1) {
       year: '2025',
       quarter: 'Q2',
       category: 'Infrastructure',
-      description: 'Purok 4 Central Covered Court Concrete Paving',
+      description: 'Sitio Gitna Central Covered Court Concrete Paving',
       budget: 350000,
       actual: 345000
     },
@@ -2000,7 +2002,7 @@ if (heroSlides.length > 1) {
       year: '2025',
       quarter: 'Q4',
       category: 'Infrastructure',
-      description: 'Sitio Riverside Slope Stabilization & Pathway',
+      description: 'Sitio Santolan Slope Stabilization & Pathway',
       budget: 310000,
       actual: 300000
     },
@@ -2416,15 +2418,15 @@ if (heroSlides.length > 1) {
       isEmergency: true,
       date: "2026-09-26",
       department: "Barangay Disaster Risk Reduction & Management Council (BDRRMC)",
-      summary: "Residents in riverside sitios and flood-prone lowlands are advised to prepare emergency go-bags, secure roofing, and heed mandatory flood protocols. The announcement will be held on September 26, 2026, with preemptive evacuation starting promptly at 1:00 PM before typhoon landfall. Free barangay emergency shuttles are staged at Purok 1 and Purok 2 Chapels to transport families to the Multi-Purpose Covered Court 24/7 evacuation center.",
+      summary: "Residents in riverside sitios and flood-prone lowlands are advised to prepare emergency go-bags, secure roofing, and heed mandatory flood protocols. The announcement will be held on September 26, 2026, with preemptive evacuation starting promptly at 1:00 PM before typhoon landfall. Free barangay emergency shuttles are staged at Sitio Ibaba and Sitio Santolan Chapels to transport families to the Multi-Purpose Covered Court 24/7 evacuation center.",
       content: `
-        <p><strong>SITUATION & STORM WARNING:</strong> The Philippine Atmospheric, Geophysical and Astronomical Services Administration (PAGASA) has raised Wind Signal No. 3 over our province due to Severe Tropical Storm 'Julian'. Critical riverbank telemetry sensors in Purok 1 and Purok 2 have reached orange alert level. Torrential rainfall, high-velocity gale winds, and river overflows are anticipated within the next 18 to 24 hours.</p>
+        <p><strong>SITUATION & STORM WARNING:</strong> The Philippine Atmospheric, Geophysical and Astronomical Services Administration (PAGASA) has raised Wind Signal No. 3 over our province due to Severe Tropical Storm 'Julian'. Critical riverbank telemetry sensors in Sitio Ibaba and Sitio Santolan have reached orange alert level. Torrential rainfall, high-velocity gale winds, and river overflows are anticipated within the next 18 to 24 hours.</p>
         <p><strong>MANDATORY EVACUATION SCHEDULE:</strong> The announcement will be held on September 26, 2026, with mandatory preemptive evacuation commencing at 1:00 PM and continuing until 5:00 PM for all residents living within 50 meters of the riverbank, low-lying waterways, and landslide-vulnerable hillsides. The Barangay Multi-Purpose Covered Court on Central Grounds serves as the primary designated 24/7 evacuation center with standby food packs, potable water stations, and medical officers.</p>
         <p><strong>CRITICAL HOUSEHOLD ACTION PROTOCOLS:</strong></p>
         <ul>
           <li><strong>Emergency Go-Bags:</strong> Prepare waterproof bags containing non-perishable canned food, 3-day bottled water supply, first-aid kits, essential prescription medicines, flashlights, power banks, battery-powered radios, and government IDs sealed in ziplock pouches.</li>
           <li><strong>Utility Precautions:</strong> Switch off the main electrical breaker and securely disconnect LPG gas regulator hoses before locking and vacating homes.</li>
-          <li><strong>Free Emergency Transportation:</strong> Barangay emergency rescue trucks and transport shuttles will make continuous pickup loops at Purok 1 and Purok 2 Chapels starting at 1:00 PM.</li>
+          <li><strong>Free Emergency Transportation:</strong> Barangay emergency rescue trucks and transport shuttles will make continuous pickup loops at Sitio Ibaba and Sitio Santolan Chapels starting at 1:00 PM.</li>
           <li><strong>Livestock & Pets:</strong> Domestic animals must not be left tied or locked indoors; safe temporary holding corrals are set up behind the evacuation center.</li>
         </ul>
         <p><strong>24/7 COMMAND DISPATCH HOTLINES:</strong></p>
@@ -2442,10 +2444,10 @@ if (heroSlides.length > 1) {
       isEmergency: false,
       date: "2026-10-05",
       department: "Barangay Health Station & City Health Office",
-      summary: "The Barangay Health Committee, in coordination with the City Health Office and volunteer physicians, is providing free comprehensive medical checkups, essential medicines, and pediatric vitamins. The announcement will be held on October 22, 2026 (Thursday, 8:00 AM – 4:00 PM) at the Purok 1 Main Health Station. Free annual influenza vaccinations will also be administered for senior citizens, persons with disabilities, and young children.",
+      summary: "The Barangay Health Committee, in coordination with the City Health Office and volunteer physicians, is providing free comprehensive medical checkups, essential medicines, and pediatric vitamins. The announcement will be held on October 22, 2026 (Thursday, 8:00 AM – 4:00 PM) at the Sitio Ilaya Main Health Station. Free annual influenza vaccinations will also be administered for senior citizens, persons with disabilities, and young children.",
       content: `
         <p>The Barangay Health Station, in partnership with visiting volunteer doctors from the City Health Office and Philippine Medical Association, will hold its annual Community Health and Preventive Wellness Outreach for all registered barangay families.</p>
-        <p><strong>OUTREACH DATE & VENUE:</strong> The announcement will be held on October 22, 2026 (Thursday, 8:00 AM – 4:00 PM) at the Purok 1 Main Health Station. Numbered priority queue numbers will be released starting at 7:30 AM at the triage admission desk. Express lanes will be maintained for senior citizens, pregnant women, and persons with disabilities.</p>
+        <p><strong>OUTREACH DATE & VENUE:</strong> The announcement will be held on October 22, 2026 (Thursday, 8:00 AM – 4:00 PM) at the Sitio Ilaya Main Health Station. Numbered priority queue numbers will be released starting at 7:30 AM at the triage admission desk. Express lanes will be maintained for senior citizens, pregnant women, and persons with disabilities.</p>
         <p><strong>FREE HEALTHCARE SERVICES AVAILABLE:</strong></p>
         <ul>
           <li><strong>General Consultations:</strong> Adult internal medicine and pediatric consultations conducted by licensed physicians.</li>
@@ -2462,25 +2464,25 @@ if (heroSlides.length > 1) {
     },
     {
       id: 3,
-      title: "Purok 3 Water Main Pipeline Rehabilitation & Road Re-blocking",
+      title: "Sitio Gitna Water Main Pipeline Rehabilitation & Road Re-blocking",
       category: "Infrastructure",
       isEmergency: false,
       date: "2026-10-12",
       department: "Barangay Engineering & Public Works Committee",
-      summary: "Extensive civil engineering rehabilitation, culinary pipeline upgrade, and concrete asphalt re-blocking will be executed along Mabini Extension to resolve chronic low water pressure and roadway surface wear. The announcement will be held on October 13 to October 17, 2026 (Daily 8:00 AM – 5:00 PM). One-lane traffic flow will be enforced by barangay tanods, and two dedicated potable water tankers will be stationed at Purok 3 Chapel for affected households.",
+      summary: "Extensive civil engineering rehabilitation, culinary pipeline upgrade, and concrete asphalt re-blocking will be executed along Mabini Extension to resolve chronic low water pressure and roadway surface wear. The announcement will be held on October 13 to October 17, 2026 (Daily 8:00 AM – 5:00 PM). One-lane traffic flow will be enforced by barangay tanods, and two dedicated potable water tankers will be stationed at Sitio Gitna Chapel for affected households.",
       content: `
         <p>In collaborative partnership with the Municipal Water District and the City Engineering Department, major infrastructure renewal will be undertaken along Mabini Extension (spanning from corner Rizal Street to corner Luna Avenue) to replace aging galvanized water mains with high-density polyethylene pipelines and repair road pavement.</p>
         <p><strong>CONSTRUCTION SCHEDULE & WORKING HOURS:</strong> The announcement will be held on October 13 to October 17, 2026 (Daily 8:00 AM – 5:00 PM). Heavy equipment mobilization will occur between 7:00 AM and 8:00 AM daily, with excavation and trench re-blocking concluded before evening rush hours.</p>
         <p><strong>TRAFFIC SCHEME & WATER SUPPLY CONTINGENCY:</strong></p>
         <ul>
           <li><strong>One-Lane Alternate Traffic:</strong> Barangay Tanod traffic marshals will oversee stop-and-go passage along Mabini Extension. Motorists are advised to utilize secondary access routes via Bonifacio Road.</li>
-          <li><strong>Potable Water Tanker Relief:</strong> During scheduled water pressure drop periods (10:00 AM to 3:00 PM daily), two 10,000-liter barangay potable water tankers will be stationed at the Purok 3 Chapel courtyard to supply clean household water free of charge.</li>
-          <li><strong>Domestic Storage:</strong> Residents in Purok 3 are advised to store adequate clean drinking and cooking water in covered storage containers prior to 8:00 AM each morning.</li>
+          <li><strong>Potable Water Tanker Relief:</strong> During scheduled water pressure drop periods (10:00 AM to 3:00 PM daily), two 10,000-liter barangay potable water tankers will be stationed at the Sitio Gitna Chapel courtyard to supply clean household water free of charge.</li>
+          <li><strong>Domestic Storage:</strong> Residents in Sitio Gitna are advised to store adequate clean drinking and cooking water in covered storage containers prior to 8:00 AM each morning.</li>
         </ul>
         <p>For urgent traffic inquiries or emergency water delivery requests, please contact the Barangay Engineering Desk at <strong>0919-482-1130</strong>.</p>
       `,
       attachment: {
-        name: "Infrastructure_Advisory_Purok3.pdf",
+        name: "Infrastructure_Advisory_SitioGitna.pdf",
         size: "750 KB"
       }
     },
@@ -2499,7 +2501,7 @@ if (heroSlides.length > 1) {
         <ul>
           <li><strong>State of the Barangay Address (SOBA):</strong> Punong Barangay Romy D. Catilo will deliver the executive report covering executive accomplishments, peace and order indexes, and disaster readiness milestones.</li>
           <li><strong>Comprehensive Financial Transparency Report:</strong> Barangay Treasurer Mennen M. Bolos will present the itemized financial accountability statement of the 20% Barangay Development Fund, 10% SK Youth Development Fund, and General Administrative expenditures.</li>
-          <li><strong>Project Turn-over & Blessing:</strong> Formal turnover and community handover of completed solar-powered LED streetlights across Puroks 1 to 5 and the newly dredged drainage outfall canal.</li>
+          <li><strong>Project Turn-over & Blessing:</strong> Formal turnover and community handover of completed solar-powered LED streetlights across Sitio Ibaba, Sitio Santolan, Sitio Ilaya, Sitio Gitna, and Tierra Verde and the newly dredged drainage outfall canal.</li>
           <li><strong>Open Public Forum:</strong> An open floor where any resident can voice neighborhood petitions, public safety suggestions, and community inquiries directly to the barangay council.</li>
         </ul>
         <p>Your active voice and presence ensure honest, participatory, and transparent local governance. All attendees will receive verified attendance certificates for barangay profiling records.</p>

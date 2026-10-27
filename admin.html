@@ -270,7 +270,7 @@
                 <div class="alert-item danger">
                   <div class="alert-icon">⚠️</div>
                   <div class="alert-body">
-                    <span class="alert-title">Flood Risk: Purok 2 Embankment (84%)</span>
+                    <span class="alert-title">Flood Risk: Sitio Ibaba (84%)</span>
                     <p class="alert-desc">Siltation telemetry indicates imminent creek overflow if storm surge exceeds 45mm.</p>
                     <span class="alert-time">22 mins ago · Disaster Mitigation</span>
                   </div>
@@ -1005,7 +1005,7 @@
                     <tr>
                       <td><code>#V-2026-091</code></td>
                       <td>Infrastructure</td>
-                      <td>Purok 3 Solar LED Streetlight bulb replacements (12 units)</td>
+                      <td>Sitio Santolan Solar LED Streetlight bulb replacements (12 units)</td>
                       <td><strong>₱34,200</strong></td>
                     </tr>
                     <tr>
@@ -1311,14 +1311,6 @@
                     <td><span class="badge-status blue">High Indigency Demand</span></td>
                   </tr>
                   <tr>
-                    <td><strong>Purok 2 Embankment</strong></td>
-                    <td>640</td>
-                    <td>532 (83.1%)</td>
-                    <td>108</td>
-                    <td>485</td>
-                    <td><span class="badge-status red">84% Flood / Drainage Risk</span></td>
-                  </tr>
-                  <tr>
                     <td><strong>Sitio Ilaya</strong></td>
                     <td>750</td>
                     <td>640 (85.3%)</td>
@@ -1335,7 +1327,15 @@
                     <td><span class="badge-status green">Low Risk</span></td>
                   </tr>
                   <tr>
-                    <td><strong>Tierra Verde &amp; Potenciana</strong></td>
+                    <td><strong>Tierra Verde</strong></td>
+                    <td>640</td>
+                    <td>532 (83.1%)</td>
+                    <td>108</td>
+                    <td>485</td>
+                    <td><span class="badge-status red">84% Flood / Drainage Risk</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Potenciana Village</strong></td>
                     <td>520</td>
                     <td>446 (85.8%)</td>
                     <td>74</td>
@@ -1343,7 +1343,7 @@
                     <td><span class="badge-status green">Residential Subdivision</span></td>
                   </tr>
                   <tr>
-                    <td><strong>G.C. Berberabe</strong></td>
+                    <td><strong>G.C Berberabe</strong></td>
                     <td>258</td>
                     <td>190 (73.6%)</td>
                     <td>68</td>
@@ -1776,15 +1776,15 @@
           </div>
 
           <div class="resolve-case-summary-body">
-            <h4 class="resolve-case-heading" id="resCaseSummary">Heavy siltation &amp; plastic clog choking Purok 2 culvert outflow</h4>
+            <h4 class="resolve-case-heading" id="resCaseSummary">Heavy siltation &amp; plastic clog choking Sitio Ibaba culvert outflow</h4>
             <div class="resolve-case-details-grid">
               <div>
                 <span class="detail-label">Location / Purok:</span>
-                <strong id="resCaseLocation">Purok 2 Embankment</strong>
+                <strong id="resCaseLocation">Sitio Ibaba</strong>
               </div>
               <div>
                 <span class="detail-label">Reported By:</span>
-                <strong id="resCaseReporter">Purok Leader M. De Chavez</strong>
+                <strong id="resCaseReporter">Sitio Leader M. De Chavez</strong>
               </div>
             </div>
             <div class="resolve-case-prev-notes" id="resCasePrevNotesBox">
@@ -1862,12 +1862,13 @@
             <div class="form-group">
               <label class="form-label">Location / Sitio</label>
               <select id="newIncLocation" class="form-select" required>
-                <option value="Purok 2 Embankment">Purok 2 Embankment</option>
-                <option value="Sitio Santolan Bridge">Sitio Santolan Bridge</option>
-                <option value="Sitio Ibaba Main St">Sitio Ibaba Main St</option>
-                <option value="Sitio Ilaya Crossing">Sitio Ilaya Crossing</option>
-                <option value="Tierra Verde Entrance">Tierra Verde Entrance</option>
-                <option value="Sitio Gitna Alley">Sitio Gitna Alley</option>
+                <option value="Sitio Ibaba">Sitio Ibaba</option>
+                <option value="Sitio Santolan">Sitio Santolan</option>
+                <option value="Sitio Ilaya">Sitio Ilaya</option>
+                <option value="Sitio Gitna">Sitio Gitna</option>
+                <option value="Tierra Verde">Tierra Verde</option>
+                <option value="Potenciana Village">Potenciana Village</option>
+                <option value="G.C Berberabe">G.C Berberabe</option>
               </select>
             </div>
           </div>
@@ -1920,8 +1921,11 @@
                 <option value="All Residents">All Barangay Pallocan West Residents</option>
                 <option value="Sitio Ibaba">Sitio Ibaba</option>
                 <option value="Sitio Santolan">Sitio Santolan</option>
-                <option value="Purok 2 Embankment">Purok 2 Embankment</option>
                 <option value="Sitio Ilaya">Sitio Ilaya</option>
+                <option value="Sitio Gitna">Sitio Gitna</option>
+                <option value="Tierra Verde">Tierra Verde</option>
+                <option value="Potenciana Village">Potenciana Village</option>
+                <option value="G.C Berberabe">G.C Berberabe</option>
               </select>
             </div>
           </div>
@@ -1983,7 +1987,15 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label">Location / Purok</label>
-              <input type="text" id="projLocation" class="form-input" placeholder="e.g. Sitio Santolan Access Road" required>
+              <select id="projLocation" class="form-select" required>
+                <option value="Sitio Ibaba">Sitio Ibaba</option>
+                <option value="Sitio Santolan">Sitio Santolan</option>
+                <option value="Sitio Ilaya">Sitio Ilaya</option>
+                <option value="Sitio Gitna">Sitio Gitna</option>
+                <option value="Tierra Verde">Tierra Verde</option>
+                <option value="Potenciana Village">Potenciana Village</option>
+                <option value="G.C Berberabe">G.C Berberabe</option>
+              </select>
             </div>
             <div class="form-group">
               <label class="form-label">Allocated Budget (₱)</label>
@@ -2055,7 +2067,7 @@
         <form id="submitProposalForm" class="modal-form" onsubmit="return false;">
           <div class="form-group">
             <label class="form-label" for="newPropTitle">Proposal Title <span class="text-danger">*</span></label>
-            <input type="text" id="newPropTitle" class="form-input" placeholder="e.g. Solar Streetlight Installation - Purok 4" required>
+            <input type="text" id="newPropTitle" class="form-input" placeholder="e.g. Solar Streetlight Installation - Sitio Gitna" required>
           </div>
 
           <div class="form-row-2">
@@ -2080,7 +2092,15 @@
           <div class="form-row-2">
             <div class="form-group">
               <label class="form-label" for="newPropLocation">Location / Purok <span class="text-danger">*</span></label>
-              <input type="text" id="newPropLocation" class="form-input" placeholder="e.g. Purok 4, Main Highway" required>
+              <select id="newPropLocation" class="form-select" required>
+                <option value="Sitio Ibaba">Sitio Ibaba</option>
+                <option value="Sitio Santolan">Sitio Santolan</option>
+                <option value="Sitio Ilaya">Sitio Ilaya</option>
+                <option value="Sitio Gitna">Sitio Gitna</option>
+                <option value="Tierra Verde">Tierra Verde</option>
+                <option value="Potenciana Village">Potenciana Village</option>
+                <option value="G.C Berberabe">G.C Berberabe</option>
+              </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="newPropProponent">Proponent / Resident <span class="text-danger">*</span></label>
@@ -2172,7 +2192,7 @@
 
           <div class="form-group">
             <label class="form-label" for="budgetInputDesc">Description / Line Item Purpose <span class="text-danger">*</span></label>
-            <textarea id="budgetInputDesc" class="form-textarea" rows="3" placeholder="e.g. Drainage Desiltation & Street Repair Purok 1-3" required></textarea>
+            <textarea id="budgetInputDesc" class="form-textarea" rows="3" placeholder="e.g. Drainage Desiltation & Street Repair Sitio Ibaba" required></textarea>
           </div>
 
           <div class="form-grid-2">
@@ -2378,12 +2398,12 @@
               <div class="res-info-cell full-width">
                 <span class="res-info-lbl">Assigned Sitio / Purok</span>
                 <span class="res-info-val">
-                  <span class="res-sitio-tag" id="resReviewDetailSitio">Purok 2 Embankment</span>
+                  <span class="res-sitio-tag" id="resReviewDetailSitio">Sitio Ibaba</span>
                 </span>
               </div>
               <div class="res-info-cell full-width">
                 <span class="res-info-lbl">Complete Street Address</span>
-                <span class="res-info-val" id="resReviewDetailAddress">082 Purok 2 Embankment Road, Barangay Pallocan West, Batangas City</span>
+                <span class="res-info-val" id="resReviewDetailAddress">082 Sitio Ibaba Road, Barangay Pallocan West, Batangas City</span>
               </div>
             </div>
           </div>
@@ -2447,7 +2467,7 @@
                     </div>
                     <div class="res-id-field">
                       <span class="res-id-lbl">Tirahan / Address</span>
-                      <span class="res-id-val" id="resGraphicAddress">PUROK 2, PALLOCAN WEST, BATANGAS CITY</span>
+                      <span class="res-id-val" id="resGraphicAddress">SITIO IBABA, PALLOCAN WEST, BATANGAS CITY</span>
                     </div>
                   </div>
                 </div>
@@ -2493,7 +2513,7 @@
                   </div>
                   <div class="res-proof-row">
                     <span class="res-proof-lbl">Service Address</span>
-                    <span class="res-proof-val" id="resGraphicProofAddress">082 Purok 2 Embankment, Brgy. Pallocan West, Batangas City</span>
+                    <span class="res-proof-val" id="resGraphicProofAddress">082 Sitio Ibaba, Brgy. Pallocan West, Batangas City</span>
                   </div>
                   <div class="res-proof-row">
                     <span class="res-proof-lbl">Billing Period</span>
@@ -2703,11 +2723,11 @@
               <select id="preRegSitio" class="form-select" required>
                 <option value="Sitio Ibaba">Sitio Ibaba</option>
                 <option value="Sitio Santolan">Sitio Santolan</option>
-                <option value="Purok 2 Embankment">Purok 2 Embankment</option>
                 <option value="Sitio Ilaya">Sitio Ilaya</option>
                 <option value="Sitio Gitna">Sitio Gitna</option>
-                <option value="Tierra Verde & Potenciana">Tierra Verde &amp; Potenciana</option>
-                <option value="G.C. Berberabe">G.C. Berberabe</option>
+                <option value="Tierra Verde">Tierra Verde</option>
+                <option value="Potenciana Village">Potenciana Village</option>
+                <option value="G.C Berberabe">G.C Berberabe</option>
               </select>
             </div>
             <div class="form-group">

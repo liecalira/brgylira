@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ref: 'TCK-4021',
       category: 'Infrastructure',
       urgency: 'Standard',
-      location: 'Corner of Acacia St. & Main Road, Purok 3',
+      location: 'Sitio Ibaba',
       dateFiled: '2026-10-01',
       status: 'In Review',
       currentStage: 2, // 1: New, 2: In Review, 3: Resolved
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ref: 'TCK-3890',
       category: 'Sanitation',
       urgency: 'Standard',
-      location: 'Purok 3 near Basketball Court alley',
+      location: 'Sitio Santolan',
       dateFiled: '2026-09-22',
       status: 'Resolved',
       currentStage: 3,
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ref: 'TCK-3412',
       category: 'Public Safety',
       urgency: 'Urgent',
-      location: 'School Access Path, Purok 3',
+      location: 'Sitio Ilaya',
       dateFiled: '2026-09-08',
       status: 'Resolved',
       currentStage: 3,
@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const DEFAULT_PROPOSALS = [
     {
       ref: 'PROP-8421',
-      title: 'Installation of Solar LED Streetlights along Purok 3 Riverbank Walkway',
+      title: 'Installation of Solar LED Streetlights along Sitio Ibaba Riverbank Walkway',
       category: 'Infrastructure',
-      location: 'Purok 3 Riverbank Walkway (150-meter stretch)',
+      location: 'Sitio Ibaba',
       budget: 150000,
       timeline: 'Q1 2027 (3 months implementation)',
       dateFiled: '2026-09-28',
@@ -219,11 +219,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  const CANONICAL_SITIOS = [
+    'Sitio Ibaba',
+    'Sitio Santolan',
+    'Sitio Ilaya',
+    'Sitio Gitna',
+    'Tierra Verde',
+    'Potenciana Village',
+    'G.C Berberabe'
+  ];
+
+  function normalizeSitioName(val) {
+    if (!val || typeof val !== 'string') return 'Sitio Ibaba';
+    const trimmed = val.trim();
+    if (CANONICAL_SITIOS.includes(trimmed)) return trimmed;
+    const lower = trimmed.toLowerCase();
+    if (lower.includes('santolan')) return 'Sitio Santolan';
+    if (lower.includes('ilaya')) return 'Sitio Ilaya';
+    if (lower.includes('gitna')) return 'Sitio Gitna';
+    if (lower.includes('potenciana')) return 'Potenciana Village';
+    if (lower.includes('tierra verde')) return 'Tierra Verde';
+    if (lower.includes('berberabe')) return 'G.C Berberabe';
+    return 'Sitio Ibaba';
+  }
+
   // Load app state
   let currentUser = loadData('brgy360_user', DEFAULT_USER);
+  if (currentUser && typeof currentUser === 'object') {
+    currentUser.sitio = normalizeSitioName(currentUser.sitio);
+  }
   let userRequests = loadData('brgy360_requests', DEFAULT_REQUESTS);
   let userConcerns = loadData('brgy360_concerns', DEFAULT_CONCERNS);
+  if (Array.isArray(userConcerns)) {
+    userConcerns.forEach((c) => {
+      if (c) c.sitio = normalizeSitioName(c.sitio);
+    });
+  }
   let userProposals = loadData('brgy360_proposals', DEFAULT_PROPOSALS);
+  if (Array.isArray(userProposals)) {
+    userProposals.forEach((p) => {
+      if (p) p.location = normalizeSitioName(p.location);
+    });
+  }
   let userNotifications = loadData('brgy360_notifs', DEFAULT_NOTIFS);
 
   // Set active session
@@ -569,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function syncUserDisplays() {
     const name = currentUser.name || 'Juan Dela Cruz';
     const initial = currentUser.avatarInitial || name.charAt(0).toUpperCase();
-    const sitio = currentUser.sitio || 'Sitio Ibaba';
+    const sitio = normalizeSitioName(currentUser.sitio);
     const email = currentUser.email || 'juan.delacruz@example.com';
     const mobile = currentUser.mobile || '0917 123 4567';
     const address = currentUser.address || 'Barangay Pallocan West';
@@ -584,9 +621,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropdownAvatar = document.getElementById('dropdownAvatar');
     const dropdownUserName = document.getElementById('dropdownUserName');
     const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserTier = document.getElementById('dropdownUserTier');
     if (dropdownAvatar) dropdownAvatar.textContent = initial;
     if (dropdownUserName) dropdownUserName.textContent = name;
     if (dropdownUserEmail) dropdownUserEmail.textContent = email;
+    if (dropdownUserTier) dropdownUserTier.textContent = sitio + ' • Resident ID: ' + (currentUser.residentId || 'PW-2026-08492');
 
     // Sidebar
     const sidebarAvatar = document.getElementById('sidebarAvatar');

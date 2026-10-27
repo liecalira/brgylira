@@ -21,7 +21,7 @@
       password: 'UserPassword360!',
       role: 'resident',
       name: 'Juan Dela Cruz',
-      title: 'Verified Resident (Purok 3)',
+      title: 'Verified Resident (Sitio Ibaba)',
       targetUrl: 'user.html'
     }
   };

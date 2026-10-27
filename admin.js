@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
       fullName: 'Carmela D. Hernandez',
       age: '41',
       address: '15 Riverside Drive',
-      sitio: 'Purok 2 Embankment',
-      purokSitio: 'Purok 2 Embankment',
+      sitio: 'Tierra Verde',
+      purokSitio: 'Tierra Verde',
       docType: 'Barangay Business Clearance',
       documentType: 'Barangay Business Clearance',
       purpose: 'Barangay Business Clearance Renewal for 2026',
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
       status: 'Ready for Pickup',
       residencySince: 'January 2010',
       businessName: 'Hernandez Sari-Sari Store & Carinderia',
-      businessAddress: '15 Riverside Drive, Purok 2, Barangay Pallocan Kanluran',
+      businessAddress: '15 Riverside Drive, Tierra Verde, Barangay Pallocan Kanluran',
       natureOfBusiness: 'Retail Food Commodities & Eatery',
       businessType: 'Sole Proprietorship',
       numberOfEmployees: '3',
@@ -258,8 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
       fullName: 'Corazon T. Marasigan',
       age: '58',
       address: '28 Embankment Way',
-      sitio: 'Purok 2 Embankment',
-      purokSitio: 'Purok 2 Embankment',
+      sitio: 'Sitio Ibaba',
+      purokSitio: 'Sitio Ibaba',
       docType: 'Certificate of Residency',
       documentType: 'Certificate of Residency',
       purpose: 'Meralco Electric Service Connection & Meter Relocation',
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
       status: 'In Review',
       residencySince: 'July 1999',
       businessName: 'Marasigan Rice Supply',
-      businessAddress: '28 Embankment Way, Purok 2, Barangay Pallocan Kanluran',
+      businessAddress: '28 Embankment Way, Sitio Ibaba, Barangay Pallocan Kanluran',
       natureOfBusiness: 'Grain & Rice Trading',
       businessType: 'Sole Proprietorship',
       numberOfEmployees: '2',
@@ -280,9 +280,9 @@ document.addEventListener('DOMContentLoaded', function () {
       resident: 'Kevin Paul Ramos',
       fullName: 'Kevin Paul Ramos',
       age: '33',
-      address: '019 Commercial Strip, G.C. Berberabe',
-      sitio: 'G.C. Berberabe',
-      purokSitio: 'G.C. Berberabe',
+      address: '019 Commercial Strip, G.C Berberabe',
+      sitio: 'G.C Berberabe',
+      purokSitio: 'G.C Berberabe',
       docType: 'Barangay Business Clearance',
       documentType: 'Barangay Business Clearance',
       purpose: 'Barangay Business Clearance Application for Auto Repair Shop',
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
       status: 'In Review',
       residencySince: 'September 2017',
       businessName: 'Apex Motor Works & Vulcanizing Shop',
-      businessAddress: '019 Commercial Strip, G.C. Berberabe, Barangay Pallocan Kanluran',
+      businessAddress: '019 Commercial Strip, G.C Berberabe, Barangay Pallocan Kanluran',
       natureOfBusiness: 'Automotive Mechanical & Electrical Repair',
       businessType: 'Sole Proprietorship',
       numberOfEmployees: '5',
@@ -466,10 +466,10 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       id: 'INC-2026-042',
       category: 'Infrastructure',
-      summary: 'Heavy siltation & plastic clog choking Purok 2 culvert outflow',
+      summary: 'Heavy siltation & plastic clog choking Sitio Ibaba culvert outflow',
       submittedDetails: 'Culvert capacity depleted by ~72%. Overflow risk acute during rainfall exceeding 45mm.',
-      location: 'Purok 2 Embankment',
-      reporter: 'Purok Leader M. De Chavez',
+      location: 'Sitio Ibaba',
+      reporter: 'Sitio Leader M. De Chavez',
       dateLogged: '2026-10-11',
       severity: 'Critical Hazard',
       status: 'Active Hazard',
@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
       category: 'Infrastructure',
       summary: 'Collapsed riprap retaining wall threatening footpath',
       submittedDetails: 'Approximately 6 meters of riprap dislodged due to creek bank scouring.',
-      location: 'Sitio Santolan Bridge',
+      location: 'Sitio Santolan',
       reporter: 'Resident Engr. F. Aldover',
       dateLogged: '2026-10-10',
       severity: 'High Hazard',
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function () {
       category: 'Utilities',
       summary: 'Dangling secondary power cable near basketball court',
       submittedDetails: 'Cable sagging to 2.1m above road level.',
-      location: 'Sitio Ibaba Main St',
+      location: 'Sitio Ibaba',
       reporter: 'SK Kagawad K. Soriano',
       dateLogged: '2026-10-09',
       severity: 'Urgent Hazard',
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-039',
       category: 'Sanitation',
       summary: 'Illegal waste dumping along riverbank easement',
-      location: 'Sitio Ilaya Crossing',
+      location: 'Sitio Ilaya',
       reporter: 'BPSO Patrol Team 2',
       dateLogged: '2026-10-08',
       severity: 'Moderate',
@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-038',
       category: 'Public Safety',
       summary: 'Stray canine pack aggressive near elementary walkway',
-      location: 'Sitio Gitna Alley',
+      location: 'Sitio Gitna',
       reporter: 'PTA President L. Mercado',
       dateLogged: '2026-10-07',
       severity: 'Moderate',
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-036',
       category: 'Infrastructure',
       summary: 'Deep pothole causing motorcycle skidding near corner',
-      location: 'Purok 2 Main Road',
+      location: 'Potenciana Village',
       reporter: 'TODA Driver G. Balita',
       dateLogged: '2026-10-04',
       severity: 'Moderate',
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-035',
       category: 'Sanitation',
       summary: 'Uncollected domestic garbage pile attracting flies',
-      location: 'Tierra Verde Entrance',
+      location: 'Tierra Verde',
       reporter: 'HOA Officer R. Belen',
       dateLogged: '2026-10-03',
       severity: 'Low',
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'INC-2026-032',
       category: 'Noise',
       summary: 'Modified muffler exhaust noise late evening',
-      location: 'G.C. Berberabe Highway',
+      location: 'G.C Berberabe',
       reporter: 'Resident Walk-in',
       dateLogged: '2026-09-27',
       severity: 'Low',
@@ -649,6 +649,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   ];
 
+  function normalizeSitioName(val) {
+    const canonical = [
+      'Sitio Ibaba',
+      'Sitio Santolan',
+      'Sitio Ilaya',
+      'Sitio Gitna',
+      'Tierra Verde',
+      'Potenciana Village',
+      'G.C Berberabe'
+    ];
+    if (!val || typeof val !== 'string') return 'Sitio Ibaba';
+    const trimmed = val.trim();
+    if (canonical.includes(trimmed)) return trimmed;
+    const lower = trimmed.toLowerCase();
+    if (lower.includes('santolan')) return 'Sitio Santolan';
+    if (lower.includes('ilaya')) return 'Sitio Ilaya';
+    if (lower.includes('gitna')) return 'Sitio Gitna';
+    if (lower.includes('potenciana')) return 'Potenciana Village';
+    if (lower.includes('tierra verde')) return 'Tierra Verde';
+    if (lower.includes('berberabe')) return 'G.C Berberabe';
+    return 'Sitio Ibaba';
+  }
+
   // Sync any newly submitted resident concerns from Resident Portal (localStorage: brgy360_concerns)
   const SEEDED_PORTAL_CONCERN_REFS = new Set(['TCK-4021', 'TCK-3890', 'TCK-3412']);
   function syncResidentConcernsFromStorage() {
@@ -672,7 +695,7 @@ document.addEventListener('DOMContentLoaded', function () {
             category: c.category || 'Infrastructure',
             summary: c.desc || 'Submitted resident concern',
             submittedDetails: '',
-            location: c.location || 'Barangay Pallocan West',
+            location: normalizeSitioName(c.sitio || c.location),
             reporter: c.reporter || residentName,
             dateLogged: c.dateFiled || new Date().toISOString().slice(0, 10),
             severity: c.urgency === 'Urgent' ? 'Urgent Hazard' : 'Moderate',
@@ -702,26 +725,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // 1. PENDING (4 items)
     {
       id: 'PROP-2026-001',
-      title: 'Solar Streetlight Installation - Purok 4',
+      title: 'Solar Streetlight Installation - Sitio Gitna',
       category: 'Infrastructure',
       year: '2026',
-      location: 'Purok 4, Main Highway',
-      sitio: 'Purok 4, Main Highway',
+      location: 'Sitio Gitna',
+      sitio: 'Sitio Gitna',
       proponent: 'Juan Dela Cruz',
       date: 'Oct 12, 2026',
       budget: '₱150,000.00',
       votes: 142,
       targetVotes: 200,
       status: 'Pending',
-      description: 'Installation of 12 standalone high-efficiency solar LED pole lights along the dark road curves of Purok 4 to curb nighttime road hazards and vehicle accidents.'
+      description: 'Installation of 12 standalone high-efficiency solar LED pole lights along the dark road curves of Sitio Gitna to curb nighttime road hazards and vehicle accidents.'
     },
     {
       id: 'PROP-2026-002',
       title: 'Community Garden Development & Urban Farming Hub',
       category: 'Environment',
       year: '2026',
-      location: 'Purok 1, Creek Road Vacant Lot',
-      sitio: 'Purok 1, Creek Road Vacant Lot',
+      location: 'Sitio Ibaba',
+      sitio: 'Sitio Ibaba',
       proponent: 'Maria Santos · Women’s Club',
       date: 'Oct 13, 2026',
       budget: '₱95,000.00',
@@ -735,8 +758,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Elderly Community Wellness & Blood Pressure Kiosk',
       category: 'Health',
       year: '2026',
-      location: 'Tierra Verde Clubhouse',
-      sitio: 'Tierra Verde Clubhouse',
+      location: 'Tierra Verde',
+      sitio: 'Tierra Verde',
       proponent: 'Senior Citizens Association',
       date: 'Oct 10, 2026',
       budget: '₱70,000.00',
@@ -750,8 +773,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Pedestrian Speed Bump & Zebra Crossing at Elementary School',
       category: 'Public Safety',
       year: '2026',
-      location: 'Sitio Ilaya, School Zone',
-      sitio: 'Sitio Ilaya, School Zone',
+      location: 'Sitio Ilaya',
+      sitio: 'Sitio Ilaya',
       proponent: 'PTA Pres. Ricardo Ramos',
       date: 'Oct 14, 2026',
       budget: '₱45,000.00',
@@ -767,8 +790,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Barangay Materials Recovery Facility (MRF) Expansion',
       category: 'Environment',
       year: '2026',
-      location: 'Sitio Ibaba Boundary',
-      sitio: 'Sitio Ibaba Boundary',
+      location: 'Sitio Ibaba',
+      sitio: 'Sitio Ibaba',
       proponent: 'Ibaba Homeowners Civic Action',
       date: 'Oct 08, 2026',
       budget: '₱85,000.00',
@@ -782,8 +805,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Youth Sports Center Covered Court Roof Restoration',
       category: 'Sports & Youth',
       year: '2026',
-      location: 'Sitio Santolan Covered Court',
-      sitio: 'Sitio Santolan Covered Court',
+      location: 'Sitio Santolan',
+      sitio: 'Sitio Santolan',
       proponent: 'SK Council Pallocan West',
       date: 'Oct 04, 2026',
       budget: '₱110,000.00',
@@ -799,8 +822,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Solar LED Lighting Installation along River Embankment',
       category: 'Infrastructure',
       year: '2026',
-      location: 'Purok 2 Embankment',
-      sitio: 'Purok 2 Embankment',
+      location: 'Tierra Verde',
+      sitio: 'Tierra Verde',
       proponent: 'Engr. Marco Villanueva',
       date: 'Sep 28, 2026',
       budget: '₱120,000.00',
@@ -814,8 +837,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'CCTV Surveillance Expansion for Crime Prevention',
       category: 'Public Safety',
       year: '2026',
-      location: 'Main Barangay Access Roads',
-      sitio: 'Main Barangay Access Roads',
+      location: 'Potenciana Village',
+      sitio: 'Potenciana Village',
       proponent: 'BPSO Tanod Executive Committee',
       date: 'Sep 15, 2026',
       budget: '₱180,000.00',
@@ -829,8 +852,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Drainage Desilting & Reinforced Concrete Cover Replacement',
       category: 'Infrastructure',
       year: '2026',
-      location: 'Purok 3 Commercial Strip',
-      sitio: 'Purok 3 Commercial Strip',
+      location: 'G.C Berberabe',
+      sitio: 'G.C Berberabe',
       proponent: 'Pallocan Merchants Guild',
       date: 'Sep 20, 2026',
       budget: '₱135,000.00',
@@ -844,8 +867,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Community Disaster Siren & Early Flood Alert Station',
       category: 'Public Safety',
       year: '2026',
-      location: 'River Bridge Monitoring Station',
-      sitio: 'River Bridge Monitoring Station',
+      location: 'Sitio Santolan',
+      sitio: 'Sitio Santolan',
       proponent: 'BDRRMC Volunteer Corps',
       date: 'Sep 10, 2026',
       budget: '₱90,000.00',
@@ -859,8 +882,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Portable Emergency First-Aid & Oxygen Outreach Kit',
       category: 'Health',
       year: '2026',
-      location: 'Barangay Health Sub-Station',
-      sitio: 'Barangay Health Sub-Station',
+      location: 'Sitio Ilaya',
+      sitio: 'Sitio Ilaya',
       proponent: 'Dr. Angela Perez & BHWs',
       date: 'Sep 05, 2026',
       budget: '₱65,000.00',
@@ -876,8 +899,8 @@ document.addEventListener('DOMContentLoaded', function () {
       title: 'Commercial Billboard Structure at Public Plaza Entrance',
       category: 'Infrastructure',
       year: '2026',
-      location: 'Pallocan Kanluran Public Plaza',
-      sitio: 'Pallocan Kanluran Public Plaza',
+      location: 'G.C Berberabe',
+      sitio: 'G.C Berberabe',
       proponent: 'PrimeAds Media Group',
       date: 'Sep 02, 2026',
       budget: '₱250,000.00',
@@ -893,7 +916,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-01',
       title: 'E-Library & Free WiFi Tech Hub Refurbishment',
-      location: 'Barangay Hall, 2nd Floor',
+      location: 'Sitio Gitna',
       timeline: '2025-01-10 – 2025-08-15',
       budget: '₱420,000.00',
       progress: 100,
@@ -903,7 +926,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-02',
       title: 'Drainage Culvert Modernization Phase 1',
-      location: 'Purok 2 to Main Diversion',
+      location: 'Sitio Ibaba',
       timeline: '2025-06-01 – 2025-11-30',
       budget: '₱350,000.00',
       progress: 100,
@@ -913,7 +936,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-03',
       title: 'Solar Powered Public Streetlighting (Phase 2)',
-      location: 'Sitio Ibaba Main St to Sitio Ilaya',
+      location: 'Sitio Ilaya',
       timeline: '2026-02-15 – 2026-11-20',
       budget: '₱285,000.00',
       progress: 68,
@@ -923,7 +946,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-04',
       title: 'Barangay Disaster Operations Command Center (BDRRMC)',
-      location: 'Adjacent to Barangay Multi-Purpose Hall',
+      location: 'Potenciana Village',
       timeline: '2026-04-01 – 2026-12-15',
       budget: '₱410,000.00',
       progress: 42,
@@ -933,7 +956,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-05',
       title: 'Sitio Santolan Pedestrian Footbridge Elevation',
-      location: 'Sitio Santolan River Crossing',
+      location: 'Sitio Santolan',
       timeline: '2026-11-01 – 2027-02-28',
       budget: '₱180,000.00',
       progress: 10,
@@ -943,7 +966,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       code: 'PRJ-2026-06',
       title: 'CCTV High-Definition Security Grid Expansion (16 Cams)',
-      location: 'Pallocan West Commercial Corridors',
+      location: 'G.C Berberabe',
       timeline: '2026-03-01 – 2026-10-31',
       budget: '₱170,000.00',
       progress: 35,
@@ -958,7 +981,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: 'ANN-2026-08',
       title: 'Dengue Vector Surveillance & Larvicide Fogging Schedule',
       category: 'Health',
-      audience: 'Sitio Ibaba & Sitio Santolan',
+      audience: 'Sitio Ibaba',
       date: '2026-10-10',
       status: 'Active',
       isCritical: false,
@@ -966,9 +989,9 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       id: 'ANN-2026-07',
-      title: 'Pre-Monsoon Flood Preparedness Advisory: Purok 2',
+      title: 'Pre-Monsoon Flood Preparedness Advisory: Tierra Verde',
       category: 'Emergency',
-      audience: 'Purok 2 Embankment Residents',
+      audience: 'Tierra Verde',
       date: '2026-10-09',
       status: 'Active',
       isCritical: true,
@@ -991,6 +1014,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const savedAnn = localStorage.getItem('brgy360_announcements');
     if (savedAnn) {
       announcementsList = JSON.parse(savedAnn);
+      if (Array.isArray(announcementsList)) {
+        announcementsList.forEach((a) => {
+          if (!a) return;
+          if (a.audience && a.audience !== 'All Residents') {
+            a.audience = normalizeSitioName(a.audience);
+          }
+          if (typeof a.title === 'string') {
+            a.title = a.title.replace(/Purok\s*2/gi, 'Tierra Verde');
+          }
+        });
+      }
     }
   } catch (e) {
     console.warn('Error reading saved announcements', e);
@@ -1004,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function () {
       year: '2026',
       quarter: 'Q1',
       category: 'Infrastructure',
-      description: 'Drainage Desiltation & Street Repair Purok 1-3',
+      description: 'Drainage Desiltation & Street Repair Sitio Ibaba',
       budget: 320000,
       actual: 310000
     },
@@ -1076,7 +1110,7 @@ document.addEventListener('DOMContentLoaded', function () {
       year: '2026',
       quarter: 'Q3',
       category: 'Infrastructure',
-      description: 'Flood Retaining Wall Reinforcement Purok 2',
+      description: 'Flood Retaining Wall Reinforcement Tierra Verde',
       budget: 300000,
       actual: 150000
     },
@@ -1149,7 +1183,7 @@ document.addEventListener('DOMContentLoaded', function () {
       year: '2025',
       quarter: 'Q2',
       category: 'Infrastructure',
-      description: 'Purok 4 Central Covered Court Concrete Paving',
+      description: 'Sitio Gitna Central Covered Court Concrete Paving',
       budget: 350000,
       actual: 345000
     },
@@ -1185,7 +1219,7 @@ document.addEventListener('DOMContentLoaded', function () {
       year: '2025',
       quarter: 'Q4',
       category: 'Infrastructure',
-      description: 'Sitio Riverside Slope Stabilization & Pathway',
+      description: 'Sitio Santolan Slope Stabilization & Pathway',
       budget: 310000,
       actual: 300000
     },
@@ -1205,6 +1239,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const stored = localStorage.getItem('brgy360_budget_records');
     if (stored) {
       adminBudgetRecords = JSON.parse(stored);
+      if (Array.isArray(adminBudgetRecords)) {
+        adminBudgetRecords.forEach((rec) => {
+          if (rec && typeof rec.description === 'string') {
+            rec.description = rec.description
+              .replace(/Purok\s*1-3/gi, 'Sitio Ibaba')
+              .replace(/Purok\s*2/gi, 'Tierra Verde')
+              .replace(/Purok\s*4/gi, 'Sitio Gitna')
+              .replace(/Sitio\s+Riverside/gi, 'Sitio Santolan');
+          }
+        });
+      }
     } else {
       adminBudgetRecords = [...DEFAULT_ADMIN_BUDGET_RECORDS];
       localStorage.setItem('brgy360_budget_records', JSON.stringify(adminBudgetRecords));
@@ -1311,8 +1356,8 @@ document.addEventListener('DOMContentLoaded', function () {
       age: 31,
       gender: 'Female',
       civilStatus: 'Single',
-      address: '082 Purok 2 Embankment Road, Barangay Pallocan West, Batangas City',
-      sitio: 'Purok 2 Embankment',
+      address: '082 Sitio Ibaba Road, Barangay Pallocan West, Batangas City',
+      sitio: 'Sitio Ibaba',
       registeredDate: 'Oct 16, 2026',
       status: 'Pending',
       voterStatus: 'Registered Voter (Precinct 0142B)',
@@ -1336,8 +1381,8 @@ document.addEventListener('DOMContentLoaded', function () {
       age: 37,
       gender: 'Male',
       civilStatus: 'Married',
-      address: 'Block 14 Lot 6, Tierra Verde Subd., Barangay Pallocan West, Batangas City',
-      sitio: 'Tierra Verde & Potenciana',
+      address: 'Block 14 Lot 6, Tierra Verde, Barangay Pallocan West, Batangas City',
+      sitio: 'Tierra Verde',
       registeredDate: 'Oct 15, 2026',
       status: 'Pending',
       voterStatus: 'Registered Voter (Precinct 0142A)',
@@ -1486,8 +1531,8 @@ document.addEventListener('DOMContentLoaded', function () {
       age: 27,
       gender: 'Male',
       civilStatus: 'Single',
-      address: '24 Commercial Arcade, G.C. Berberabe, Barangay Pallocan West, Batangas City',
-      sitio: 'G.C. Berberabe',
+      address: '24 Commercial Arcade, G.C Berberabe, Barangay Pallocan West, Batangas City',
+      sitio: 'G.C Berberabe',
       registeredDate: 'Oct 8, 2026',
       status: 'Rejected',
       voterStatus: 'Not Registered / Transferee',
@@ -1509,6 +1554,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const storedRes = localStorage.getItem('brgy360_resident_applications');
     if (storedRes) {
       residentApplications = JSON.parse(storedRes);
+      if (Array.isArray(residentApplications)) {
+        residentApplications.forEach((app) => {
+          if (!app) return;
+          app.sitio = normalizeSitioName(app.sitio);
+          if (typeof app.address === 'string') {
+            app.address = app.address
+              .replace(/Purok\s*2\s*Embankment/gi, 'Sitio Ibaba')
+              .replace(/G\.C\.\s*Berberabe/gi, 'G.C Berberabe');
+          }
+        });
+      }
     } else {
       residentApplications = [...DEFAULT_RESIDENT_APPLICATIONS];
       localStorage.setItem('brgy360_resident_applications', JSON.stringify(residentApplications));
