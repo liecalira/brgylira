@@ -2462,13 +2462,15 @@
 }
 
 .form-input.input-error,
-.form-select.input-error {
+.form-select.input-error,
+.form-textarea.input-error {
   border-color: #ef4444 !important;
   background-color: #fef2f2 !important;
 }
 
 .form-input.input-error:focus,
-.form-select.input-error:focus {
+.form-select.input-error:focus,
+.form-textarea.input-error:focus {
   border-color: #dc2626 !important;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18) !important;
 }

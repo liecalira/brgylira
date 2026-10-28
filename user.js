@@ -1768,21 +1768,47 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCancelDocModal) btnCancelDocModal.addEventListener('click', () => closeModal(docRequestModal));
 
   if (docApplicationForm) {
+    const specificInput = document.getElementById('modalDocPurposeSpecific');
+    const specificErr = document.getElementById('modalDocPurposeSpecificError');
+
+    if (specificInput) {
+      specificInput.addEventListener('input', function () {
+        if (this.value.trim().length >= 3) {
+          this.classList.remove('input-error');
+          if (specificErr) {
+            specificErr.textContent = '';
+            specificErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
     docApplicationForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const docType = modalDocType ? modalDocType.value : 'Barangay Clearance';
       const cat = document.getElementById('modalDocPurposeCategory')?.value || 'General';
-      const specific = document.getElementById('modalDocPurposeSpecific')?.value || '';
-      const claimMethod = 'Physical Pickup at Barangay Hall';
+      const specific = (specificInput?.value || '').trim();
 
-      // Generate Reference Code
+      if (!specific || specific.length < 3) {
+        if (specificInput) {
+          specificInput.classList.add('input-error');
+          specificInput.focus();
+        }
+        if (specificErr) {
+          specificErr.textContent = 'Please enter specific purpose details (at least 3 characters).';
+          specificErr.style.display = 'block';
+        }
+        return;
+      }
+
+      const claimMethod = 'Physical Pickup at Barangay Hall';
       const refCode = 'BRGY-' + Math.floor(100000 + Math.random() * 900000);
       const today = new Date().toISOString().split('T')[0];
 
       const newRequest = {
         ref: refCode,
         docType: docType,
-        purpose: cat + (specific ? ` (${specific})` : ''),
+        purpose: cat + ` (${specific})`,
         dateFiled: today,
         claimMethod: claimMethod,
         claimTarget: 'Estimated within 1–2 business days',
@@ -1875,20 +1901,130 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCancelConcernModal) btnCancelConcernModal.addEventListener('click', () => closeModal(concernModal));
 
   if (concernReportForm) {
+    const concernTitleInput = document.getElementById('modalConcernTitle');
+    const concernCategoryInput = document.getElementById('modalConcernCategory');
+    const concernDateInput = document.getElementById('modalConcernDate');
+    const concernSitioInput = document.getElementById('modalConcernSitio');
+    const concernLocationInput = document.getElementById('modalConcernLocation');
+    const concernDescInput = document.getElementById('modalConcernDesc');
+
+    const concernTitleErr = document.getElementById('modalConcernTitleError');
+    const concernCategoryErr = document.getElementById('modalConcernCategoryError');
+    const concernDateErr = document.getElementById('modalConcernDateError');
+    const concernSitioErr = document.getElementById('modalConcernSitioError');
+    const concernLocationErr = document.getElementById('modalConcernLocationError');
+    const concernDescErr = document.getElementById('modalConcernDescError');
+
+    // Real-time clearing
+    [
+      [concernTitleInput, concernTitleErr, 3],
+      [concernLocationInput, concernLocationErr, 3],
+      [concernDescInput, concernDescErr, 10]
+    ].forEach(item => {
+      const el = item[0];
+      const err = item[1];
+      const min = item[2];
+      if (el) {
+        el.addEventListener('input', function () {
+          if (this.value.trim().length >= min) {
+            this.classList.remove('input-error');
+            if (err) { err.textContent = ''; err.style.display = 'none'; }
+          }
+        });
+      }
+    });
+
+    [
+      [concernCategoryInput, concernCategoryErr],
+      [concernDateInput, concernDateErr],
+      [concernSitioInput, concernSitioErr]
+    ].forEach(item => {
+      const el = item[0];
+      const err = item[1];
+      if (el) {
+        el.addEventListener('change', function () {
+          if (this.value) {
+            this.classList.remove('input-error');
+            if (err) { err.textContent = ''; err.style.display = 'none'; }
+          }
+        });
+      }
+    });
+
     concernReportForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const title = (document.getElementById('modalConcernTitle')?.value || '').trim();
-      const category = normalizeConcernCategory(document.getElementById('modalConcernCategory')?.value || 'Infrastructure');
+      let isValid = true;
+      let firstInvalid = null;
+
+      function markInvalid(inputEl, errorEl, message) {
+        if (inputEl) inputEl.classList.add('input-error');
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.style.display = 'block';
+        }
+        if (!firstInvalid && inputEl) firstInvalid = inputEl;
+        isValid = false;
+      }
+
+      function markValid(inputEl, errorEl) {
+        if (inputEl) inputEl.classList.remove('input-error');
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.style.display = 'none';
+        }
+      }
+
+      const title = (concernTitleInput?.value || '').trim();
+      const category = normalizeConcernCategory(concernCategoryInput?.value || '');
       const checkedRadio = document.querySelector('#concernUrgencyCards input[name="concernUrgencyRadio"]:checked');
       const urgency = normalizeConcernUrgency(checkedRadio?.value || document.getElementById('modalConcernUrgency')?.value || 'Standard');
-      const dateFiled = document.getElementById('modalConcernDate')?.value || new Date().toISOString().split('T')[0];
-      const sitio = normalizeSitioName(document.getElementById('modalConcernSitio')?.value || currentUser.sitio || 'Sitio Ibaba');
-      const landmark = (document.getElementById('modalConcernLocation')?.value || '').trim();
+      const dateFiled = concernDateInput?.value || '';
+      const sitio = normalizeSitioName(concernSitioInput?.value || '');
+      const landmark = (concernLocationInput?.value || '').trim();
       const location = landmark ? `${sitio} — ${landmark}` : sitio;
-      const desc = (document.getElementById('modalConcernDesc')?.value || '').trim();
+      const desc = (concernDescInput?.value || '').trim();
 
-      if (!title || !desc) {
-        showToast('Missing Fields', 'Please enter both a concern title and detailed description.', true);
+      if (!title || title.length < 3) {
+        markInvalid(concernTitleInput, concernTitleErr, 'Please enter a concern title (at least 3 characters).');
+      } else {
+        markValid(concernTitleInput, concernTitleErr);
+      }
+
+      if (!concernCategoryInput?.value) {
+        markInvalid(concernCategoryInput, concernCategoryErr, 'Please select an incident category.');
+      } else {
+        markValid(concernCategoryInput, concernCategoryErr);
+      }
+
+      if (!dateFiled) {
+        markInvalid(concernDateInput, concernDateErr, 'Please select the date of occurrence.');
+      } else {
+        markValid(concernDateInput, concernDateErr);
+      }
+
+      if (!sitio) {
+        markInvalid(concernSitioInput, concernSitioErr, 'Please select the Sitio or Purok.');
+      } else {
+        markValid(concernSitioInput, concernSitioErr);
+      }
+
+      if (!landmark || landmark.length < 3) {
+        markInvalid(concernLocationInput, concernLocationErr, 'Please enter exact landmark or location (at least 3 characters).');
+      } else {
+        markValid(concernLocationInput, concernLocationErr);
+      }
+
+      if (!desc || desc.length < 10) {
+        markInvalid(concernDescInput, concernDescErr, 'Please provide a detailed description (at least 10 characters).');
+      } else {
+        markValid(concernDescInput, concernDescErr);
+      }
+
+      if (!isValid) {
+        if (firstInvalid) {
+          firstInvalid.focus();
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 
@@ -2001,14 +2137,136 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCancelPropModal) btnCancelPropModal.addEventListener('click', () => closeModal(proposalModal));
 
   if (proposalSubmitForm) {
+    const propTitleInput = document.getElementById('modalPropTitle');
+    const propCatInput = document.getElementById('modalPropCategory');
+    const propLocInput = document.getElementById('modalPropLocation');
+    const propBudgetInput = document.getElementById('modalPropBudget');
+    const propRationaleInput = document.getElementById('modalPropRationale');
+
+    const propTitleErr = document.getElementById('modalPropTitleError');
+    const propCatErr = document.getElementById('modalPropCategoryError');
+    const propLocErr = document.getElementById('modalPropLocationError');
+    const propBudgetErr = document.getElementById('modalPropBudgetError');
+    const propRationaleErr = document.getElementById('modalPropRationaleError');
+
+    // Real-time restriction: Budget (Numeric digits only)
+    if (propBudgetInput) {
+      propBudgetInput.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/\D/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+          if (propBudgetErr) {
+            propBudgetErr.textContent = 'Estimated budget must contain numeric digits only. Letters and special characters are not allowed.';
+            propBudgetErr.style.display = 'block';
+          }
+          this.classList.add('input-error');
+          return;
+        }
+        if (Number(sanitized) > 0) {
+          this.classList.remove('input-error');
+          if (propBudgetErr) {
+            propBudgetErr.textContent = '';
+            propBudgetErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Real-time clearing
+    if (propTitleInput) {
+      propTitleInput.addEventListener('input', function () {
+        if (this.value.trim().length >= 3) {
+          this.classList.remove('input-error');
+          if (propTitleErr) { propTitleErr.textContent = ''; propTitleErr.style.display = 'none'; }
+        }
+      });
+    }
+    if (propRationaleInput) {
+      propRationaleInput.addEventListener('input', function () {
+        if (this.value.trim().length >= 10) {
+          this.classList.remove('input-error');
+          if (propRationaleErr) { propRationaleErr.textContent = ''; propRationaleErr.style.display = 'none'; }
+        }
+      });
+    }
+    if (propLocInput) {
+      propLocInput.addEventListener('change', function () {
+        if (this.value) {
+          this.classList.remove('input-error');
+          if (propLocErr) { propLocErr.textContent = ''; propLocErr.style.display = 'none'; }
+        }
+      });
+    }
+
     proposalSubmitForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const title = document.getElementById('modalPropTitle')?.value || '';
-      const category = document.getElementById('modalPropCategory')?.value || 'Infrastructure';
-      const location = document.getElementById('modalPropLocation')?.value || '';
-      const budget = parseFloat(document.getElementById('modalPropBudget')?.value || 0);
-      const timeline = document.getElementById('modalPropTimeline')?.value || '';
-      const rationale = document.getElementById('modalPropRationale')?.value || '';
+      let isValid = true;
+      let firstInvalid = null;
+
+      function markInvalid(inputEl, errorEl, message) {
+        if (inputEl) inputEl.classList.add('input-error');
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.style.display = 'block';
+        }
+        if (!firstInvalid && inputEl) firstInvalid = inputEl;
+        isValid = false;
+      }
+
+      function markValid(inputEl, errorEl) {
+        if (inputEl) inputEl.classList.remove('input-error');
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.style.display = 'none';
+        }
+      }
+
+      const title = (propTitleInput?.value || '').trim();
+      const category = propCatInput?.value || '';
+      const location = propLocInput?.value || '';
+      const rawBudget = (propBudgetInput?.value || '').trim();
+      const budget = parseFloat(rawBudget || 0);
+      const timeline = (document.getElementById('modalPropTimeline')?.value || '').trim();
+      const rationale = (propRationaleInput?.value || '').trim();
+
+      if (!title || title.length < 3) {
+        markInvalid(propTitleInput, propTitleErr, 'Please enter a project title (at least 3 characters).');
+      } else {
+        markValid(propTitleInput, propTitleErr);
+      }
+
+      if (!category) {
+        markInvalid(propCatInput, propCatErr, 'Please select a sector category.');
+      } else {
+        markValid(propCatInput, propCatErr);
+      }
+
+      if (!location) {
+        markInvalid(propLocInput, propLocErr, 'Please select a target location or sitio.');
+      } else {
+        markValid(propLocInput, propLocErr);
+      }
+
+      if (!rawBudget || !/^\d+$/.test(rawBudget) || budget <= 0) {
+        markInvalid(propBudgetInput, propBudgetErr, 'Estimated budget must contain numeric digits only and be greater than ₱0.');
+      } else {
+        markValid(propBudgetInput, propBudgetErr);
+      }
+
+      if (!rationale || rationale.length < 10) {
+        markInvalid(propRationaleInput, propRationaleErr, 'Please explain the rationale and community impact (at least 10 characters).');
+      } else {
+        markValid(propRationaleInput, propRationaleErr);
+      }
+
+      if (!isValid) {
+        if (firstInvalid) {
+          firstInvalid.focus();
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
 
       const propRef = 'PROP-' + Math.floor(1000 + Math.random() * 9000);
       const today = new Date().toISOString().split('T')[0];
@@ -2302,18 +2560,214 @@ document.addEventListener('DOMContentLoaded', function () {
   // ==========================================================
 
   // A. Contact info form
+  // A. Contact info form
   if (updateProfileForm) {
+    const profileMobileInput = document.getElementById('profileMobile');
+    const profileEmailInput = document.getElementById('profileEmail');
+    const profileAgeInput = document.getElementById('profileAge');
+    const profileAddressInput = document.getElementById('profileAddress');
+    const profileSitioInput = document.getElementById('profileSitio');
+
+    const profileMobileErr = document.getElementById('profileMobileError');
+    const profileEmailErr = document.getElementById('profileEmailError');
+    const profileAgeErr = document.getElementById('profileAgeError');
+    const profileAddressErr = document.getElementById('profileAddressError');
+    const profileSitioErr = document.getElementById('profileSitioError');
+
+    // Populate initial age if present in currentUser
+    if (profileAgeInput && currentUser) {
+      if (currentUser.age) {
+        profileAgeInput.value = currentUser.age;
+      } else if (currentUser.dob) {
+        const birth = new Date(currentUser.dob);
+        const now = new Date();
+        let a = now.getFullYear() - birth.getFullYear();
+        profileAgeInput.value = (a > 0 && a < 120) ? a : '28';
+      }
+    }
+
+    // Real-time restriction: Contact Number (Numeric digits only)
+    if (profileMobileInput) {
+      profileMobileInput.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/\D/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+          if (profileMobileErr) {
+            profileMobileErr.textContent = 'Contact number must contain numeric digits only. Letters and special characters are not allowed.';
+            profileMobileErr.style.display = 'block';
+          }
+          this.classList.add('input-error');
+          return;
+        }
+        if (sanitized.length >= 7 && sanitized.length <= 11) {
+          this.classList.remove('input-error');
+          if (profileMobileErr) {
+            profileMobileErr.textContent = '';
+            profileMobileErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Real-time restriction: Age (Numeric digits only)
+    if (profileAgeInput) {
+      profileAgeInput.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/\D/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+          if (profileAgeErr) {
+            profileAgeErr.textContent = 'Age must contain numeric digits only. Letters and special characters are not allowed.';
+            profileAgeErr.style.display = 'block';
+          }
+          this.classList.add('input-error');
+          return;
+        }
+        const num = parseInt(sanitized, 10);
+        if (!isNaN(num) && num >= 1 && num <= 120) {
+          this.classList.remove('input-error');
+          if (profileAgeErr) {
+            profileAgeErr.textContent = '';
+            profileAgeErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Real-time validation: Email Address
+    if (profileEmailInput) {
+      profileEmailInput.addEventListener('input', function () {
+        const val = this.value.trim();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (emailRegex.test(val)) {
+          this.classList.remove('input-error');
+          if (profileEmailErr) {
+            profileEmailErr.textContent = '';
+            profileEmailErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Real-time clear on address & sitio
+    if (profileAddressInput) {
+      profileAddressInput.addEventListener('input', function () {
+        if (this.value.trim().length >= 5) {
+          this.classList.remove('input-error');
+          if (profileAddressErr) {
+            profileAddressErr.textContent = '';
+            profileAddressErr.style.display = 'none';
+          }
+        }
+      });
+    }
+    if (profileSitioInput) {
+      profileSitioInput.addEventListener('change', function () {
+        if (this.value) {
+          this.classList.remove('input-error');
+          if (profileSitioErr) {
+            profileSitioErr.textContent = '';
+            profileSitioErr.style.display = 'none';
+          }
+        }
+      });
+    }
+
     updateProfileForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const mobile = document.getElementById('profileMobile')?.value.trim();
-      const email = document.getElementById('profileEmail')?.value.trim();
-      const address = document.getElementById('profileAddress')?.value.trim();
-      const sitio = document.getElementById('profileSitio')?.value;
+      let isValid = true;
+      let firstInvalidInput = null;
 
-      currentUser.mobile = mobile || currentUser.mobile;
-      currentUser.email = email || currentUser.email;
-      currentUser.address = address || currentUser.address;
-      currentUser.sitio = sitio || currentUser.sitio;
+      function markProfileInvalid(inputEl, errorEl, message) {
+        if (inputEl) inputEl.classList.add('input-error');
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.style.display = 'block';
+        }
+        if (!firstInvalidInput && inputEl) {
+          firstInvalidInput = inputEl;
+        }
+        isValid = false;
+      }
+
+      function clearProfileValid(inputEl, errorEl) {
+        if (inputEl) inputEl.classList.remove('input-error');
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.style.display = 'none';
+        }
+      }
+
+      // 1. Mobile Number: numeric digits only, 7-11 digits
+      const mobileVal = profileMobileInput ? profileMobileInput.value.trim() : '';
+      if (!mobileVal) {
+        markProfileInvalid(profileMobileInput, profileMobileErr, 'Contact number is required.');
+      } else if (!/^\d+$/.test(mobileVal)) {
+        markProfileInvalid(profileMobileInput, profileMobileErr, 'Contact number must contain numeric digits only. Letters and special characters are not allowed.');
+      } else if (mobileVal.length < 7 || mobileVal.length > 11) {
+        markProfileInvalid(profileMobileInput, profileMobileErr, 'Contact number must be between 7 and 11 numeric digits (e.g. 09171234567).');
+      } else {
+        clearProfileValid(profileMobileInput, profileMobileErr);
+      }
+
+      // 2. Email Address: valid format
+      const emailVal = profileEmailInput ? profileEmailInput.value.trim() : '';
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailVal) {
+        markProfileInvalid(profileEmailInput, profileEmailErr, 'Email address is required.');
+      } else if (!emailRegex.test(emailVal)) {
+        markProfileInvalid(profileEmailInput, profileEmailErr, 'Please enter a valid email address (e.g. resident@example.com).');
+      } else {
+        clearProfileValid(profileEmailInput, profileEmailErr);
+      }
+
+      // 3. Age: numeric digits only, 1-120
+      const ageVal = profileAgeInput ? profileAgeInput.value.trim() : '';
+      if (!ageVal) {
+        markProfileInvalid(profileAgeInput, profileAgeErr, 'Age is required.');
+      } else if (!/^\d+$/.test(ageVal)) {
+        markProfileInvalid(profileAgeInput, profileAgeErr, 'Age must contain numeric digits only. Letters and special characters are not allowed.');
+      } else {
+        const aNum = parseInt(ageVal, 10);
+        if (isNaN(aNum) || aNum < 1 || aNum > 120) {
+          markProfileInvalid(profileAgeInput, profileAgeErr, 'Please enter a valid age between 1 and 120.');
+        } else {
+          clearProfileValid(profileAgeInput, profileAgeErr);
+        }
+      }
+
+      // 4. Address: min 5 chars
+      const addressVal = profileAddressInput ? profileAddressInput.value.trim() : '';
+      if (!addressVal) {
+        markProfileInvalid(profileAddressInput, profileAddressErr, 'Residential address is required.');
+      } else if (addressVal.length < 5) {
+        markProfileInvalid(profileAddressInput, profileAddressErr, 'Address must be at least 5 characters long.');
+      } else {
+        clearProfileValid(profileAddressInput, profileAddressErr);
+      }
+
+      // 5. Sitio / Purok
+      const sitioVal = profileSitioInput ? profileSitioInput.value : '';
+      if (!sitioVal) {
+        markProfileInvalid(profileSitioInput, profileSitioErr, 'Please select your Sitio or Purok.');
+      } else {
+        clearProfileValid(profileSitioInput, profileSitioErr);
+      }
+
+      if (!isValid) {
+        if (firstInvalidInput) {
+          firstInvalidInput.focus();
+          firstInvalidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      currentUser.mobile = mobileVal;
+      currentUser.email = emailVal;
+      currentUser.age = parseInt(ageVal, 10);
+      currentUser.address = addressVal;
+      currentUser.sitio = sitioVal;
 
       saveData('brgy360_user', currentUser);
       syncUserDisplays();

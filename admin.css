@@ -5386,151 +5386,88 @@ body.print-modal-open {
   border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-/* Status Filter Pills (Toggle Buttons) */
-.res-status-filter-pills {
-  display: inline-flex;
-  align-items: center;
-  background: #f1f5f9;
-  padding: 4px;
-  border-radius: 9999px;
-  gap: 4px;
-}
-
-.res-filter-pill {
-  border: none;
-  background: transparent;
-  color: #475569;
-  font-size: 12.5px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.res-filter-pill:hover {
-  color: #0f172a;
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.res-filter-pill.active {
-  background: #0f172a;
-  color: #ffffff;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
-}
-
-.pill-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.pill-dot-amber { background-color: #d97706; }
-.pill-dot-green { background-color: #16a34a; }
-.pill-dot-red { background-color: #dc2626; }
-
-.res-filter-pill.active .pill-dot-amber { background-color: #fde68a; }
-.res-filter-pill.active .pill-dot-green { background-color: #86efac; }
-.res-filter-pill.active .pill-dot-red { background-color: #fca5a5; }
-
-.res-pill-count {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.08);
-  color: inherit;
-}
-
-.res-filter-pill.active .res-pill-count {
-  background: rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-}
-
-/* Search Box & Sitio Filter */
-.res-search-wrap {
-  display: flex;
-  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  flex: 1;
-  justify-content: flex-end;
 }
 
-.res-search-input-box {
+/* Left Search Box in Resident Verification */
+.res-table-search-box {
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 200px;
+  flex: 1;
+  min-width: 260px;
 }
 
-.res-search-icon {
+.res-table-search-box .res-search-icon {
   position: absolute;
   left: 12px;
   color: #94a3b8;
   pointer-events: none;
 }
 
-.res-search-input {
+.res-table-search-box .table-search-input {
   width: 100%;
-  padding: 8px 32px 8px 34px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #334155;
-  background: #f8fafc;
-  outline: none;
-  font-family: inherit;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  padding-left: 36px;
+  padding-right: 32px;
 }
 
-.res-search-input:focus {
-  border-color: #0f172a;
-  background: #ffffff;
-  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
-}
-
-.res-search-clear {
+.res-table-search-box .res-search-clear {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   color: #94a3b8;
   cursor: pointer;
   font-size: 16px;
   line-height: 1;
-  padding: 2px;
+  padding: 4px;
 }
-.res-search-clear:hover { color: #334155; }
+
+.res-table-search-box .res-search-clear:hover {
+  color: #334155;
+}
+
+/* Right Status Filter Buttons (Square & Consistent with Other Desks) */
+.res-status-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.res-filter-pill {
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.res-filter-pill:hover {
+  background: #e2e8f0;
+  color: var(--text-main);
+}
+
+.res-filter-pill.active {
+  background: var(--dark-navy, #0a2540) !important;
+  color: #ffffff !important;
+  border-color: var(--dark-navy, #0a2540) !important;
+  box-shadow: 0 1px 4px rgba(10, 37, 64, 0.2);
+}
 
 .res-select-wrap {
   min-width: 180px;
-}
-
-.res-sitio-select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #334155;
-  background: #f8fafc;
-  outline: none;
-  font-family: inherit;
-  cursor: pointer;
-}
-.res-sitio-select:focus {
-  border-color: #0f172a;
-  background: #ffffff;
 }
 
 .res-count-indicator {
@@ -6596,4 +6533,30 @@ body.print-modal-open {
   .res-search-input-box, .res-select-wrap {
     min-width: 100%;
   }
+}
+
+/* Form Validation & Error Feedback Styles */
+.form-input.is-invalid,
+.form-select.is-invalid,
+.form-textarea.is-invalid,
+.form-input.input-error,
+.form-select.input-error,
+.form-textarea.input-error {
+  border-color: #ef4444 !important;
+  background-color: #fffbfa !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16) !important;
+}
+
+.field-error-text {
+  display: none;
+  font-size: 11.5px;
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.field-error-text.show,
+.field-error-text.is-visible {
+  display: block;
 }

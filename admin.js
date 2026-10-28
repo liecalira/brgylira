@@ -3733,23 +3733,126 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCloseNewIncModal) btnCloseNewIncModal.addEventListener('click', closeNewIncidentModal);
   if (btnCancelNewInc) btnCancelNewInc.addEventListener('click', closeNewIncidentModal);
 
+  // Real-time input restrictions and error clearing for Walk-in Incident form
+  const incTitleInput = document.getElementById('newIncTitle');
+  const incReporterInput = document.getElementById('newIncReporter');
+  const incContactInput = document.getElementById('newIncContact');
+  const incDescInput = document.getElementById('newIncDesc');
+
+  if (incReporterInput) {
+    incReporterInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newIncReporterError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (incContactInput) {
+    incContactInput.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newIncContactError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (incTitleInput) {
+    incTitleInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newIncTitleError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (incDescInput) {
+    incDescInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newIncDescError');
+      if (err) err.textContent = '';
+    });
+  }
+
   if (btnSubmitNewIncident) {
     btnSubmitNewIncident.addEventListener('click', function () {
-      const title = (document.getElementById('newIncTitle')?.value || '').trim();
-      const cat = normalizeConcernCategory(document.getElementById('newIncCategory')?.value || 'Infrastructure');
-      const urgency = normalizeConcernUrgency(document.getElementById('newIncUrgency')?.value || 'Standard');
-      const loc = normalizeSitioName(document.getElementById('newIncLocation')?.value || 'Sitio Ibaba');
-      const repRaw = (document.getElementById('newIncReporter')?.value || '').trim();
-      const desc = (document.getElementById('newIncDesc')?.value || '').trim();
+      const titleEl = document.getElementById('newIncTitle');
+      const catEl = document.getElementById('newIncCategory');
+      const urgencyEl = document.getElementById('newIncUrgency');
+      const locEl = document.getElementById('newIncLocation');
+      const repEl = document.getElementById('newIncReporter');
+      const contactEl = document.getElementById('newIncContact');
+      const descEl = document.getElementById('newIncDesc');
 
-      if (!title || !repRaw || !desc) {
-        showAdminToast('Missing Required Fields', 'Please enter the concern title, resident name, and description.', 'danger');
-        return;
+      const title = (titleEl?.value || '').trim();
+      const cat = normalizeConcernCategory(catEl?.value || 'Infrastructure');
+      const urgency = normalizeConcernUrgency(urgencyEl?.value || 'Standard');
+      const loc = normalizeSitioName(locEl?.value || 'Sitio Ibaba');
+      const reporterName = (repEl?.value || '').trim();
+      const reporterContact = (contactEl?.value || '').trim();
+      const desc = (descEl?.value || '').trim();
+
+      // Reset prior errors
+      const titleErr = document.getElementById('newIncTitleError');
+      const repErr = document.getElementById('newIncReporterError');
+      const contactErr = document.getElementById('newIncContactError');
+      const descErr = document.getElementById('newIncDescError');
+
+      [titleErr, repErr, contactErr, descErr].forEach(e => { if (e) e.textContent = ''; });
+      [titleEl, repEl, contactEl, descEl].forEach(e => { if (e) e.classList.remove('is-invalid', 'input-error'); });
+
+      let isValid = true;
+      let firstInvalid = null;
+
+      if (!title || title.length < 3) {
+        if (titleErr) titleErr.textContent = 'Please enter a concern title (at least 3 characters).';
+        if (titleEl) titleEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = titleEl;
       }
 
-      const repParts = repRaw.split(/[•·/|-]/).map(s => s.trim()).filter(Boolean);
-      const reporterName = repParts[0] || repRaw;
-      const reporterContact = repParts[1] || '';
+      const nameRegex = /^[a-zA-Z\s]+$/;
+      if (!reporterName) {
+        if (repErr) repErr.textContent = 'Resident full name is required.';
+        if (repEl) repEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = repEl;
+      } else if (!nameRegex.test(reporterName)) {
+        if (repErr) repErr.textContent = 'Resident name must contain letters and spaces only. No numbers or special characters.';
+        if (repEl) repEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = repEl;
+      }
+
+      const digitsRegex = /^\d+$/;
+      if (!reporterContact) {
+        if (contactErr) contactErr.textContent = 'Contact number is required.';
+        if (contactEl) contactEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = contactEl;
+      } else if (!digitsRegex.test(reporterContact)) {
+        if (contactErr) contactErr.textContent = 'Contact number must contain numeric digits only. No letters or special characters.';
+        if (contactEl) contactEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = contactEl;
+      } else if (reporterContact.length < 7 || reporterContact.length > 11) {
+        if (contactErr) contactErr.textContent = 'Contact number must be between 7 and 11 digits.';
+        if (contactEl) contactEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = contactEl;
+      }
+
+      if (!desc || desc.length < 10) {
+        if (descErr) descErr.textContent = 'Please provide a detailed description (at least 10 characters).';
+        if (descEl) descEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = descEl;
+      }
+
+      if (!isValid) {
+        if (firstInvalid) firstInvalid.focus();
+        showAdminToast('Validation Error', 'Please correct the highlighted fields with valid information.', 'danger');
+        return;
+      }
 
       const newId = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
       const newTicket = normalizeAdminConcern({
@@ -4227,30 +4330,119 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Real-time input restrictions and error clearing for Community Proposal modal
+  const propTitleInput = document.getElementById('newPropTitle');
+  const propProponentInput = document.getElementById('newPropProponent');
+  const propBudgetInput = document.getElementById('newPropBudget');
+  const propDescInput = document.getElementById('newPropDescription');
+
+  if (propProponentInput) {
+    propProponentInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newPropProponentError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (propBudgetInput) {
+    propBudgetInput.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newPropBudgetError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (propTitleInput) {
+    propTitleInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newPropTitleError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (propDescInput) {
+    propDescInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('newPropDescriptionError');
+      if (err) err.textContent = '';
+    });
+  }
+
   if (btnSaveSubmitProp) {
     btnSaveSubmitProp.addEventListener('click', () => {
-      const title = document.getElementById('newPropTitle')?.value.trim();
+      const titleEl = document.getElementById('newPropTitle');
+      const propEl = document.getElementById('newPropProponent');
+      const budgetEl = document.getElementById('newPropBudget');
+      const descEl = document.getElementById('newPropDescription');
+      const locEl = document.getElementById('newPropLocation');
+
+      const title = (titleEl?.value || '').trim();
       const category = document.getElementById('newPropCategory')?.value || 'Infrastructure';
       const year = document.getElementById('newPropYear')?.value.trim() || '2026';
-      const location = document.getElementById('newPropLocation')?.value.trim();
-      const proponent = document.getElementById('newPropProponent')?.value.trim();
-      const budget = document.getElementById('newPropBudget')?.value.trim();
+      const location = (locEl?.value || '').trim();
+      const proponent = (propEl?.value || '').trim();
+      const budget = (budgetEl?.value || '').trim();
       const targetVotes = parseInt(document.getElementById('newPropTargetVotes')?.value, 10) || 200;
       const initialVotes = parseInt(document.getElementById('newPropInitialVotes')?.value, 10) || 1;
       const status = document.getElementById('newPropStatus')?.value || 'Pending';
-      const description = document.getElementById('newPropDescription')?.value.trim();
+      const description = (descEl?.value || '').trim();
 
-      if (!title || !location || !proponent || !budget || !description) {
-        showAdminToast('Incomplete Form', 'Please fill in all required fields (*) to record the proposal.', 'error');
+      // Reset prior errors
+      const titleErr = document.getElementById('newPropTitleError');
+      const propErr = document.getElementById('newPropProponentError');
+      const budgetErr = document.getElementById('newPropBudgetError');
+      const descErr = document.getElementById('newPropDescriptionError');
+
+      [titleErr, propErr, budgetErr, descErr].forEach(e => { if (e) e.textContent = ''; });
+      [titleEl, propEl, budgetEl, descEl].forEach(e => { if (e) e.classList.remove('is-invalid', 'input-error'); });
+
+      let isValid = true;
+      let firstInvalid = null;
+
+      if (!title || title.length < 3) {
+        if (titleErr) titleErr.textContent = 'Proposal title must be at least 3 characters.';
+        if (titleEl) titleEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = titleEl;
+      }
+
+      const nameRegex = /^[a-zA-Z\s]+$/;
+      if (!proponent) {
+        if (propErr) propErr.textContent = 'Proponent / resident name is required.';
+        if (propEl) propEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = propEl;
+      } else if (!nameRegex.test(proponent)) {
+        if (propErr) propErr.textContent = 'Proponent name must contain letters and spaces only. No numbers or special characters.';
+        if (propEl) propEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = propEl;
+      }
+
+      const budgetNum = parseFloat(budget.replace(/[^\d.]/g, ''));
+      if (!budget || isNaN(budgetNum) || budgetNum <= 0) {
+        if (budgetErr) budgetErr.textContent = 'Estimated budget must be a positive numeric amount greater than 0.';
+        if (budgetEl) budgetEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = budgetEl;
+      }
+
+      if (!description || description.length < 10) {
+        if (descErr) descErr.textContent = 'Please provide a descriptive scope (at least 10 characters).';
+        if (descEl) descEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = descEl;
+      }
+
+      if (!isValid) {
+        if (firstInvalid) firstInvalid.focus();
+        showAdminToast('Validation Error', 'Please correct the highlighted proposal fields.', 'danger');
         return;
       }
 
-      // Format budget if needed
-      let formattedBudget = budget;
-      if (!formattedBudget.startsWith('₱')) {
-        formattedBudget = '₱' + formattedBudget;
-      }
-
+      const formattedBudget = `₱${budgetNum.toLocaleString()}`;
       const nextNum = citizenProposals.length + 1;
       const newId = `PROP-2026-${String(nextNum).padStart(3, '0')}`;
 
@@ -4657,16 +4849,65 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Real-time input clearing for Announcement Form
+  const annTitleInput = document.getElementById('annTitle');
+  const annContentInput = document.getElementById('annContent');
+
+  if (annTitleInput) {
+    annTitleInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('annTitleError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (annContentInput) {
+    annContentInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('annContentError');
+      if (err) err.textContent = '';
+    });
+  }
+
   if (btnSubmitNewAnn) {
     btnSubmitNewAnn.addEventListener('click', () => {
-      const title = document.getElementById('annTitle')?.value.trim();
-      const cat = document.getElementById('annCategory')?.value;
-      const aud = document.getElementById('annAudience')?.value;
-      const content = document.getElementById('annContent')?.value.trim();
+      const titleEl = document.getElementById('annTitle');
+      const catEl = document.getElementById('annCategory');
+      const audEl = document.getElementById('annAudience');
+      const contentEl = document.getElementById('annContent');
+
+      const title = (titleEl?.value || '').trim();
+      const cat = catEl?.value || 'General';
+      const aud = audEl?.value || 'All Residents';
+      const content = (contentEl?.value || '').trim();
       const isCritical = annIsCriticalInput?.value === 'true';
 
-      if (!title || !content) {
-        showAdminToast('Input Required', 'Please enter a title and announcement content.', 'warning');
+      const titleErr = document.getElementById('annTitleError');
+      const contentErr = document.getElementById('annContentError');
+
+      [titleErr, contentErr].forEach(e => { if (e) e.textContent = ''; });
+      [titleEl, contentEl].forEach(e => { if (e) e.classList.remove('is-invalid', 'input-error'); });
+
+      let isValid = true;
+      let firstInvalid = null;
+
+      if (!title || title.length < 3) {
+        if (titleErr) titleErr.textContent = 'Please enter an announcement headline (at least 3 characters).';
+        if (titleEl) titleEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = titleEl;
+      }
+
+      if (!content || content.length < 10) {
+        if (contentErr) contentErr.textContent = 'Please provide detailed announcement content (at least 10 characters).';
+        if (contentEl) contentEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = contentEl;
+      }
+
+      if (!isValid) {
+        if (firstInvalid) firstInvalid.focus();
+        showAdminToast('Validation Error', 'Please complete all required fields.', 'danger');
         return;
       }
 
@@ -4712,17 +4953,87 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnCloseNewProjModal) btnCloseNewProjModal.addEventListener('click', () => modalNewProj?.classList.remove('active'));
   if (btnCancelNewProj) btnCancelNewProj.addEventListener('click', () => modalNewProj?.classList.remove('active'));
 
+  // Real-time restrictions and clearing for Project Form
+  const projBudgetInput = document.getElementById('projBudget');
+  const projTitleInput = document.getElementById('projTitle');
+  const projDescInput = document.getElementById('projDesc');
+
+  if (projBudgetInput) {
+    projBudgetInput.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('projBudgetError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (projTitleInput) {
+    projTitleInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('projTitleError');
+      if (err) err.textContent = '';
+    });
+  }
+
+  if (projDescInput) {
+    projDescInput.addEventListener('input', function () {
+      this.classList.remove('is-invalid', 'input-error');
+      const err = document.getElementById('projDescError');
+      if (err) err.textContent = '';
+    });
+  }
+
   if (btnSubmitNewProj) {
     btnSubmitNewProj.addEventListener('click', () => {
-      const title = document.getElementById('projTitle')?.value.trim();
-      const loc = document.getElementById('projLocation')?.value.trim();
-      const budget = document.getElementById('projBudget')?.value.trim();
-      const status = document.getElementById('projStatus')?.value || 'ongoing';
-      const progress = parseInt(document.getElementById('projProgress')?.value || '10', 10);
-      const desc = document.getElementById('projDesc')?.value.trim() || 'Civic infrastructure improvement';
+      const titleEl = document.getElementById('projTitle');
+      const locEl = document.getElementById('projLocation');
+      const budgetEl = document.getElementById('projBudget');
+      const statusEl = document.getElementById('projStatus');
+      const progressEl = document.getElementById('projProgress');
+      const descEl = document.getElementById('projDesc');
 
-      if (!title || !loc || !budget) {
-        showAdminToast('Input Required', 'Please fill in Project Name, Location, and Budget.', 'warning');
+      const title = (titleEl?.value || '').trim();
+      const loc = (locEl?.value || '').trim();
+      const budget = (budgetEl?.value || '').trim();
+      const status = statusEl?.value || 'ongoing';
+      const progress = parseInt(progressEl?.value || '10', 10);
+      const desc = (descEl?.value || '').trim();
+
+      const titleErr = document.getElementById('projTitleError');
+      const budgetErr = document.getElementById('projBudgetError');
+      const descErr = document.getElementById('projDescError');
+
+      [titleErr, budgetErr, descErr].forEach(e => { if (e) e.textContent = ''; });
+      [titleEl, budgetEl, descEl].forEach(e => { if (e) e.classList.remove('is-invalid', 'input-error'); });
+
+      let isValid = true;
+      let firstInvalid = null;
+
+      if (!title || title.length < 3) {
+        if (titleErr) titleErr.textContent = 'Project title must be at least 3 characters.';
+        if (titleEl) titleEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = titleEl;
+      }
+
+      const budgetNum = parseFloat(budget.replace(/[^\d.]/g, ''));
+      if (!budget || isNaN(budgetNum) || budgetNum <= 0) {
+        if (budgetErr) budgetErr.textContent = 'Budget must be numeric and greater than 0.';
+        if (budgetEl) budgetEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = budgetEl;
+      }
+
+      if (!desc || desc.length < 10) {
+        if (descErr) descErr.textContent = 'Project scope must be at least 10 characters.';
+        if (descEl) descEl.classList.add('is-invalid');
+        isValid = false;
+        if (!firstInvalid) firstInvalid = descEl;
+      }
+
+      if (!isValid) {
+        if (firstInvalid) firstInvalid.focus();
+        showAdminToast('Validation Error', 'Please correct the highlighted project fields.', 'danger');
         return;
       }
 
@@ -4732,7 +5043,7 @@ document.addEventListener('DOMContentLoaded', function () {
         title: title,
         location: loc,
         timeline: '2026-10-15 – 2027-04-30',
-        budget: budget.startsWith('₱') ? budget : '₱' + budget,
+        budget: `₱${budgetNum.toLocaleString()}`,
         progress: progress,
         status: status,
         contractor: desc
@@ -4989,6 +5300,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!modal) return;
     if (form) form.reset();
 
+    // Reset errors
+    ['budgetInputYearError', 'budgetInputDescError', 'budgetInputAmountError'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
+    ['budgetInputYear', 'budgetInputDesc', 'budgetInputAmount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('is-invalid', 'input-error');
+    });
+
     if (title) title.textContent = 'Add Budget Record';
     if (recordIdInput) recordIdInput.value = '';
     if (yearInput) yearInput.value = '2026';
@@ -5016,6 +5337,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!modal) return;
 
+    // Reset errors
+    ['budgetInputYearError', 'budgetInputDescError', 'budgetInputAmountError'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
+    ['budgetInputYear', 'budgetInputDesc', 'budgetInputAmount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('is-invalid', 'input-error');
+    });
+
     if (title) title.textContent = 'Edit Budget Record';
     if (recordIdInput) recordIdInput.value = record.id;
     if (yearInput) yearInput.value = record.year || '2026';
@@ -5034,19 +5365,68 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modal) modal.classList.remove('active');
     const form = document.getElementById('adminBudgetForm');
     if (form) form.reset();
+    ['budgetInputYearError', 'budgetInputDescError', 'budgetInputAmountError'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
+    ['budgetInputYear', 'budgetInputDesc', 'budgetInputAmount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('is-invalid', 'input-error');
+    });
   }
 
   function saveBudgetRecord() {
     const recordId = document.getElementById('budgetRecordId')?.value.trim();
-    const year = document.getElementById('budgetInputYear')?.value.trim();
-    const quarter = document.getElementById('budgetInputQuarter')?.value;
-    const category = document.getElementById('budgetInputCategory')?.value;
-    const description = document.getElementById('budgetInputDesc')?.value.trim();
-    const budget = parseFloat(document.getElementById('budgetInputAmount')?.value) || 0;
-    const actual = parseFloat(document.getElementById('budgetInputActual')?.value) || 0;
+    const yearEl = document.getElementById('budgetInputYear');
+    const quarterEl = document.getElementById('budgetInputQuarter');
+    const catEl = document.getElementById('budgetInputCategory');
+    const descEl = document.getElementById('budgetInputDesc');
+    const amountEl = document.getElementById('budgetInputAmount');
+    const actualEl = document.getElementById('budgetInputActual');
 
-    if (!year || !quarter || !category || !description || budget <= 0) {
-      showAdminToast('Input Required', 'Please complete all required fields and enter a valid budget amount.', 'warning');
+    const year = (yearEl?.value || '').trim();
+    const quarter = quarterEl?.value || 'Q1';
+    const category = catEl?.value || 'Administration';
+    const description = (descEl?.value || '').trim();
+    const budgetRaw = (amountEl?.value || '').trim();
+    const budget = parseFloat(budgetRaw) || 0;
+    const actual = parseFloat(actualEl?.value || '0') || 0;
+
+    const yearErr = document.getElementById('budgetInputYearError');
+    const descErr = document.getElementById('budgetInputDescError');
+    const amountErr = document.getElementById('budgetInputAmountError');
+
+    [yearErr, descErr, amountErr].forEach(e => { if (e) e.textContent = ''; });
+    [yearEl, descEl, amountEl].forEach(e => { if (e) e.classList.remove('is-invalid', 'input-error'); });
+
+    let isValid = true;
+    let firstInvalid = null;
+
+    const yearNum = parseInt(year, 10);
+    if (!year || isNaN(yearNum) || yearNum < 2020 || yearNum > 2035) {
+      if (yearErr) yearErr.textContent = 'Please enter a valid 4-digit fiscal year between 2020 and 2035.';
+      if (yearEl) yearEl.classList.add('is-invalid');
+      isValid = false;
+      if (!firstInvalid) firstInvalid = yearEl;
+    }
+
+    if (!description || description.length < 5) {
+      if (descErr) descErr.textContent = 'Description must be at least 5 characters.';
+      if (descEl) descEl.classList.add('is-invalid');
+      isValid = false;
+      if (!firstInvalid) firstInvalid = descEl;
+    }
+
+    if (!budgetRaw || isNaN(budget) || budget <= 0) {
+      if (amountErr) amountErr.textContent = 'Budget amount must be a positive number greater than 0.';
+      if (amountEl) amountEl.classList.add('is-invalid');
+      isValid = false;
+      if (!firstInvalid) firstInvalid = amountEl;
+    }
+
+    if (!isValid) {
+      if (firstInvalid) firstInvalid.focus();
+      showAdminToast('Validation Error', 'Please correct the highlighted budget fields.', 'danger');
       return;
     }
 
@@ -5242,6 +5622,36 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         saveBudgetRecord();
+      });
+    }
+
+    // Real-time input clearing and restrictions for budget form
+    const bgtAmtInput = document.getElementById('budgetInputAmount');
+    const bgtYearInput = document.getElementById('budgetInputYear');
+    const bgtDescInput = document.getElementById('budgetInputDesc');
+
+    if (bgtAmtInput) {
+      bgtAmtInput.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('budgetInputAmountError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (bgtYearInput) {
+      bgtYearInput.addEventListener('input', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('budgetInputYearError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (bgtDescInput) {
+      bgtDescInput.addEventListener('input', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('budgetInputDescError');
+        if (err) err.textContent = '';
       });
     }
 
@@ -5976,21 +6386,135 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Pre-Registration Submission Handler
   function handlePreRegistrationSubmit() {
-    const fullName = document.getElementById('preRegFullName')?.value.trim();
-    const dob = document.getElementById('preRegDob')?.value;
+    const fullNameInput = document.getElementById('preRegFullName');
+    const dobInput = document.getElementById('preRegDob');
+    const ageInput = document.getElementById('preRegAge');
+    const mobileInput = document.getElementById('preRegMobile');
+    const emailInput = document.getElementById('preRegEmail');
+    const addressInput = document.getElementById('preRegAddress');
+    const sitioInput = document.getElementById('preRegSitio');
+
+    const fullNameErr = document.getElementById('preRegFullNameError');
+    const dobErr = document.getElementById('preRegDobError');
+    const ageErr = document.getElementById('preRegAgeError');
+    const mobileErr = document.getElementById('preRegMobileError');
+    const emailErr = document.getElementById('preRegEmailError');
+    const addressErr = document.getElementById('preRegAddressError');
+    const sitioErr = document.getElementById('preRegSitioError');
+
+    let isValid = true;
+    let firstInvalid = null;
+
+    function markInvalid(inputEl, errorEl, message) {
+      if (inputEl) inputEl.classList.add('is-invalid');
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+      }
+      if (!firstInvalid && inputEl) firstInvalid = inputEl;
+      isValid = false;
+    }
+
+    function markValid(inputEl, errorEl) {
+      if (inputEl) inputEl.classList.remove('is-invalid');
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.style.display = 'none';
+      }
+    }
+
+    const fullName = (fullNameInput?.value || '').trim();
+    const dob = dobInput?.value || '';
+    const ageVal = (ageInput?.value || '').trim();
+    const mobile = (mobileInput?.value || '').trim();
+    const email = (emailInput?.value || '').trim();
+    const address = (addressInput?.value || '').trim();
+    const sitio = sitioInput?.value || '';
     const gender = document.getElementById('preRegGender')?.value || 'Female';
-    const civil = document.getElementById('preRegCivilStatus')?.value;
-    const mobile = document.getElementById('preRegMobile')?.value.trim();
-    const email = document.getElementById('preRegEmail')?.value.trim();
-    const address = document.getElementById('preRegAddress')?.value.trim();
-    const sitio = document.getElementById('preRegSitio')?.value;
-    const voter = document.getElementById('preRegVoter')?.value;
+    const civil = document.getElementById('preRegCivilStatus')?.value || 'Single';
+    const voter = document.getElementById('preRegVoter')?.value || 'Registered Voter (Precinct 0142A)';
     const idType = document.getElementById('preRegIdType')?.value;
-    const idNumber = document.getElementById('preRegIdNumber')?.value.trim();
+    const idNumber = document.getElementById('preRegIdNumber')?.value?.trim() || `4829-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
     const proofType = document.getElementById('preRegProofType')?.value;
 
-    if (!fullName || !dob || !mobile || !email || !address || !sitio || !idNumber) {
-      showAdminToast('Validation Notice', 'Please fill out all required fields with an asterisk (*).', 'danger');
+    // 1. Name: Letters and spaces only. No numbers or special characters.
+    if (!fullName) {
+      markInvalid(fullNameInput, fullNameErr, 'Full legal name is required.');
+    } else if (!/^[a-zA-Z\s]+$/.test(fullName)) {
+      markInvalid(fullNameInput, fullNameErr, 'Name must contain letters and spaces only. Numbers and special characters are not allowed.');
+    } else if (fullName.length < 2) {
+      markInvalid(fullNameInput, fullNameErr, 'Name must be at least 2 characters long.');
+    } else {
+      markValid(fullNameInput, fullNameErr);
+    }
+
+    // 2. Date of Birth
+    if (!dob) {
+      markInvalid(dobInput, dobErr, 'Date of birth is required.');
+    } else {
+      const d = new Date(dob);
+      const today = new Date();
+      if (isNaN(d.getTime()) || d > today || d.getFullYear() < 1900) {
+        markInvalid(dobInput, dobErr, 'Please select a valid past date of birth.');
+      } else {
+        markValid(dobInput, dobErr);
+      }
+    }
+
+    // 3. Age: Numeric digits only. No letters or special characters.
+    if (!ageVal) {
+      markInvalid(ageInput, ageErr, 'Age is required.');
+    } else if (!/^\d+$/.test(ageVal)) {
+      markInvalid(ageInput, ageErr, 'Age must contain numeric digits only. Letters and special characters are not allowed.');
+    } else {
+      const a = parseInt(ageVal, 10);
+      if (isNaN(a) || a < 1 || a > 120) {
+        markInvalid(ageInput, ageErr, 'Please enter a valid age between 1 and 120.');
+      } else {
+        markValid(ageInput, ageErr);
+      }
+    }
+
+    // 4. Contact Number: Numeric digits only. No letters or special characters.
+    if (!mobile) {
+      markInvalid(mobileInput, mobileErr, 'Contact number is required.');
+    } else if (!/^\d+$/.test(mobile)) {
+      markInvalid(mobileInput, mobileErr, 'Contact number must contain numeric digits only. Letters and special characters are not allowed.');
+    } else if (mobile.length < 7 || mobile.length > 11) {
+      markInvalid(mobileInput, mobileErr, 'Contact number must be between 7 and 11 numeric digits (e.g. 09171234567).');
+    } else {
+      markValid(mobileInput, mobileErr);
+    }
+
+    // 5. Email Address: Valid format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email) {
+      markInvalid(emailInput, emailErr, 'Email address is required.');
+    } else if (!emailRegex.test(email)) {
+      markInvalid(emailInput, emailErr, 'Please enter a valid email address (e.g. resident@example.com).');
+    } else {
+      markValid(emailInput, emailErr);
+    }
+
+    // 6. Address
+    if (!address || address.length < 5) {
+      markInvalid(addressInput, addressErr, 'Street address is required (at least 5 characters).');
+    } else {
+      markValid(addressInput, addressErr);
+    }
+
+    // 7. Sitio
+    if (!sitio) {
+      markInvalid(sitioInput, sitioErr, 'Please select Sitio / Purok.');
+    } else {
+      markValid(sitioInput, sitioErr);
+    }
+
+    if (!isValid) {
+      if (firstInvalid) {
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -6006,7 +6530,7 @@ document.addEventListener('DOMContentLoaded', function () {
       email: email,
       mobile: mobile,
       dob: dob,
-      age: 28,
+      age: parseInt(ageVal, 10) || 28,
       gender: gender,
       civilStatus: civil || 'Single',
       address: address,
@@ -6244,6 +6768,90 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnClosePreReg) btnClosePreReg.addEventListener('click', closePreRegModal);
     if (btnCancelPreReg) btnCancelPreReg.addEventListener('click', closePreRegModal);
     if (btnSubmitPreReg) btnSubmitPreReg.addEventListener('click', handlePreRegistrationSubmit);
+
+    // Real-time input restrictions and error clearing for Pre-Registration Intake Form
+    const preRegNameEl = document.getElementById('preRegFullName');
+    const preRegMobileEl = document.getElementById('preRegMobile');
+    const preRegAgeEl = document.getElementById('preRegAge');
+    const preRegDobEl = document.getElementById('preRegDob');
+    const preRegEmailEl = document.getElementById('preRegEmail');
+    const preRegAddrEl = document.getElementById('preRegAddress');
+    const preRegSitioEl = document.getElementById('preRegSitio');
+
+    if (preRegNameEl) {
+      preRegNameEl.addEventListener('input', function () {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegFullNameError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (preRegMobileEl) {
+      preRegMobileEl.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegMobileError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (preRegAgeEl) {
+      preRegAgeEl.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegAgeError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (preRegDobEl) {
+      preRegDobEl.max = new Date().toISOString().split('T')[0];
+      preRegDobEl.addEventListener('change', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegDobError');
+        if (err) err.textContent = '';
+        if (this.value) {
+          const birthDate = new Date(this.value);
+          const today = new Date();
+          let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+          const m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            calculatedAge--;
+          }
+          if (calculatedAge >= 0 && preRegAgeEl) {
+            preRegAgeEl.value = calculatedAge;
+            preRegAgeEl.classList.remove('is-invalid', 'input-error');
+            const aErr = document.getElementById('preRegAgeError');
+            if (aErr) aErr.textContent = '';
+          }
+        }
+      });
+    }
+
+    if (preRegEmailEl) {
+      preRegEmailEl.addEventListener('input', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegEmailError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (preRegAddrEl) {
+      preRegAddrEl.addEventListener('input', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegAddressError');
+        if (err) err.textContent = '';
+      });
+    }
+
+    if (preRegSitioEl) {
+      preRegSitioEl.addEventListener('change', function () {
+        this.classList.remove('is-invalid', 'input-error');
+        const err = document.getElementById('preRegSitioError');
+        if (err) err.textContent = '';
+      });
+    }
 
     // 10. Activation Notice Modal Controls
     const actNoticeModal = document.getElementById('resActivationNoticeModal');

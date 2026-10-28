@@ -1195,54 +1195,48 @@
           </div>
 
           <!-- 3. Primary Card: Resident Verification Data Table -->
-          <div class="admin-card res-verif-main-card">
+          <div class="admin-card table-control-card res-verif-main-card">
             
             <!-- Header & Quick Filters Toolbar -->
-            <div class="res-filter-toolbar">
-              
-              <!-- Left: Status Filter Pills (Toggle Buttons with Active Navy Highlighting) -->
-              <div class="res-status-filter-pills" role="tablist" aria-label="Verification status filter">
-                <button type="button" class="res-filter-pill active" data-res-status="all" id="resPillAll" role="tab" aria-selected="true">
-                  All <span class="res-pill-count" id="resCountAll">8</span>
+            <div class="table-filters-row res-filter-toolbar">
+              <!-- Left: Search Box (by Name/Sitio) -->
+              <div class="table-search-box res-table-search-box">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="res-search-icon" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="resSearchInput" class="table-search-input" placeholder="Search by name or sitio..." aria-label="Search applications by name or sitio">
+                <button type="button" id="btnClearResSearch" class="res-search-clear" style="display: none;" aria-label="Clear search text">&times;</button>
+              </div>
+
+              <!-- Right: Status Filter Pills (Square Buttons Consistent with Other Pages) -->
+              <div class="filter-pills-row res-status-filter-pills" id="resStatusFilterGroup" role="tablist" aria-label="Verification status filter">
+                <button type="button" class="filter-pill res-filter-pill active" data-res-status="all" id="resPillAll" role="tab" aria-selected="true">
+                  All (<span id="resCountAll">8</span>)
                 </button>
-                <button type="button" class="res-filter-pill" data-res-status="pending" id="resPillPending" role="tab" aria-selected="false">
-                  <span class="pill-dot pill-dot-amber"></span> Pending <span class="res-pill-count" id="resCountPending">4</span>
+                <button type="button" class="filter-pill res-filter-pill" data-res-status="pending" id="resPillPending" role="tab" aria-selected="false">
+                  Pending (<span id="resCountPending">4</span>)
                 </button>
-                <button type="button" class="res-filter-pill" data-res-status="verified" id="resPillVerified" role="tab" aria-selected="false">
-                  <span class="pill-dot pill-dot-green"></span> Verified <span class="res-pill-count" id="resCountVerified">3</span>
+                <button type="button" class="filter-pill res-filter-pill" data-res-status="verified" id="resPillVerified" role="tab" aria-selected="false">
+                  Verified (<span id="resCountVerified">3</span>)
                 </button>
-                <button type="button" class="res-filter-pill" data-res-status="rejected" id="resPillRejected" role="tab" aria-selected="false">
-                  <span class="pill-dot pill-dot-red"></span> Rejected <span class="res-pill-count" id="resCountRejected">1</span>
+                <button type="button" class="filter-pill res-filter-pill" data-res-status="rejected" id="resPillRejected" role="tab" aria-selected="false">
+                  Rejected (<span id="resCountRejected">1</span>)
                 </button>
               </div>
 
-              <!-- Right: Search Input (by Name/Sitio), Zone Filter & Total Count -->
-              <div class="res-search-wrap">
-                <div class="res-search-input-box">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="res-search-icon" aria-hidden="true">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                  <input type="text" id="resSearchInput" class="res-search-input" placeholder="Search by name or sitio..." aria-label="Search applications by name or sitio">
-                  <button type="button" id="btnClearResSearch" class="res-search-clear" style="display: none;" aria-label="Clear search text">&times;</button>
-                </div>
-
-                <div class="res-select-wrap">
-                  <select id="resSitioFilter" class="res-sitio-select" aria-label="Filter by Sitio or Purok">
-                    <option value="all">All Sitios &amp; Puroks</option>
-                    <option value="Sitio Ibaba">Sitio Ibaba</option>
-                    <option value="Sitio Santolan">Sitio Santolan</option>
-                    <option value="Sitio Ilaya">Sitio Ilaya</option>
-                   <option value="Sitio Gitna">Sitio Gitna</option>
-                    <option value="Tierra Verde">Tierra Verde</option>
-                    <option value="Potenciana Village">Potenciana Village</option>
-                    <option value="G.C Berberabe">G.C Berberabe</option>
-                  </select>
-                </div>
-
-                <div class="res-count-indicator" id="resTotalCountIndicator">
-                  Showing <strong>8</strong> of <strong>8</strong> applications
-                </div>
+              <!-- Sitio Dropdown Filter (Right side alongside pills) -->
+              <div class="dropdown-filter-wrap res-select-wrap">
+                <select id="resSitioFilter" class="table-filter-select" aria-label="Filter by Sitio or Purok">
+                  <option value="all">All Sitios &amp; Puroks</option>
+                  <option value="Sitio Ibaba">Sitio Ibaba</option>
+                  <option value="Sitio Santolan">Sitio Santolan</option>
+                  <option value="Sitio Ilaya">Sitio Ilaya</option>
+                  <option value="Sitio Gitna">Sitio Gitna</option>
+                  <option value="Tierra Verde">Tierra Verde</option>
+                  <option value="Potenciana Village">Potenciana Village</option>
+                  <option value="G.C Berberabe">G.C Berberabe</option>
+                </select>
               </div>
             </div>
 
@@ -1272,6 +1266,11 @@
               <h4 class="res-empty-title">No matching resident applications found</h4>
               <p class="res-empty-desc">Try clearing your search input, switching status filter pills, or selecting a different Sitio.</p>
               <button type="button" class="btn-res-action secondary" id="btnResetResFilters">Reset Filter Criteria</button>
+            </div>
+
+            <!-- Table Footer Pagination / Count Indicator -->
+            <div class="table-footer-pagination" style="padding: 12px 18px 4px 18px;">
+              <span class="pagination-info" id="resTotalCountIndicator">Showing <strong>8</strong> of <strong>8</strong> applications</span>
             </div>
 
           </div>
@@ -1859,10 +1858,11 @@
           <div class="form-group">
             <label class="form-label">Concern Title <span class="text-danger">*</span></label>
             <input type="text" id="newIncTitle" class="form-input" placeholder="e.g. Damaged drainage cover near chapel" required>
+            <span class="field-error-text text-danger" id="newIncTitleError"></span>
           </div>
           <div class="form-grid-2">
             <div class="form-group">
-              <label class="form-label">Category</label>
+              <label class="form-label">Category <span class="text-danger">*</span></label>
               <select id="newIncCategory" class="form-select" required>
                 <option value="Infrastructure">Infrastructure</option>
                 <option value="Sanitation">Sanitation</option>
@@ -1873,7 +1873,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Location / Sitio</label>
+              <label class="form-label">Location / Sitio <span class="text-danger">*</span></label>
               <select id="newIncLocation" class="form-select" required>
                 <option value="Sitio Ibaba">Sitio Ibaba</option>
                 <option value="Sitio Santolan">Sitio Santolan</option>
@@ -1885,9 +1885,17 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Resident Name &amp; Contact <span class="text-danger">*</span></label>
-            <input type="text" id="newIncReporter" class="form-input" placeholder="e.g. Maria Santos • 0918 345 6789" required>
+          <div class="form-grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="newIncReporter">Resident Full Name <span class="text-danger">*</span></label>
+              <input type="text" id="newIncReporter" class="form-input" placeholder="e.g. Maria Santos" pattern="[a-zA-Z\s]+" required>
+              <span class="field-error-text text-danger" id="newIncReporterError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="newIncContact">Contact Number <span class="text-danger">*</span></label>
+              <input type="tel" id="newIncContact" class="form-input" placeholder="09183456789" inputmode="numeric" pattern="[0-9]*" maxlength="11" required>
+              <span class="field-error-text text-danger" id="newIncContactError"></span>
+            </div>
           </div>
           <!-- Urgency Level Toggle Card (Standard vs Urgent) -->
           <div class="form-group">
@@ -1917,6 +1925,7 @@
           <div class="form-group">
             <label class="form-label">Detailed Description <span class="text-danger">*</span></label>
             <textarea id="newIncDesc" class="form-textarea" rows="3" placeholder="Provide detailed description of the resident's concern..." required></textarea>
+            <span class="field-error-text text-danger" id="newIncDescError"></span>
           </div>
         </form>
       </div>
@@ -1941,8 +1950,9 @@
       <div class="modal-body">
         <form id="newAnnouncementForm" class="modal-form">
           <div class="form-group">
-            <label class="form-label">Headline / Title</label>
+            <label class="form-label" for="annTitle">Headline / Title <span class="text-danger">*</span></label>
             <input type="text" id="annTitle" class="form-input" placeholder="e.g. Dengue Prevention Cleanup Drive in Sitio Ibaba" required>
+            <span class="field-error-text text-danger" id="annTitleError"></span>
           </div>
           <div class="form-grid-2">
             <div class="form-group">
@@ -1993,8 +2003,9 @@
             <input type="hidden" id="annIsCritical" value="false">
           </div>
           <div class="form-group">
-            <label class="form-label">Announcement Content / Directive Details</label>
+            <label class="form-label" for="annContent">Announcement Content / Directive Details <span class="text-danger">*</span></label>
             <textarea id="annContent" class="form-textarea" rows="4" placeholder="Enter complete announcement message..." required></textarea>
+            <span class="field-error-text text-danger" id="annContentError"></span>
           </div>
         </form>
       </div>
@@ -2019,12 +2030,13 @@
       <div class="modal-body">
         <form id="newProjectForm" class="modal-form">
           <div class="form-group">
-            <label class="form-label">Project Title</label>
+            <label class="form-label" for="projTitle">Project Title <span class="text-danger">*</span></label>
             <input type="text" id="projTitle" class="form-input" placeholder="e.g. Solar LED Streetlights Phase 3" required>
+            <span class="field-error-text text-danger" id="projTitleError"></span>
           </div>
           <div class="form-grid-2">
             <div class="form-group">
-              <label class="form-label">Location / Purok</label>
+              <label class="form-label" for="projLocation">Location / Purok</label>
               <select id="projLocation" class="form-select" required>
                 <option value="Sitio Ibaba">Sitio Ibaba</option>
                 <option value="Sitio Santolan">Sitio Santolan</option>
@@ -2036,8 +2048,9 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Allocated Budget (₱)</label>
-              <input type="text" id="projBudget" class="form-input" placeholder="e.g. ₱250,000.00" required>
+              <label class="form-label" for="projBudget">Allocated Budget (₱) <span class="text-danger">*</span></label>
+              <input type="text" id="projBudget" class="form-input" placeholder="e.g. 250000" inputmode="numeric" required>
+              <span class="field-error-text text-danger" id="projBudgetError"></span>
             </div>
           </div>
           <div class="form-grid-2">
@@ -2056,8 +2069,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Project Scope &amp; Target Beneficiaries</label>
+            <label class="form-label" for="projDesc">Project Scope &amp; Target Beneficiaries <span class="text-danger">*</span></label>
             <textarea id="projDesc" class="form-textarea" rows="3" placeholder="Describe engineering scope, contractor, or timetable..." required></textarea>
+            <span class="field-error-text text-danger" id="projDescError"></span>
           </div>
         </form>
       </div>
@@ -2106,6 +2120,7 @@
           <div class="form-group">
             <label class="form-label" for="newPropTitle">Proposal Title <span class="text-danger">*</span></label>
             <input type="text" id="newPropTitle" class="form-input" placeholder="e.g. Solar Streetlight Installation - Sitio Gitna" required>
+            <span class="field-error-text text-danger" id="newPropTitleError"></span>
           </div>
 
           <div class="form-row-2">
@@ -2142,14 +2157,16 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="newPropProponent">Proponent / Resident <span class="text-danger">*</span></label>
-              <input type="text" id="newPropProponent" class="form-input" placeholder="e.g. Juan Dela Cruz" required>
+              <input type="text" id="newPropProponent" class="form-input" placeholder="e.g. Juan Dela Cruz" pattern="[a-zA-Z\s]+" required>
+              <span class="field-error-text text-danger" id="newPropProponentError"></span>
             </div>
           </div>
 
           <div class="form-row-2">
             <div class="form-group">
               <label class="form-label" for="newPropBudget">Estimated Budget <span class="text-danger">*</span></label>
-              <input type="text" id="newPropBudget" class="form-input" placeholder="e.g. ₱150,000" required>
+              <input type="text" id="newPropBudget" class="form-input" placeholder="e.g. 150000" inputmode="numeric" required>
+              <span class="field-error-text text-danger" id="newPropBudgetError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="newPropTargetVotes">Target / Required Upvotes</label>
@@ -2176,6 +2193,7 @@
           <div class="form-group">
             <label class="form-label" for="newPropDescription">Description / Scope <span class="text-danger">*</span></label>
             <textarea id="newPropDescription" class="form-textarea" rows="3" placeholder="2-3 line summary of project purpose, location specifics, and benefits to residents..." required></textarea>
+            <span class="field-error-text text-danger" id="newPropDescriptionError"></span>
           </div>
         </form>
       </div>
@@ -2205,6 +2223,7 @@
             <div class="form-group">
               <label class="form-label" for="budgetInputYear">Fiscal Year <span class="text-danger">*</span></label>
               <input type="number" id="budgetInputYear" class="form-input" value="2026" min="2020" max="2035" required>
+              <span class="field-error-text text-danger" id="budgetInputYearError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="budgetInputQuarter">Quarter <span class="text-danger">*</span></label>
@@ -2231,12 +2250,14 @@
           <div class="form-group">
             <label class="form-label" for="budgetInputDesc">Description / Line Item Purpose <span class="text-danger">*</span></label>
             <textarea id="budgetInputDesc" class="form-textarea" rows="3" placeholder="e.g. Drainage Desiltation & Street Repair Sitio Ibaba" required></textarea>
+            <span class="field-error-text text-danger" id="budgetInputDescError"></span>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label" for="budgetInputAmount">Budget Amount (₱) <span class="text-danger">*</span></label>
               <input type="number" id="budgetInputAmount" class="form-input" placeholder="e.g. 250000" min="0" step="1000" required>
+              <span class="field-error-text text-danger" id="budgetInputAmountError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="budgetInputActual">Actual Spent Amount (₱)</label>
@@ -2394,7 +2415,7 @@
                 <span class="res-info-val" id="resReviewDetailDob">April 18, 1995 (31 yrs old)</span>
               </div>
               <div class="res-info-cell">
-                <span class="res-info-lbl">Sex / Gender</span>
+                <span class="res-info-lbl">Gender</span>
                 <span class="res-info-val" id="resReviewDetailGender">Female</span>
               </div>
               <div class="res-info-cell">
@@ -2709,16 +2730,23 @@
       </div>
 
       <div class="modal-body" style="padding: 18px 24px; max-height: 75vh; overflow-y: auto;">
-        <form id="preRegisterForm">
+        <form id="preRegisterForm" novalidate>
           <div class="form-group" style="margin-bottom: 12px;">
             <label class="form-label" for="preRegFullName">Full Legal Name <span class="text-danger">*</span></label>
-            <input type="text" id="preRegFullName" class="form-input" placeholder="e.g. Maria Teresa Santos Ramos" required>
+            <input type="text" id="preRegFullName" class="form-input" placeholder="e.g. Maria Teresa Santos Ramos" pattern="[a-zA-Z\s]+" required>
+            <span class="field-error-text text-danger" id="preRegFullNameError"></span>
           </div>
 
-          <div class="form-grid-3" style="margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="form-grid-4" style="margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px;">
             <div class="form-group">
               <label class="form-label" for="preRegDob">Date of Birth <span class="text-danger">*</span></label>
               <input type="date" id="preRegDob" class="form-input" value="1998-07-22" required>
+              <span class="field-error-text text-danger" id="preRegDobError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="preRegAge">Age <span class="text-danger">*</span></label>
+              <input type="text" id="preRegAge" class="form-input" value="28" placeholder="e.g. 28" inputmode="numeric" pattern="[0-9]*" maxlength="3" required>
+              <span class="field-error-text text-danger" id="preRegAgeError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="preRegGender">Gender <span class="text-danger">*</span></label>
@@ -2727,6 +2755,7 @@
                 <option value="Female" selected>Female</option>
                 <option value="Other / Non-Binary">Other / Non-Binary</option>
               </select>
+              <span class="field-error-text text-danger" id="preRegGenderError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="preRegCivilStatus">Civil Status <span class="text-danger">*</span></label>
@@ -2736,26 +2765,30 @@
                 <option value="Widowed">Widowed</option>
                 <option value="Separated">Separated</option>
               </select>
+              <span class="field-error-text text-danger" id="preRegCivilStatusError"></span>
             </div>
           </div>
 
-          <div class="form-grid-2" style="margin-bottom: 12px;">
+          <div class="form-grid-2" style="margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
               <label class="form-label" for="preRegMobile">Mobile Number <span class="text-danger">*</span></label>
-              <input type="tel" id="preRegMobile" class="form-input" placeholder="0917 123 4567" required>
+              <input type="tel" id="preRegMobile" class="form-input" placeholder="09171234567" inputmode="numeric" pattern="[0-9]*" maxlength="11" required>
+              <span class="field-error-text text-danger" id="preRegMobileError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="preRegEmail">Email Address <span class="text-danger">*</span></label>
               <input type="email" id="preRegEmail" class="form-input" placeholder="resident@example.com" required>
+              <span class="field-error-text text-danger" id="preRegEmailError"></span>
             </div>
           </div>
 
           <div class="form-group" style="margin-bottom: 12px;">
             <label class="form-label" for="preRegAddress">Street Address / House No. <span class="text-danger">*</span></label>
             <input type="text" id="preRegAddress" class="form-input" placeholder="e.g. 054 Sampaguita St., Barangay Pallocan West" required>
+            <span class="field-error-text text-danger" id="preRegAddressError"></span>
           </div>
 
-          <div class="form-grid-2" style="margin-bottom: 14px;">
+          <div class="form-grid-2" style="margin-bottom: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
               <label class="form-label" for="preRegSitio">Sitio / Purok Zone <span class="text-danger">*</span></label>
               <select id="preRegSitio" class="form-select" required>
@@ -2767,6 +2800,7 @@
                 <option value="Potenciana Village">Potenciana Village</option>
                 <option value="G.C Berberabe">G.C Berberabe</option>
               </select>
+              <span class="field-error-text text-danger" id="preRegSitioError"></span>
             </div>
             <div class="form-group">
               <label class="form-label" for="preRegVoter">Voter Registration</label>

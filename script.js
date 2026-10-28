@@ -553,6 +553,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const regCivilStatus = document.getElementById('regCivilStatus');
   const regMobile = document.getElementById('regMobile');
   const regDob = document.getElementById('regDob');
+  const regAge = document.getElementById('regAge');
   const regEmail = document.getElementById('regEmail');
   const regAddress = document.getElementById('regAddress');
   const regSitio = document.getElementById('regSitio');
@@ -566,6 +567,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const regCivilStatusError = document.getElementById('regCivilStatusError');
   const regMobileError = document.getElementById('regMobileError');
   const regDobError = document.getElementById('regDobError');
+  const regAgeError = document.getElementById('regAgeError');
   const regEmailError = document.getElementById('regEmailError');
   const regAddressError = document.getElementById('regAddressError');
   const regSitioError = document.getElementById('regSitioError');
@@ -807,14 +809,88 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Clear errors on input for all registration fields
+  // Date of Birth & Age synchronization
+  if (regDob) {
+    // Set max date for birthdate to today
+    const todayStr = new Date().toISOString().split('T')[0];
+    regDob.setAttribute('max', todayStr);
+
+    regDob.addEventListener('change', function () {
+      if (regDob.value) {
+        const calculatedAge = computeAge(regDob.value);
+        if (regAge) {
+          regAge.value = calculatedAge;
+          clearFieldError(regAge, regAgeError);
+        }
+        clearFieldError(regDob, regDobError);
+      }
+    });
+  }
+
+  // Real-time restriction: Name (Letters and spaces only)
+  if (regFullName) {
+    regFullName.addEventListener('input', function () {
+      const original = this.value;
+      const sanitized = original.replace(/[^a-zA-Z\s]/g, '');
+      if (original !== sanitized) {
+        this.value = sanitized;
+        setFieldError(this, regFullNameError, 'Name must contain letters and spaces only. Numbers and special characters are not allowed.');
+        return;
+      }
+      if (sanitized.trim().length >= 2) {
+        clearFieldError(this, regFullNameError);
+      }
+    });
+  }
+
+  // Real-time restriction: Contact Number (Numeric digits only)
+  if (regMobile) {
+    regMobile.addEventListener('input', function () {
+      const original = this.value;
+      const sanitized = original.replace(/\D/g, '');
+      if (original !== sanitized) {
+        this.value = sanitized;
+        setFieldError(this, regMobileError, 'Contact number must contain numeric digits only. Letters and special characters are not allowed.');
+        return;
+      }
+      if (sanitized.length >= 7 && sanitized.length <= 11) {
+        clearFieldError(this, regMobileError);
+      }
+    });
+  }
+
+  // Real-time restriction: Age (Numeric digits only)
+  if (regAge) {
+    regAge.addEventListener('input', function () {
+      const original = this.value;
+      const sanitized = original.replace(/\D/g, '');
+      if (original !== sanitized) {
+        this.value = sanitized;
+        setFieldError(this, regAgeError, 'Age must contain numeric digits only. Letters and special characters are not allowed.');
+        return;
+      }
+      const num = parseInt(sanitized, 10);
+      if (!isNaN(num) && num >= 1 && num <= 120) {
+        clearFieldError(this, regAgeError);
+      }
+    });
+  }
+
+  // Real-time validation: Email Address
+  if (regEmail) {
+    regEmail.addEventListener('input', function () {
+      const val = this.value.trim();
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (emailRegex.test(val)) {
+        clearFieldError(this, regEmailError);
+      }
+    });
+  }
+
+  // Clear errors on input for all other registration fields
   [
-    [regFullName, regFullNameError],
     [regGender, regGenderError],
     [regCivilStatus, regCivilStatusError],
-    [regMobile, regMobileError],
-    [regDob, regDobError],
-    [regEmail, regEmailError],
     [regAddress, regAddressError],
     [regSitio, regSitioError]
   ].forEach(function (pair) {
@@ -852,70 +928,115 @@ document.addEventListener('DOMContentLoaded', function () {
     registerForm.addEventListener('submit', function (e) {
       e.preventDefault();
       let isValid = true;
+      let firstInvalidField = null;
 
-      // Full Name
-      const nameVal = regFullName ? regFullName.value.trim() : '';
-      if (!nameVal) {
-        setFieldError(regFullName, regFullNameError, 'Full legal name is required.');
+      function markInvalid(inputEl, errorEl, message) {
+        setFieldError(inputEl, errorEl, message);
+        if (!firstInvalidField && inputEl) {
+          firstInvalidField = inputEl;
+        }
         isValid = false;
+      }
+
+      // Full Name: Letters and spaces only. No numbers or special characters.
+      const nameVal = regFullName ? regFullName.value.trim() : '';
+      const nameRegex = /^[a-zA-Z\s]+$/;
+      if (!nameVal) {
+        markInvalid(regFullName, regFullNameError, 'Full legal name is required.');
+      } else if (!nameRegex.test(nameVal)) {
+        markInvalid(regFullName, regFullNameError, 'Name must contain letters and spaces only. Numbers and special characters are not allowed.');
+      } else if (nameVal.length < 2) {
+        markInvalid(regFullName, regFullNameError, 'Name must be at least 2 characters long.');
+      } else {
+        clearFieldError(regFullName, regFullNameError);
       }
 
       // Gender (Kasarian)
       const genderVal = regGender ? regGender.value : '';
       if (!genderVal) {
-        setFieldError(regGender, regGenderError, 'Please select your gender.');
-        isValid = false;
+        markInvalid(regGender, regGenderError, 'Please select your gender.');
+      } else {
+        clearFieldError(regGender, regGenderError);
       }
 
       // Civil Status
       const civilVal = regCivilStatus ? regCivilStatus.value : '';
       if (!civilVal) {
-        setFieldError(regCivilStatus, regCivilStatusError, 'Please select your civil status.');
-        isValid = false;
-      }
-
-      // Mobile Number (Philippine format: 09xx xxx xxxx or +639xx xxx xxxx)
-      const mobileVal = regMobile ? regMobile.value.trim() : '';
-      const cleanMobile = mobileVal.replace(/[\s\-()]/g, '');
-      const mobileRegex = /^(09|\+639)\d{9}$/;
-      if (!mobileVal) {
-        setFieldError(regMobile, regMobileError, 'Mobile number is required.');
-        isValid = false;
-      } else if (!mobileRegex.test(cleanMobile)) {
-        setFieldError(regMobile, regMobileError, 'Please enter a valid Philippine mobile number (e.g. 0917 123 4567).');
-        isValid = false;
+        markInvalid(regCivilStatus, regCivilStatusError, 'Please select your civil status.');
+      } else {
+        clearFieldError(regCivilStatus, regCivilStatusError);
       }
 
       // Date of Birth
       const dobVal = regDob ? regDob.value : '';
       if (!dobVal) {
-        setFieldError(regDob, regDobError, 'Date of birth is required.');
-        isValid = false;
+        markInvalid(regDob, regDobError, 'Date of birth is required.');
+      } else {
+        const d = new Date(dobVal);
+        const today = new Date();
+        today.setHours(23, 59, 59, 999);
+        if (isNaN(d.getTime()) || d > today || d.getFullYear() < 1900) {
+          markInvalid(regDob, regDobError, 'Please enter a valid date of birth in the past.');
+        } else {
+          clearFieldError(regDob, regDobError);
+        }
       }
 
-      // Email Address
+      // Age: Numeric digits only. No letters or special characters.
+      const ageVal = regAge ? regAge.value.trim() : '';
+      const digitsRegex = /^\d+$/;
+      if (!ageVal) {
+        markInvalid(regAge, regAgeError, 'Age is required.');
+      } else if (!digitsRegex.test(ageVal)) {
+        markInvalid(regAge, regAgeError, 'Age must contain numeric digits only. Letters and special characters are not allowed.');
+      } else {
+        const ageNum = parseInt(ageVal, 10);
+        if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
+          markInvalid(regAge, regAgeError, 'Please enter a valid age between 1 and 120.');
+        } else {
+          clearFieldError(regAge, regAgeError);
+        }
+      }
+
+      // Mobile Number: Numeric digits only. No letters or special characters.
+      const mobileVal = regMobile ? regMobile.value.trim() : '';
+      if (!mobileVal) {
+        markInvalid(regMobile, regMobileError, 'Contact number is required.');
+      } else if (!digitsRegex.test(mobileVal)) {
+        markInvalid(regMobile, regMobileError, 'Contact number must contain numeric digits only. Letters and special characters are not allowed.');
+      } else if (mobileVal.length < 7 || mobileVal.length > 11) {
+        markInvalid(regMobile, regMobileError, 'Contact number must be between 7 and 11 numeric digits (e.g. 09171234567).');
+      } else {
+        clearFieldError(regMobile, regMobileError);
+      }
+
+      // Email Address: Validate format
       const emailVal = regEmail ? regEmail.value.trim() : '';
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailVal) {
-        setFieldError(regEmail, regEmailError, 'Email address is required.');
-        isValid = false;
+        markInvalid(regEmail, regEmailError, 'Email address is required.');
       } else if (!emailRegex.test(emailVal)) {
-        setFieldError(regEmail, regEmailError, 'Please enter a valid email address.');
-        isValid = false;
+        markInvalid(regEmail, regEmailError, 'Please enter a valid email address (e.g. resident@example.com).');
+      } else {
+        clearFieldError(regEmail, regEmailError);
       }
 
       // Address
       const addressVal = regAddress ? regAddress.value.trim() : '';
       if (!addressVal) {
-        setFieldError(regAddress, regAddressError, 'Address is required.');
-        isValid = false;
+        markInvalid(regAddress, regAddressError, 'Address is required.');
+      } else if (addressVal.length < 5) {
+        markInvalid(regAddress, regAddressError, 'Address must be at least 5 characters long.');
+      } else {
+        clearFieldError(regAddress, regAddressError);
       }
 
       // Sitio / Purok
       const sitioVal = regSitio ? regSitio.value : '';
       if (!sitioVal) {
-        setFieldError(regSitio, regSitioError, 'Sitio / Purok is required.');
-        isValid = false;
+        markInvalid(regSitio, regSitioError, 'Sitio / Purok is required.');
+      } else {
+        clearFieldError(regSitio, regSitioError);
       }
 
       // ID Type & Submit ID (picture / attachment)
@@ -924,9 +1045,12 @@ document.addEventListener('DOMContentLoaded', function () {
         setFieldError(null, regIdFileError, 'Please submit your government ID photo or scanned attachment.');
         if (regIdDropzone) {
           regIdDropzone.style.borderColor = '#ef4444';
-          regIdDropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (!firstInvalidField) firstInvalidField = regIdDropzone;
         }
         isValid = false;
+      } else {
+        clearFieldError(null, regIdFileError);
+        if (regIdDropzone) regIdDropzone.style.borderColor = '';
       }
 
       // Proof of Residency (Optional)
@@ -935,26 +1059,32 @@ document.addEventListener('DOMContentLoaded', function () {
       // Password
       const passVal = regPassword ? regPassword.value : '';
       if (!passVal) {
-        setFieldError(regPassword, regPasswordError, 'Password is required.');
-        isValid = false;
+        markInvalid(regPassword, regPasswordError, 'Password is required.');
       } else if (passVal.length < 8) {
-        setFieldError(regPassword, regPasswordError, 'Password must be at least 8 characters long.');
-        isValid = false;
+        markInvalid(regPassword, regPasswordError, 'Password must be at least 8 characters long.');
+      } else {
+        clearFieldError(regPassword, regPasswordError);
       }
 
       // Confirm Password
       const confirmVal = regConfirmPassword ? regConfirmPassword.value : '';
       if (!confirmVal) {
-        setFieldError(regConfirmPassword, regConfirmPasswordError, 'Please confirm your password.');
-        isValid = false;
+        markInvalid(regConfirmPassword, regConfirmPasswordError, 'Please confirm your password.');
       } else if (passVal !== confirmVal) {
-        setFieldError(regConfirmPassword, regConfirmPasswordError, 'Passwords do not match.');
-        isValid = false;
+        markInvalid(regConfirmPassword, regConfirmPasswordError, 'Passwords do not match.');
+      } else {
+        clearFieldError(regConfirmPassword, regConfirmPasswordError);
       }
 
-      if (!isValid) return;
+      if (!isValid) {
+        if (firstInvalidField) {
+          firstInvalidField.focus();
+          firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
 
-      const applicantAge = computeAge(dobVal);
+      const applicantAge = parseInt(ageVal, 10) || computeAge(dobVal);
       const generatedResidentId = 'PW-2026-' + Math.floor(10000 + Math.random() * 90000);
       const generatedIdNumber = '4829-' + Math.floor(1000 + Math.random() * 9000) + '-' + Math.floor(1000 + Math.random() * 9000);
       const generatedProofNumber = proofTypeVal ? ('DOC-PW-' + Math.floor(1000000 + Math.random() * 9000000)) : null;
@@ -1302,20 +1432,138 @@ if (heroSlides.length > 1) {
 
   // Modal Form Validation & Submission
   if (modalProposeForm) {
-    const requiredFields = [
-      { inputId: 'modalProjectName', errorId: 'errorProjectName', validate: val => val.trim().length >= 3 },
-      { inputId: 'modalProjectCategory', errorId: 'errorProjectCategory', validate: val => val && val.trim() !== '' },
-      { inputId: 'modalProjectLocation', errorId: 'errorProjectLocation', validate: val => val.trim().length >= 3 },
-      { inputId: 'modalProjectBudget', errorId: 'errorProjectBudget', validate: val => Number(val) > 0 },
-      { inputId: 'modalProjectStartDate', errorId: 'errorProjectStartDate', validate: val => val.trim() !== '' },
-      { inputId: 'modalProjectDescription', errorId: 'errorProjectDescription', validate: val => val.trim().length >= 10 },
-      { inputId: 'modalProponentName', errorId: 'errorProponentName', validate: val => val.trim().length >= 2 },
-      { inputId: 'modalProponentEmail', errorId: 'errorProponentEmail', validate: val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
-      { inputId: 'modalProponentPhone', errorId: 'errorProponentPhone', validate: val => val.trim().length >= 7 }
+    const propNameEl = document.getElementById('modalProponentName');
+    const propPhoneEl = document.getElementById('modalProponentPhone');
+    const propEmailEl = document.getElementById('modalProponentEmail');
+    const propBudgetEl = document.getElementById('modalProjectBudget');
+
+    // Real-time restriction: Name (Letters and spaces only)
+    if (propNameEl) {
+      propNameEl.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/[^a-zA-Z\s]/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+          const errEl = document.getElementById('errorProponentName');
+          if (errEl) {
+            errEl.textContent = 'Name must contain letters and spaces only. Numbers and special characters are not allowed.';
+            errEl.classList.add('is-visible');
+          }
+          this.classList.add('has-error');
+          return;
+        }
+        if (sanitized.trim().length >= 2) {
+          this.classList.remove('has-error');
+          const errEl = document.getElementById('errorProponentName');
+          if (errEl) errEl.classList.remove('is-visible');
+        }
+      });
+    }
+
+    // Real-time restriction: Phone / Mobile (Numeric digits only)
+    if (propPhoneEl) {
+      propPhoneEl.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/\D/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+          const errEl = document.getElementById('errorProponentPhone');
+          if (errEl) {
+            errEl.textContent = 'Contact number must contain numeric digits only. Letters and special characters are not allowed.';
+            errEl.classList.add('is-visible');
+          }
+          this.classList.add('has-error');
+          return;
+        }
+        if (sanitized.length >= 7 && sanitized.length <= 11) {
+          this.classList.remove('has-error');
+          const errEl = document.getElementById('errorProponentPhone');
+          if (errEl) errEl.classList.remove('is-visible');
+        }
+      });
+    }
+
+    // Real-time restriction: Budget (Numeric digits only)
+    if (propBudgetEl) {
+      propBudgetEl.addEventListener('input', function () {
+        const original = this.value;
+        const sanitized = original.replace(/\D/g, '');
+        if (original !== sanitized) {
+          this.value = sanitized;
+        }
+        if (Number(sanitized) > 0) {
+          this.classList.remove('has-error');
+          const errEl = document.getElementById('errorProjectBudget');
+          if (errEl) errEl.classList.remove('is-visible');
+        }
+      });
+    }
+
+    const fieldValidators = [
+      {
+        inputId: 'modalProjectName',
+        errorId: 'errorProjectName',
+        validate: (val) => val.trim().length >= 3,
+        message: 'Please provide a descriptive project name (at least 3 characters).'
+      },
+      {
+        inputId: 'modalProjectCategory',
+        errorId: 'errorProjectCategory',
+        validate: (val) => Boolean(val && val.trim() !== ''),
+        message: 'Please select a project category from the list.'
+      },
+      {
+        inputId: 'modalProjectLocation',
+        errorId: 'errorProjectLocation',
+        validate: (val) => Boolean(val && val.trim() !== ''),
+        message: 'Please specify the project location or sitio.'
+      },
+      {
+        inputId: 'modalProjectBudget',
+        errorId: 'errorProjectBudget',
+        validate: (val) => /^\d+$/.test(val.trim()) && Number(val) > 0,
+        message: 'Budget must contain numeric digits only and be greater than ₱0.'
+      },
+      {
+        inputId: 'modalProjectStartDate',
+        errorId: 'errorProjectStartDate',
+        validate: (val) => Boolean(val && val.trim() !== ''),
+        message: 'Please choose a target start date.'
+      },
+      {
+        inputId: 'modalProjectDescription',
+        errorId: 'errorProjectDescription',
+        validate: (val) => val.trim().length >= 10,
+        message: 'Please provide a brief justification and community benefit (at least 10 characters).'
+      },
+      {
+        inputId: 'modalProponentName',
+        errorId: 'errorProponentName',
+        validate: (val) => {
+          const trimmed = val.trim();
+          return trimmed.length >= 2 && /^[a-zA-Z\s]+$/.test(trimmed);
+        },
+        message: 'Name must contain letters and spaces only. Numbers and special characters are not allowed.'
+      },
+      {
+        inputId: 'modalProponentEmail',
+        errorId: 'errorProponentEmail',
+        validate: (val) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val.trim()),
+        message: 'Please enter a valid email address (e.g., juan@example.com).'
+      },
+      {
+        inputId: 'modalProponentPhone',
+        errorId: 'errorProponentPhone',
+        validate: (val) => {
+          const trimmed = val.trim();
+          return /^\d+$/.test(trimmed) && trimmed.length >= 7 && trimmed.length <= 11;
+        },
+        message: 'Contact number must contain numeric digits only (7-11 digits).'
+      }
     ];
 
     // Clear individual errors on input/change
-    requiredFields.forEach(function (field) {
+    fieldValidators.forEach(function (field) {
       const el = document.getElementById(field.inputId);
       const errEl = document.getElementById(field.errorId);
       if (el) {
@@ -1335,7 +1583,7 @@ if (heroSlides.length > 1) {
       let isValid = true;
       let firstInvalidEl = null;
 
-      requiredFields.forEach(function (field) {
+      fieldValidators.forEach(function (field) {
         const el = document.getElementById(field.inputId);
         const errEl = document.getElementById(field.errorId);
         if (el) {
@@ -1343,7 +1591,10 @@ if (heroSlides.length > 1) {
           if (!valid) {
             isValid = false;
             el.classList.add('has-error');
-            if (errEl) errEl.classList.add('is-visible');
+            if (errEl) {
+              errEl.textContent = field.message;
+              errEl.classList.add('is-visible');
+            }
             if (!firstInvalidEl) firstInvalidEl = el;
           } else {
             el.classList.remove('has-error');
@@ -1353,7 +1604,10 @@ if (heroSlides.length > 1) {
       });
 
       if (!isValid) {
-        if (firstInvalidEl) firstInvalidEl.focus();
+        if (firstInvalidEl) {
+          firstInvalidEl.focus();
+          firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 

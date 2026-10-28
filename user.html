@@ -840,27 +840,35 @@
                 </div>
               </div>
 
-              <form id="updateProfileForm" class="portal-form">
-                <div class="form-grid-2">
+              <form id="updateProfileForm" class="portal-form" novalidate>
+                <div class="form-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
                   <div class="form-group">
-                    <label for="profileMobile" class="form-label">Mobile Number</label>
-                    <input type="tel" id="profileMobile" class="form-input" value="0917 123 4567" placeholder="0917 123 4567" required>
+                    <label for="profileMobile" class="form-label">Mobile Number <span class="text-danger">*</span></label>
+                    <input type="tel" id="profileMobile" class="form-input" value="09171234567" placeholder="09171234567" inputmode="numeric" pattern="[0-9]*" maxlength="11" required>
+                    <span class="field-error-msg" id="profileMobileError" style="display: none;"></span>
                   </div>
                   <div class="form-group">
-                    <label for="profileEmail" class="form-label">Email Address</label>
+                    <label for="profileEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
                     <input type="email" id="profileEmail" class="form-input" value="juan.delacruz@example.com" placeholder="you@example.com" required>
+                    <span class="field-error-msg" id="profileEmailError" style="display: none;"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="profileAge" class="form-label">Age <span class="text-danger">*</span></label>
+                    <input type="text" id="profileAge" class="form-input" value="28" placeholder="e.g. 28" inputmode="numeric" pattern="[0-9]*" maxlength="3" required>
+                    <span class="field-error-msg" id="profileAgeError" style="display: none;"></span>
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="profileAddress" class="form-label">Complete Residential Address</label>
+                <div class="form-group" style="margin-top: 14px;">
+                  <label for="profileAddress" class="form-label">Complete Residential Address <span class="text-danger">*</span></label>
                   <input type="text" id="profileAddress" class="form-input" value="142 Pallocan Blvd, Barangay Pallocan West" placeholder="House No., Street Name" required>
+                  <span class="field-error-msg" id="profileAddressError" style="display: none;"></span>
                 </div>
 
-                <div class="form-grid-2">
+                <div class="form-grid-2" style="margin-top: 14px;">
                   <div class="form-group">
-                    <label for="profileSitio" class="form-label">Sitio / Purok</label>
-                    <select id="profileSitio" class="form-select">
+                    <label for="profileSitio" class="form-label">Sitio / Purok <span class="text-danger">*</span></label>
+                    <select id="profileSitio" class="form-select" required>
                       <option value="Sitio Ibaba" selected>Sitio Ibaba</option>
                       <option value="Sitio Santolan">Sitio Santolan</option>
                       <option value="Sitio Ilaya">Sitio Ilaya</option>
@@ -869,6 +877,7 @@
                       <option value="Potenciana Village">Potenciana Village</option>
                       <option value="G.C Berberabe">G.C Berberabe</option>
                     </select>
+                    <span class="field-error-msg" id="profileSitioError" style="display: none;"></span>
                   </div>
                   <div class="form-group">
                     <label for="profileCity" class="form-label">City / Province</label>
@@ -1018,8 +1027,9 @@
           </div>
 
           <div class="form-group">
-            <label for="modalDocPurposeSpecific" class="form-label">Specific Details / Company</label>
+            <label for="modalDocPurposeSpecific" class="form-label">Specific Details / Company <span class="required">*</span></label>
             <input type="text" id="modalDocPurposeSpecific" class="form-input" placeholder="e.g. For SM Batangas Job Application" required>
+            <span class="field-error-msg" id="modalDocPurposeSpecificError" style="display: none;"></span>
           </div>
         </div>
 
@@ -1094,6 +1104,7 @@
         <div class="form-group">
           <label for="modalConcernTitle" class="form-label">Concern Title <span class="required">*</span></label>
           <input type="text" id="modalConcernTitle" class="form-input" placeholder="e.g. Broken streetlight along Sitio Ibaba main walkway" required>
+          <span class="field-error-msg" id="modalConcernTitleError" style="display: none;"></span>
         </div>
 
         <!-- Category & Date Submitted -->
@@ -1108,11 +1119,13 @@
               <option value="Public Utility">Public Utility (Water supply interruption, dangling electric wires)</option>
               <option value="Other">Other Neighborhood Concern</option>
             </select>
+            <span class="field-error-msg" id="modalConcernCategoryError" style="display: none;"></span>
           </div>
 
           <div class="form-group">
             <label for="modalConcernDate" class="form-label">Date Submitted <span class="required">*</span></label>
             <input type="date" id="modalConcernDate" class="form-input" required>
+            <span class="field-error-msg" id="modalConcernDateError" style="display: none;"></span>
           </div>
         </div>
 
@@ -1156,10 +1169,12 @@
               <option value="Potenciana Village">Potenciana Village</option>
               <option value="G.C Berberabe">G.C Berberabe</option>
             </select>
+            <span class="field-error-msg" id="modalConcernSitioError" style="display: none;"></span>
           </div>
           <div class="form-group">
             <label for="modalConcernLocation" class="form-label">Exact Location / Landmark <span class="required">*</span></label>
             <input type="text" id="modalConcernLocation" class="form-input" placeholder="e.g. Near Chapel, Main Road" required>
+            <span class="field-error-msg" id="modalConcernLocationError" style="display: none;"></span>
           </div>
         </div>
 
@@ -1167,6 +1182,7 @@
         <div class="form-group">
           <label for="modalConcernDesc" class="form-label">Detailed Description <span class="required">*</span></label>
           <textarea id="modalConcernDesc" class="form-textarea" rows="4" placeholder="Please describe what happened, when it started, and how it affects the area..." required></textarea>
+          <span class="field-error-msg" id="modalConcernDescError" style="display: none;"></span>
         </div>
 
         <!-- Pre-filled Resident Information -->
@@ -1225,10 +1241,11 @@
         <button type="button" class="portal-modal-close" id="closeProposalModalBtn" aria-label="Close modal">&times;</button>
       </div>
 
-      <form id="proposalSubmitForm" class="portal-modal-form">
+      <form id="proposalSubmitForm" class="portal-modal-form" novalidate>
         <div class="form-group">
           <label for="modalPropTitle" class="form-label">Project Title <span class="required">*</span></label>
           <input type="text" id="modalPropTitle" class="form-input" placeholder="e.g. Installation of Solar LED Streetlights along Sitio Ibaba Riverbank" required>
+          <span class="field-error-msg" id="modalPropTitleError" style="display: none;"></span>
         </div>
 
         <div class="form-grid-2">
@@ -1242,6 +1259,7 @@
               <option value="Health & Social Services">Community Health &amp; Senior Services</option>
               <option value="Livelihood & Skills">Livelihood &amp; Vocational Skills</option>
             </select>
+            <span class="field-error-msg" id="modalPropCategoryError" style="display: none;"></span>
           </div>
 
           <div class="form-group">
@@ -1256,13 +1274,15 @@
               <option value="Potenciana Village">Potenciana Village</option>
               <option value="G.C Berberabe">G.C Berberabe</option>
             </select>
+            <span class="field-error-msg" id="modalPropLocationError" style="display: none;"></span>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
             <label for="modalPropBudget" class="form-label">Estimated Budget (₱) <span class="required">*</span></label>
-            <input type="number" id="modalPropBudget" class="form-input" placeholder="e.g. 150000" min="5000" step="5000" required>
+            <input type="number" id="modalPropBudget" class="form-input" placeholder="e.g. 150000" min="5000" step="5000" inputmode="numeric" pattern="[0-9]*" required>
+            <span class="field-error-msg" id="modalPropBudgetError" style="display: none;"></span>
           </div>
 
           <div class="form-group">
@@ -1274,6 +1294,7 @@
         <div class="form-group">
           <label for="modalPropRationale" class="form-label">Rationale &amp; Community Impact <span class="required">*</span></label>
           <textarea id="modalPropRationale" class="form-textarea" rows="4" placeholder="Explain the current problem, who benefits, and why this initiative is important for our barangay..." required></textarea>
+          <span class="field-error-msg" id="modalPropRationaleError" style="display: none;"></span>
         </div>
 
         <div class="portal-modal-footer">
