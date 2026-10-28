@@ -3071,18 +3071,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return '<span class="badge-status badge-standard-pill"><span class="dot-gray"></span>Standard</span>';
   }
 
-  function updateConcernStatus(id, rawStatus, customNote, rawUrgency) {
+  function updateConcernStatus(id, rawStatus, customNote) {
     const ticket = incidentTickets.find(t => t.id === id || t.ref === id);
     if (!ticket) return;
 
     const newStatus = normalizeConcernStatus(rawStatus);
     ticket.status = newStatus;
     ticket.currentStage = newStatus === 'Resolved' ? 3 : (newStatus === 'In Progress' ? 2 : 1);
-    if (rawUrgency !== undefined && rawUrgency !== null) {
-      const normUrgency = normalizeConcernUrgency(rawUrgency);
-      ticket.urgency = normUrgency;
-      ticket.severity = normUrgency;
-    }
     ticket.updatedAt = new Date().toISOString().slice(0, 10);
 
     if (typeof customNote === 'string') {
@@ -3524,11 +3519,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 </select>
               </div>
               <div class="form-group" style="margin:0;">
-                <label class="form-label" for="modalConcernUrgencySelect">Urgency Level</label>
-                <select id="modalConcernUrgencySelect" class="form-select">
-                  <option value="Standard" ${urgencyNorm === 'Standard' ? 'selected' : ''}>Standard</option>
-                  <option value="Urgent" ${urgencyNorm === 'Urgent' ? 'selected' : ''}>Urgent</option>
-                </select>
+                <label class="form-label">Urgency Level (Set by Resident)</label>
+                <div style="display:flex; align-items:center; justify-content:space-between; height:38px; padding:0 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:not-allowed;" title="Urgency level is set by the resident upon submission and cannot be modified by Admin">
+                  ${urgencyBadgeHtml}
+                  <span style="font-size:11px; color:#64748b; font-weight:500;">Read-only</span>
+                </div>
               </div>
             </div>
             <div class="form-group" style="margin:0;">
@@ -3554,9 +3549,8 @@ document.addEventListener('DOMContentLoaded', function () {
     btnSaveConcernModalStatus.addEventListener('click', function () {
       if (!currentInspectingIncId) return;
       const newStatus = document.getElementById('modalConcernStatusSelect')?.value || 'Pending';
-      const newUrgency = document.getElementById('modalConcernUrgencySelect')?.value || 'Standard';
       const adminNote = document.getElementById('modalConcernAdminNote')?.value || '';
-      updateConcernStatus(currentInspectingIncId, newStatus, adminNote, newUrgency);
+      updateConcernStatus(currentInspectingIncId, newStatus, adminNote);
       closeConcernViewModal();
     });
   }
