@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="sealBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a2540" />
+      <stop offset="100%" stop-color="#0d47a1" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="100" cy="100" r="96" fill="url(#sealBg)" stroke="#fbbf24" stroke-width="4" />
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,3" />
+
+  <!-- Inner Center Circle -->
+  <circle cx="100" cy="100" r="66" fill="#ffffff" stroke="#0a2540" stroke-width="2" />
+
+  <!-- Civic Shield -->
+  <path d="M70 70 C70 65 100 60 100 60 C100 60 130 65 130 70 C130 110 100 135 100 135 C100 135 70 110 70 70 Z" fill="url(#shieldGrad)" stroke="#0d47a1" stroke-width="2.5" />
+
+  <!-- Shield Split Red/Blue for Philippine Flag colors -->
+  <path d="M72 73 C72 73 98 67 98 67 L98 132 C98 132 72 108 72 73 Z" fill="#0d47a1" opacity="0.9" />
+  <path d="M102 67 C102 67 128 73 128 73 C128 108 102 132 102 132 L102 67 Z" fill="#dc2626" opacity="0.9" />
+
+  <!-- Sun in center of shield -->
+  <circle cx="100" cy="94" r="10" fill="url(#goldGrad)" stroke="#ffffff" stroke-width="1" />
+  <!-- Sun Rays -->
+  <path d="M100 78 L100 82 M100 106 L100 110 M84 94 L88 94 M112 94 L116 94 M89 83 L92 86 M108 102 L111 105 M89 105 L92 102 M108 86 L111 83" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Three Golden Stars -->
+  <!-- Top Star -->
+  <polygon points="100,64 102,69 107,69 103,72 105,77 100,74 95,77 97,72 93,69 98,69" fill="#fbbf24" />
+  <!-- Left Star -->
+  <polygon points="80,80 81.5,83.5 85,83.5 82,86 83.5,89.5 80,87.5 76.5,89.5 78,86 75,83.5 78.5,83.5" fill="#fbbf24" />
+  <!-- Right Star -->
+  <polygon points="120,80 121.5,83.5 125,83.5 122,86 123.5,89.5 120,87.5 116.5,89.5 118,86 115,83.5 118.5,83.5" fill="#fbbf24" />
+
+  <!-- Scales of Justice underneath -->
+  <path d="M93 118 L107 118 M100 114 L100 126 M90 126 L110 126" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" />
+
+  <!-- Laurel Wreath around Shield -->
+  <path d="M54 100 C54 125 72 145 92 148 M146 100 C146 125 128 145 108 148" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4,3" />
+
+  <!-- Outer Text Around Circle -->
+  <path id="textArcTop" d="M 28 100 A 72 72 0 1 1 172 100" fill="none" />
+  <path id="textArcBottom" d="M 172 100 A 72 72 0 0 1 28 100" fill="none" />
+
+  <text font-family="'Poppins', sans-serif" font-size="10.5" font-weight="700" fill="#fbbf24" letter-spacing="2">
+    <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">
+      BARANGAY PALLOCAN WEST
+    </textPath>
+  </text>
+  <text font-family="'Poppins', sans-serif" font-size="9" font-weight="600" fill="#f1f5f9" letter-spacing="2">
+    <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">
+      BATANGAS CITY • BRGY360
+    </textPath>
+  </text>
+</svg>

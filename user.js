@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const DEFAULT_USER = {
     name: 'Juan Dela Cruz',
-    email: 'juan.delacruz@example.com',
+    email: 'juan@gmail.com',
     mobile: '0917 123 4567',
     dob: '1992-06-15',
     civilStatus: 'Single',
@@ -21,11 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
     sitio: 'Sitio Ibaba',
     city: 'Batangas City, Batangas',
     residentId: 'PW-2026-08492',
-    registeredVoter: 'Yes (Precinct 0142A)',
     verified: true,
     verificationTier: 'Level 2: Fully Verified Resident',
     idOnRecord: 'Philippine National ID (PhilID) • ****-****-8492',
-    avatarInitial: 'J'
+    avatarInitial: 'J',
+    password: 'UserPassword360!'
   };
 
   const DEFAULT_SERVICES = [
@@ -451,6 +451,20 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentUser = loadData('brgy360_user', DEFAULT_USER);
   if (currentUser && typeof currentUser === 'object') {
     currentUser.sitio = normalizeSitioName(currentUser.sitio);
+    if (!currentUser.password) {
+      try {
+        const residentsDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
+        const userEmail = (currentUser.email || '').trim().toLowerCase();
+        const foundInDb = residentsDb.find(u => u.email && u.email.trim().toLowerCase() === userEmail);
+        if (foundInDb && foundInDb.password) {
+          currentUser.password = foundInDb.password;
+        } else {
+          currentUser.password = DEFAULT_USER.password;
+        }
+      } catch (e) {
+        currentUser.password = DEFAULT_USER.password;
+      }
+    }
   }
   let userRequests = loadData('brgy360_requests', DEFAULT_REQUESTS);
 
@@ -2785,6 +2799,49 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmPwdErr = document.getElementById('confirmNewPasswordError');
     const bannerErr = document.getElementById('passwordErrorMsg');
 
+    function getActiveUserPassword() {
+      // 1. In-memory currentUser password
+      if (currentUser && currentUser.password) {
+        return currentUser.password;
+      }
+
+      // 2. Stored user object in localStorage 'brgy360_user'
+      try {
+        const stored = JSON.parse(localStorage.getItem('brgy360_user') || '{}');
+        if (stored && stored.password) {
+          return stored.password;
+        }
+      } catch (e) {}
+
+      // 3. User account created in registration database ('brgy360_residents_db')
+      try {
+        const email = (currentUser?.email || '').trim().toLowerCase();
+        const residentsDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
+        if (email && Array.isArray(residentsDb)) {
+          const found = residentsDb.find(u => u.email && u.email.trim().toLowerCase() === email);
+          if (found && found.password) {
+            return found.password;
+          }
+        }
+      } catch (e) {}
+
+      // 4. Session info check against resident database
+      try {
+        const session = JSON.parse(localStorage.getItem('brgy360_session') || '{}');
+        const sessionEmail = (session?.email || '').trim().toLowerCase();
+        if (sessionEmail) {
+          const residentsDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
+          const found = residentsDb.find(u => u.email && u.email.trim().toLowerCase() === sessionEmail);
+          if (found && found.password) {
+            return found.password;
+          }
+        }
+      } catch (e) {}
+
+      // 5. Default preconfigured password fallback
+      return DEFAULT_USER.password || 'UserPassword360!';
+    }
+
     function setFieldError(inputEl, errorEl, message) {
       if (inputEl) inputEl.classList.add('input-error');
       if (errorEl) {
@@ -2816,6 +2873,10 @@ document.addEventListener('DOMContentLoaded', function () {
       curInput.addEventListener('input', function () {
         if (curInput.value.trim()) {
           clearFieldError(curInput, curErr);
+          if (bannerErr) {
+            bannerErr.textContent = '';
+            bannerErr.style.display = 'none';
+          }
         }
       });
     }
@@ -2851,9 +2912,18 @@ document.addEventListener('DOMContentLoaded', function () {
       let hasError = false;
       let firstInvalidInput = null;
 
-      // 1. Verify that Current Password is entered
+      // 1. Verify that Current Password is entered and EXACTLY MATCHES the password set during creation/registration
+      const expectedPassword = getActiveUserPassword();
       if (!cur) {
         setFieldError(curInput, curErr, 'Please enter your current password.');
+        hasError = true;
+        if (!firstInvalidInput) firstInvalidInput = curInput;
+      } else if (cur !== expectedPassword) {
+        setFieldError(curInput, curErr, 'The current password entered is incorrect. It must match the password set when your account was created.');
+        if (bannerErr) {
+          bannerErr.textContent = 'Current password verification failed. Please enter the password you created your account with.';
+          bannerErr.style.display = 'block';
+        }
         hasError = true;
         if (!firstInvalidInput) firstInvalidInput = curInput;
       }
@@ -2869,6 +2939,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!firstInvalidInput) firstInvalidInput = newPwdInput;
       } else if (!/[a-zA-Z]/.test(p1) || !/[0-9]/.test(p1)) {
         setFieldError(newPwdInput, newPwdErr, 'New password must contain both letters and numbers.');
+        hasError = true;
+        if (!firstInvalidInput) firstInvalidInput = newPwdInput;
+      } else if (p1 === cur) {
+        setFieldError(newPwdInput, newPwdErr, 'New password cannot be the same as your current password.');
         hasError = true;
         if (!firstInvalidInput) firstInvalidInput = newPwdInput;
       }
@@ -2887,6 +2961,64 @@ document.addEventListener('DOMContentLoaded', function () {
       if (hasError) {
         if (firstInvalidInput) firstInvalidInput.focus();
         return;
+      }
+
+      // 4. Update and persist the new password across localStorage & residents database
+      currentUser.password = p1;
+      saveData('brgy360_user', currentUser);
+
+      // Synchronize updated password in brgy360_residents_db so future logins require the updated password
+      try {
+        const userEmail = (currentUser.email || '').trim().toLowerCase();
+        const residentsDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
+        let updated = false;
+
+        const isJuan = userEmail === 'juan@gmail.com' || userEmail === 'juan.delacruz@example.com';
+
+        residentsDb.forEach(u => {
+          const uEmail = (u.email || '').trim().toLowerCase();
+          if (uEmail === userEmail || (isJuan && (uEmail === 'juan@gmail.com' || uEmail === 'juan.delacruz@example.com'))) {
+            u.password = p1;
+            updated = true;
+          }
+        });
+
+        if (!updated && userEmail) {
+          residentsDb.push({
+            ...currentUser,
+            email: userEmail,
+            password: p1,
+            status: 'Verified',
+            verified: true
+          });
+        }
+
+        if (isJuan) {
+          // Ensure both aliases are recorded with the new password
+          const hasJuanGmail = residentsDb.some(u => (u.email || '').toLowerCase() === 'juan@gmail.com');
+          if (!hasJuanGmail) {
+            residentsDb.push({
+              ...currentUser,
+              name: 'Juan Dela Cruz',
+              fullName: 'Juan Dela Cruz',
+              email: 'juan@gmail.com',
+              password: p1,
+              status: 'Verified',
+              verified: true
+            });
+          }
+        }
+
+        localStorage.setItem('brgy360_residents_db', JSON.stringify(residentsDb));
+        if (userEmail) {
+          localStorage.setItem('brgy360_pwd_' + userEmail, p1);
+        }
+        if (isJuan) {
+          localStorage.setItem('brgy360_pwd_juan@gmail.com', p1);
+          localStorage.setItem('brgy360_pwd_juan.delacruz@example.com', p1);
+        }
+      } catch (err) {
+        console.warn('Could not sync updated password to residents db:', err);
       }
 
       changePasswordForm.reset();

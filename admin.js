@@ -5925,9 +5925,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const dSitio = document.getElementById('resReviewDetailSitio');
     if (dSitio) dSitio.textContent = app.sitio;
 
-    const dVoter = document.getElementById('resReviewDetailVoter');
-    if (dVoter) dVoter.textContent = app.voterStatus || 'Registered Voter (Precinct 0142A)';
-
     // Prior Rejection History Banner
     const rejBanner = document.getElementById('resReviewRejectionBanner');
     const rejReasonText = document.getElementById('resReviewRejectionReasonText');
@@ -6156,7 +6153,6 @@ document.addEventListener('DOMContentLoaded', function () {
           sitio: app.sitio,
           city: 'Batangas City, Batangas',
           residentId: app.id,
-          registeredVoter: app.voterStatus || 'Yes (Precinct 0142A)',
           verified: true,
           status: 'Verified',
           verificationTier: 'Level 2: Fully Verified Resident',
@@ -6345,7 +6341,6 @@ document.addEventListener('DOMContentLoaded', function () {
       'Sitio / Purok',
       'Registered Date',
       'Verification Status',
-      'Voter Registration',
       'ID Type',
       'ID Number',
       'Proof Document',
@@ -6363,7 +6358,6 @@ document.addEventListener('DOMContentLoaded', function () {
       `"${app.sitio || ''}"`,
       `"${app.registeredDate || ''}"`,
       `"${app.status || ''}"`,
-      `"${app.voterStatus || ''}"`,
       `"${app.idType || ''}"`,
       `"${app.idNumber || ''}"`,
       `"${app.proofType || ''}"`,
@@ -6432,7 +6426,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const sitio = sitioInput?.value || '';
     const gender = document.getElementById('preRegGender')?.value || 'Female';
     const civil = document.getElementById('preRegCivilStatus')?.value || 'Single';
-    const voter = document.getElementById('preRegVoter')?.value || 'Registered Voter (Precinct 0142A)';
     const idType = document.getElementById('preRegIdType')?.value;
     const idNumber = document.getElementById('preRegIdNumber')?.value?.trim() || `4829-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
     const proofType = document.getElementById('preRegProofType')?.value;
@@ -6537,7 +6530,6 @@ document.addEventListener('DOMContentLoaded', function () {
       sitio: sitio,
       registeredDate: dateFormatted,
       status: 'Pending',
-      voterStatus: voter || 'Registered Voter (Precinct 0142A)',
       channel: 'Walk-in Intake Form',
       idType: idType || 'Philippine National ID (PhilID)',
       idNumber: idNumber,

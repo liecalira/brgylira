@@ -56,7 +56,8 @@
     const cleanEmail = (email || '').trim().toLowerCase();
     const cleanPass = (password || '').trim();
 
-    if (cleanEmail === PRECONFIGURED_ACCOUNTS.admin.email.toLowerCase() && cleanPass === PRECONFIGURED_ACCOUNTS.admin.password) {
+    const adminPwd = localStorage.getItem('brgy360_pwd_admin@brgy360.gov.ph') || PRECONFIGURED_ACCOUNTS.admin.password;
+    if (cleanEmail === PRECONFIGURED_ACCOUNTS.admin.email.toLowerCase() && cleanPass === adminPwd) {
       localStorage.setItem('currentUserRole', 'admin');
       localStorage.setItem('brgy360_session', JSON.stringify({
         role: 'admin',
@@ -67,22 +68,46 @@
       return { success: true, role: 'admin', redirect: 'admin.html', user: PRECONFIGURED_ACCOUNTS.admin };
     }
 
-    if (cleanEmail === PRECONFIGURED_ACCOUNTS.resident.email.toLowerCase() && cleanPass === PRECONFIGURED_ACCOUNTS.resident.password) {
-      localStorage.setItem('currentUserRole', 'resident');
-      localStorage.setItem('brgy360_session', JSON.stringify({
-        role: 'resident',
-        email: PRECONFIGURED_ACCOUNTS.resident.email,
-        name: PRECONFIGURED_ACCOUNTS.resident.name,
-        loginTime: new Date().toISOString()
-      }));
-      return { success: true, role: 'resident', redirect: 'user.html', user: PRECONFIGURED_ACCOUNTS.resident };
-    }
-
-    // Also support any dynamically registered resident accounts in localStorage
+    // Resident authentication (supporting changed passwords and registered users)
     try {
       const storedUsers = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
-      const found = storedUsers.find(u => u.email.toLowerCase() === cleanEmail && u.password === cleanPass);
-      if (found) {
+      let found = storedUsers.find(u => u.email && u.email.trim().toLowerCase() === cleanEmail);
+      const isJuan = (cleanEmail === 'juan@gmail.com' || cleanEmail === 'juan.delacruz@example.com');
+      if (!found && isJuan) {
+        found = storedUsers.find(u => u.email && (u.email.trim().toLowerCase() === 'juan@gmail.com' || u.email.trim().toLowerCase() === 'juan.delacruz@example.com'));
+      }
+
+      // Determine expected password for this resident
+      let expectedPass = localStorage.getItem('brgy360_pwd_' + cleanEmail);
+      if (!expectedPass && isJuan) {
+        expectedPass = localStorage.getItem('brgy360_pwd_juan@gmail.com') || localStorage.getItem('brgy360_pwd_juan.delacruz@example.com');
+      }
+      if (!expectedPass && found && found.password) {
+        expectedPass = found.password;
+      }
+      if (!expectedPass) {
+        try {
+          const storedU = JSON.parse(localStorage.getItem('brgy360_user') || '{}');
+          if (storedU && storedU.password && (storedU.email?.toLowerCase() === cleanEmail || (isJuan && (storedU.email?.toLowerCase() === 'juan@gmail.com' || storedU.email?.toLowerCase() === 'juan.delacruz@example.com')))) {
+            expectedPass = storedU.password;
+          }
+        } catch (e) {}
+      }
+      if (!expectedPass && isJuan) {
+        expectedPass = PRECONFIGURED_ACCOUNTS.resident.password;
+      }
+
+      if (expectedPass && cleanPass === expectedPass) {
+        if (!found) {
+          found = {
+            ...PRECONFIGURED_ACCOUNTS.resident,
+            email: cleanEmail,
+            password: cleanPass,
+            status: 'Verified',
+            verified: true
+          };
+        }
+
         // Enforce admin verification prerequisite
         if (found.status === 'Pending' || found.verified === false) {
           return {
@@ -102,11 +127,14 @@
         localStorage.setItem('currentUserRole', 'resident');
         localStorage.setItem('brgy360_session', JSON.stringify({
           role: 'resident',
-          email: found.email,
+          email: found.email || cleanEmail,
           name: found.fullName || found.name || 'Resident User',
           loginTime: new Date().toISOString()
         }));
-        localStorage.setItem('brgy360_user', JSON.stringify(found));
+        localStorage.setItem('brgy360_user', JSON.stringify({
+          ...found,
+          password: cleanPass
+        }));
         return { success: true, role: 'resident', redirect: 'user.html', user: found };
       }
     } catch (e) {

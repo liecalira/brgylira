@@ -1295,8 +1295,6 @@
                     <th>Registered Residents</th>
                     <th>Verified Residents</th>
                     <th>Pending Verification</th>
-                    <th>Registered Voters</th>
-                    <th>Risk Profile</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1305,56 +1303,42 @@
                     <td>1,124</td>
                     <td>972 (86.5%)</td>
                     <td>152</td>
-                    <td>840</td>
-                    <td><span class="badge-status yellow">Seasonal Dengue Vector</span></td>
                   </tr>
                   <tr>
                     <td><strong>Sitio Santolan</strong></td>
                     <td>980</td>
                     <td>810 (82.7%)</td>
                     <td>170</td>
-                    <td>715</td>
-                    <td><span class="badge-status blue">High Indigency Demand</span></td>
                   </tr>
                   <tr>
                     <td><strong>Sitio Ilaya</strong></td>
                     <td>750</td>
                     <td>640 (85.3%)</td>
                     <td>110</td>
-                    <td>560</td>
-                    <td><span class="badge-status green">Low Risk</span></td>
                   </tr>
                   <tr>
                     <td><strong>Sitio Gitna</strong></td>
                     <td>620</td>
                     <td>530 (85.5%)</td>
                     <td>90</td>
-                    <td>490</td>
-                    <td><span class="badge-status green">Low Risk</span></td>
                   </tr>
                   <tr>
                     <td><strong>Tierra Verde</strong></td>
                     <td>640</td>
                     <td>532 (83.1%)</td>
                     <td>108</td>
-                    <td>485</td>
-                    <td><span class="badge-status red">84% Flood / Drainage Risk</span></td>
                   </tr>
                   <tr>
                     <td><strong>Potenciana Village</strong></td>
                     <td>520</td>
                     <td>446 (85.8%)</td>
                     <td>74</td>
-                    <td>410</td>
-                    <td><span class="badge-status green">Residential Subdivision</span></td>
                   </tr>
                   <tr>
                     <td><strong>G.C Berberabe</strong></td>
                     <td>258</td>
                     <td>190 (73.6%)</td>
                     <td>68</td>
-                    <td>185</td>
-                    <td><span class="badge-status yellow">Commercial Corridors</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -2422,10 +2406,6 @@
                 <span class="res-info-lbl">Civil Status</span>
                 <span class="res-info-val" id="resReviewDetailCivil">Single</span>
               </div>
-              <div class="res-info-cell">
-                <span class="res-info-lbl">Voter Registry</span>
-                <span class="res-info-val" id="resReviewDetailVoter">Registered Voter (Precinct 0142B)</span>
-              </div>
             </div>
           </div>
 
@@ -2788,28 +2768,18 @@
             <span class="field-error-text text-danger" id="preRegAddressError"></span>
           </div>
 
-          <div class="form-grid-2" style="margin-bottom: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label" for="preRegSitio">Sitio / Purok Zone <span class="text-danger">*</span></label>
-              <select id="preRegSitio" class="form-select" required>
-                <option value="Sitio Ibaba">Sitio Ibaba</option>
-                <option value="Sitio Santolan">Sitio Santolan</option>
-                <option value="Sitio Ilaya">Sitio Ilaya</option>
-                <option value="Sitio Gitna">Sitio Gitna</option>
-                <option value="Tierra Verde">Tierra Verde</option>
-                <option value="Potenciana Village">Potenciana Village</option>
-                <option value="G.C Berberabe">G.C Berberabe</option>
-              </select>
-              <span class="field-error-text text-danger" id="preRegSitioError"></span>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="preRegVoter">Voter Registration</label>
-              <select id="preRegVoter" class="form-select">
-                <option value="Yes (Precinct 0142A)" selected>Yes (Precinct 0142A)</option>
-                <option value="Yes (Precinct 0142B)">Yes (Precinct 0142B)</option>
-                <option value="Not Registered / Transferee">Not Registered / Transferee</option>
-              </select>
-            </div>
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label" for="preRegSitio">Sitio / Purok Zone <span class="text-danger">*</span></label>
+            <select id="preRegSitio" class="form-select" required>
+              <option value="Sitio Ibaba">Sitio Ibaba</option>
+              <option value="Sitio Santolan">Sitio Santolan</option>
+              <option value="Sitio Ilaya">Sitio Ilaya</option>
+              <option value="Sitio Gitna">Sitio Gitna</option>
+              <option value="Tierra Verde">Tierra Verde</option>
+              <option value="Potenciana Village">Potenciana Village</option>
+              <option value="G.C Berberabe">G.C Berberabe</option>
+            </select>
+            <span class="field-error-text text-danger" id="preRegSitioError"></span>
           </div>
 
           <!-- Document Upload Inputs Simulation -->

@@ -7,6 +7,7 @@
   <meta name="description" content="Brgy360 civic governance platform with full-spectrum descriptive, predictive, and prescriptive analytics console for Barangay Pallocan West.">
   <meta property="og:title" content="Brgy360 - Barangay Services Platform">
   <meta property="og:description" content="Brgy360 civic governance platform with full-spectrum descriptive, predictive, and prescriptive analytics console for Barangay Pallocan West.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 
   <!-- Google Font: Poppins (Complete weights for consistent typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +34,7 @@
     <div class="nav-container">
       <!-- Left side: Logo & Title -->
       <a href="#home" class="logo-group">
-        <img src="assets/logo.png" alt="Brgy360 Logo" class="nav-logo">
+        <img src="assets/logo.svg" alt="Brgy360 Logo" class="nav-logo">
         <span class="nav-title">Brgy360</span>
       </a>
 
@@ -73,7 +74,7 @@
 
     <div class="hero-content">
       <!-- Large centered logo (approx 140px) -->
-      <img src="assets/logo1.png" alt="Brgy360 Emblem" class="hero-logo">
+      <img src="assets/logo.svg" alt="Brgy360 Emblem" class="hero-logo">
 
       <!-- Small uppercase tagline -->
       <p class="tagline">Your Barangay, All in One.</p>
@@ -2241,6 +2242,14 @@
       </div>
 
       <div class="pending-verif-actions-center">
+        <button type="button" class="btn-dash-primary" id="btnPendingToAdmin" style="width: 100%; margin-bottom: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #0f172a; color: #ffffff; border: none; border-radius: 8px; padding: 12px 18px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <polyline points="16 11 18 13 22 9"></polyline>
+          </svg>
+          <span>Open Admin Console to Verify Account</span>
+        </button>
         <button type="button" class="btn-pending-return-sm" id="btnPendingToLogin">
           Return to Sign In
         </button>

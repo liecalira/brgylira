@@ -426,18 +426,35 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // Dual-Role Account 2: Pre-configured Resident (Juan Dela Cruz)
-      if (emailLower === 'juan@gmail.com') {
-        if (passVal !== 'UserPassword360!') {
-          setFieldError(loginPassword, loginPasswordError, 'Invalid resident password.');
-          return;
-        }
-        localStorage.setItem('currentUserRole', 'resident');
-        localStorage.setItem('brgy360_session', 'active');
+      // Dual-Role Account 2 & Dynamic Registered Residents:
+      let residentDb = [];
+      try {
+        residentDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
+      } catch (err) {}
 
-        const userObj = {
+      const isDefaultJuan = (emailLower === 'juan@gmail.com' || emailLower === 'juan.delacruz@example.com');
+
+      // Locate user by email in residentDb (or Juan alias)
+      let customUser = residentDb.find(u => u.email && u.email.trim().toLowerCase() === emailLower);
+      if (!customUser && isDefaultJuan) {
+        customUser = residentDb.find(u => u.email && (u.email.trim().toLowerCase() === 'juan@gmail.com' || u.email.trim().toLowerCase() === 'juan.delacruz@example.com'));
+      }
+
+      // If Juan Dela Cruz and not yet stored in residentDb, initialize the record
+      if (!customUser && isDefaultJuan) {
+        let storedJuan = null;
+        try {
+          storedJuan = JSON.parse(localStorage.getItem('brgy360_user') || 'null');
+        } catch (e) {}
+        const juanPwd = localStorage.getItem('brgy360_pwd_juan@gmail.com') ||
+                        localStorage.getItem('brgy360_pwd_juan.delacruz@example.com') ||
+                        (storedJuan && storedJuan.password) ||
+                        'UserPassword360!';
+        customUser = {
           name: 'Juan Dela Cruz',
+          fullName: 'Juan Dela Cruz',
           email: 'juan@gmail.com',
+          password: juanPwd,
           mobile: '0917 123 4567',
           dob: '1992-06-15',
           civilStatus: 'Single',
@@ -445,39 +462,41 @@ document.addEventListener('DOMContentLoaded', function () {
           sitio: 'Sitio Ibaba',
           city: 'Batangas City, Batangas',
           residentId: 'PW-2026-08492',
-          registeredVoter: 'Yes (Precinct 0142A)',
           verified: true,
+          status: 'Verified',
           verificationTier: 'Level 2: Fully Verified Resident',
           idOnRecord: 'Philippine National ID (PhilID) • ****-****-8492',
           avatarInitial: 'J'
         };
-        localStorage.setItem('brgy360_user', JSON.stringify(userObj));
-
-        if (loginFeedback) {
-          loginFeedback.className = 'auth-feedback-banner success';
-          loginFeedback.textContent = 'Welcome back, Juan! Logging you in to the resident portal...';
-          loginFeedback.style.display = 'block';
-        }
-
-        setTimeout(function () {
-          closeAuthModal();
-          loginForm.reset();
-          clearAuthFeedback();
-          window.location.href = 'user.html';
-        }, 600);
-        return;
+        residentDb.push(customUser);
+        localStorage.setItem('brgy360_residents_db', JSON.stringify(residentDb));
       }
 
-      // Optional: Check any dynamically registered residents in localStorage
-      let residentDb = [];
-      try {
-        residentDb = JSON.parse(localStorage.getItem('brgy360_residents_db') || '[]');
-      } catch (err) {}
-
-      const customUser = residentDb.find(u => u.email && u.email.toLowerCase() === emailLower);
       if (customUser) {
-        if (customUser.password !== passVal) {
+        // Find expected password: check direct override key first, then customUser.password, then brgy360_user
+        let expectedPassword = localStorage.getItem('brgy360_pwd_' + emailLower) || customUser.password;
+        if (!expectedPassword && isDefaultJuan) {
+          expectedPassword = localStorage.getItem('brgy360_pwd_juan@gmail.com') || localStorage.getItem('brgy360_pwd_juan.delacruz@example.com');
+        }
+        if (!expectedPassword) {
+          try {
+            const stUser = JSON.parse(localStorage.getItem('brgy360_user') || '{}');
+            if (stUser && stUser.password && (stUser.email?.toLowerCase() === emailLower || (isDefaultJuan && (stUser.email?.toLowerCase() === 'juan@gmail.com' || stUser.email?.toLowerCase() === 'juan.delacruz@example.com')))) {
+              expectedPassword = stUser.password;
+            }
+          } catch (e) {}
+        }
+        if (!expectedPassword && isDefaultJuan) {
+          expectedPassword = 'UserPassword360!';
+        }
+
+        if (passVal !== expectedPassword) {
           setFieldError(loginPassword, loginPasswordError, 'Invalid resident password.');
+          if (loginFeedback) {
+            loginFeedback.className = 'auth-feedback-banner error';
+            loginFeedback.textContent = 'Invalid credentials. Please verify your email and password.';
+            loginFeedback.style.display = 'block';
+          }
           return;
         }
 
@@ -520,7 +539,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // If verified by admin, allow resident portal access
         localStorage.setItem('currentUserRole', 'resident');
         localStorage.setItem('brgy360_session', 'active');
-        localStorage.setItem('brgy360_user', JSON.stringify(customUser));
+        localStorage.setItem('brgy360_user', JSON.stringify({
+          ...customUser,
+          password: passVal
+        }));
 
         if (loginFeedback) {
           loginFeedback.className = 'auth-feedback-banner success';
@@ -910,6 +932,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const regPendingModal = document.getElementById('regPendingModal');
   const btnClosePendingModal = document.getElementById('btnClosePendingModal');
   const btnPendingToLogin = document.getElementById('btnPendingToLogin');
+  const btnPendingToAdmin = document.getElementById('btnPendingToAdmin');
 
   function closePendingModal() {
     if (regPendingModal) regPendingModal.classList.remove('active');
@@ -921,6 +944,19 @@ document.addEventListener('DOMContentLoaded', function () {
       closePendingModal();
       openAuthModal();
       showLoginView();
+    });
+  }
+  if (btnPendingToAdmin) {
+    btnPendingToAdmin.addEventListener('click', function () {
+      closePendingModal();
+      localStorage.setItem('currentUserRole', 'admin');
+      localStorage.setItem('brgy360_session', JSON.stringify({
+        role: 'admin',
+        email: 'admin@brgy360.gov.ph',
+        name: 'Hon. Danilo M. Ramos',
+        loginTime: new Date().toISOString()
+      }));
+      window.location.href = 'admin.html#demographics';
     });
   }
 
@@ -1103,7 +1139,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sitio: sitioVal,
         city: 'Batangas City, Batangas',
         residentId: generatedResidentId,
-        registeredVoter: 'Yes (Precinct 0142A)',
         verified: false,
         status: 'Pending',
         verificationTier: 'Pending Administrative Verification',
@@ -1157,7 +1192,6 @@ document.addEventListener('DOMContentLoaded', function () {
           sitio: sitioVal,
           registeredDate: dateFormatted,
           status: 'Pending',
-          voterStatus: 'Registered Voter (Precinct 0142A)',
           channel: 'Resident Portal Self-Registration',
           idType: idTypeVal,
           idNumber: generatedIdNumber,
@@ -1219,13 +1253,54 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // In-app Toast Notification Engine (Avoids window.alert)
+  function showPublicToast(title, message, type = 'success') {
+    let toastContainer = document.getElementById('publicToastContainer');
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.id = 'publicToastContainer';
+      toastContainer.style.cssText = 'position: fixed; bottom: 24px; right: 24px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; max-width: 400px; pointer-events: none;';
+      document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement('div');
+    toast.style.cssText = 'background: #ffffff; color: #0f172a; padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border-left: 4px solid #0d47a1; font-family: "Poppins", sans-serif; pointer-events: auto; display: flex; flex-direction: column; gap: 4px; animation: slideInToast 0.3s ease;';
+    if (type === 'success') toast.style.borderLeftColor = '#16a34a';
+    if (type === 'warning') toast.style.borderLeftColor = '#d97706';
+
+    toast.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <strong style="font-size: 14px; font-weight: 700; color: #0f172a;">${title}</strong>
+        <button type="button" style="background: none; border: none; font-size: 18px; line-height: 1; cursor: pointer; color: #94a3b8;">&times;</button>
+      </div>
+      <p style="margin: 0; font-size: 12.5px; color: #475569; line-height: 1.5; white-space: pre-line;">${message}</p>
+    `;
+
+    const closeBtn = toast.querySelector('button');
+    closeBtn.addEventListener('click', () => toast.remove());
+
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }
+    }, 6000);
+  }
+
   // 5. Document Request Form Handler
   if (docServiceForm) {
     docServiceForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const docType = document.getElementById('docType').value;
       const refNumber = 'BRGY-' + Math.floor(100000 + Math.random() * 900000);
-      alert('Salamat! Your request for ' + docType + ' has been submitted.\n\nYour Reference Number is: ' + refNumber + '\nPlease claim it at the Barangay Hall window within 1-2 business days.');
+      showPublicToast(
+        'Request Submitted Successfully',
+        'Salamat! Your request for ' + docType + ' has been submitted.\nReference Number: ' + refNumber + '\nPlease claim it at the Barangay Hall within 1-2 business days.',
+        'success'
+      );
       docServiceForm.reset();
     });
   }
@@ -1236,7 +1311,11 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const reportType = document.getElementById('reportCategory').value;
       const ticketId = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
-      alert('Your report has been securely recorded.\n\nIncident Ticket ID: ' + ticketId + '\nCategory: ' + reportType + '\nThe Barangay Council and Tanods have been notified.');
+      showPublicToast(
+        'Report Logged Securely',
+        'Your report has been securely recorded.\nIncident Ticket ID: ' + ticketId + '\nCategory: ' + reportType + '\nThe Barangay Council and Tanods have been notified.',
+        'success'
+      );
       complaintReportForm.reset();
     });
   }
@@ -1247,7 +1326,11 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const title = document.getElementById('proposalTitle').value;
       const proposalCode = 'PROP-' + Math.floor(1000 + Math.random() * 9000);
-      alert('Thank you! Your project proposal for "' + title + '" has been received.\n\nTracking ID: ' + proposalCode + '\nIt will be reviewed during the Barangay Development Council planning session.');
+      showPublicToast(
+        'Project Proposal Received',
+        'Thank you! Your project proposal for "' + title + '" has been received.\nTracking ID: ' + proposalCode + '\nIt will be reviewed during the Barangay Development Council planning session.',
+        'success'
+      );
       projectProposalForm.reset();
     });
   }
